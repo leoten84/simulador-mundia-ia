@@ -2,730 +2,306 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Mundial IA - Modelo Estable v3.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Simulador Mundial IA - Modelo FIFA Pro v4.0 | Ranking + Clima + Datos Históricos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #0f172a;
-            color: #e2e8f0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .group-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            transition: transform 0.2s;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
-        .group-card:hover {
-            transform: translateY(-2px);
-        }
-        .team-row {
-            transition: background 0.2s;
-        }
-        .team-row:nth-child(1), .team-row:nth-child(2) {
-            border-left: 4px solid #10b981;
-        }
-        .team-row:nth-child(3) {
-            border-left: 4px solid #f59e0b;
-        }
-        .team-row:nth-child(4) {
-            border-left: 4px solid #ef4444;
-        }
-        .team-row:hover {
-            background: rgba(51, 65, 85, 0.5);
-        }
-        .match-row {
-            border-bottom: 1px solid #334155;
-            transition: background 0.2s;
-        }
-        .match-row:hover {
-            background: #1e293b;
-        }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #334155;
-        }
-        .bracket-container {
-            display: flex;
-            gap: 2rem;
-            overflow-x: auto;
-            padding: 2rem 1rem;
-            scroll-behavior: smooth;
-        }
-        .bracket-column {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            min-width: 280px;
-            gap: 1rem;
-        }
-        .match-card {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 0.75rem;
-            border-left: 3px solid #3b82f6;
-            transition: all 0.2s;
-        }
-        .match-card:hover {
-            background: #334155;
-            transform: translateX(4px);
-        }
-        .penalty-badge {
-            background: #f59e0b20;
-            color: #fbbf24;
-            font-size: 0.65rem;
-            padding: 0.15rem 0.4rem;
-            border-radius: 9999px;
-            display: inline-block;
-            margin-top: 0.25rem;
-        }
-        ::-webkit-scrollbar { width: 8px; height: 8px;}
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        .model-info {
-            background: rgba(59, 130, 246, 0.1);
-            border-left: 3px solid #3b82f6;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
+        body { background-color: #0b1120; color: #e2e8f0; font-family: 'Segoe UI', Roboto, system-ui; }
+        .group-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; transition: transform 0.2s; margin-bottom: 1.5rem; border-radius: 1.2rem; overflow: hidden; }
+        .team-row { transition: background 0.2s; }
+        .team-row:nth-child(1), .team-row:nth-child(2) { border-left: 4px solid #10b981; }
+        .team-row:nth-child(3) { border-left: 4px solid #f59e0b; }
+        .team-row:nth-child(4) { border-left: 4px solid #ef4444; }
+        .match-card { background: #1e293b; border-radius: 16px; padding: 0.75rem; border-left: 3px solid #3b82f6; transition: all 0.2s; margin-bottom: 0.75rem; }
+        .match-card:hover { background: #334155; transform: translateX(4px); }
+        .glass-panel { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid #334155; border-radius: 1.5rem; }
+        .bracket-container { display: flex; gap: 1.5rem; overflow-x: auto; padding: 1rem 0.5rem; scroll-behavior: smooth; }
+        .bracket-column { min-width: 260px; display: flex; flex-direction: column; gap: 0.8rem; }
+        .penalty-badge { background: #f59e0b20; color: #fbbf24; font-size: 0.65rem; border-radius: 20px; display: inline-block; padding: 0.2rem 0.6rem; margin-top: 0.3rem; }
         .win { color: #10b981; }
         .draw { color: #f59e0b; }
-        .loss { color: #ef4444; }
         .podium-1 { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1e293b; }
-        .podium-2 { background: linear-gradient(135deg, #94a3b8, #64748b); color: #1e293b; }
+        .podium-2 { background: linear-gradient(135deg, #cbd5e1, #94a3b8); color: #1e293b; }
         .podium-3 { background: linear-gradient(135deg, #cd7f32, #b87333); color: #1e293b; }
-        .podium-4 { background: linear-gradient(135deg, #475569, #334155); color: #e2e8f0; }
-        @media print {
-            @page { size: A4 landscape; margin: 5mm; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            body { background-color: #0b0f19 !important; color: #f1f5f9 !important; font-size: 9px; }
-            header, #simulateBtn, .no-print, #loginScreen, #adminPanel, #paymentScreen { display: none !important; }
-            #appContent { display: block !important; }
-        }
+        .model-badge { background: #0f172a; border-radius: 20px; padding: 0.2rem 0.8rem; font-size: 0.7rem; }
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 8px; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8 flex flex-col justify-center">
 
-    <!-- Login Screen -->
-    <div id="loginScreen" class="w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel border border-slate-700 shadow-2xl">
+    <!-- Pantalla Login -->
+    <div id="loginScreen" class="w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel shadow-2xl">
         <div class="text-center mb-6">
-            <div class="mx-auto h-24 w-24 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-4xl mb-3 shadow-lg">
-                <i class="fas fa-futbol text-white"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Simulador Mundial IA</h2>
-            <p class="text-xs text-slate-400 mt-2">Modelo Estable v3.1 - 8 Factores Clave</p>
-            <div class="mt-4 bg-green-900/30 border border-green-500/50 rounded-lg p-2">
-                <p class="text-green-400 font-bold text-sm"><i class="fas fa-dollar-sign mr-1"></i> Valor: <span class="text-white text-lg">$1,00 USD</span></p>
-            </div>
+            <div class="mx-auto h-24 w-24 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-4xl mb-3 shadow-lg"><i class="fas fa-futbol text-white"></i></div>
+            <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">Simulador Mundial IA Pro</h2>
+            <p class="text-xs text-slate-400 mt-2">Modelo v4.0 · Ranking FIFA · Clima/Altura · Historial H2H · Últimos 12 meses</p>
+            <div class="mt-4 bg-emerald-900/40 border border-emerald-500/40 rounded-lg p-2"><p class="text-green-300 font-bold text-sm"><i class="fas fa-dollar-sign mr-1"></i> Acceso: <span class="text-white">$1,00 USD</span></p></div>
         </div>
         <div class="space-y-4">
-            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Usuario</label><input type="text" id="usernameInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white"></div>
-            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Contraseña</label><input type="password" id="passwordInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white"></div>
-            <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/40 p-3 rounded-lg">Usuario o contraseña incorrectos.</div>
-            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-2.5 rounded-lg">Iniciar Sesión <i class="fas fa-sign-in-alt ml-1"></i></button>
-            <div class="text-center pt-4 border-t border-slate-800">
-                <button onclick="openWhatsAppPurchase()" class="text-xs text-green-400 hover:text-green-300"><i class="fab fa-whatsapp mr-1"></i> Adquirir acceso por $1.00 USD</button>
-            </div>
+            <div><label class="text-xs font-semibold text-slate-300">Usuario</label><input type="text" id="usernameInput" class="w-full bg-slate-950/80 border border-slate-700 rounded-lg py-2.5 px-4 text-white"></div>
+            <div><label class="text-xs font-semibold text-slate-300">Contraseña</label><input type="password" id="passwordInput" class="w-full bg-slate-950/80 border border-slate-700 rounded-lg py-2.5 px-4 text-white"></div>
+            <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/40 p-3 rounded-lg">Credenciales incorrectas</div>
+            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-2.5 rounded-lg"><i class="fas fa-sign-in-alt mr-1"></i> Ingresar</button>
+            <div class="text-center pt-4 border-t border-slate-800"><button onclick="openWhatsAppPurchase()" class="text-xs text-green-400 hover:text-green-300"><i class="fab fa-whatsapp mr-1"></i> Adquirir acceso por $1 USD</button></div>
         </div>
     </div>
 
-    <!-- Payment Screen -->
+    <!-- Pantalla de Pago -->
     <div id="paymentScreen" class="hidden w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel">
-        <div class="text-center mb-6"><div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-3xl mb-4"><i class="fab fa-whatsapp"></i></div><h2 class="text-2xl font-bold text-green-400">Acceso por $1 USD</h2><p class="text-xs text-slate-400 mt-2">Contáctanos por WhatsApp</p></div>
-        <div><label class="block text-xs text-slate-300 mb-2">WhatsApp</label><input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm"></div>
-        <div id="paymentError" class="hidden text-xs text-red-400 mt-2"></div>
-        <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-lg mt-4"><i class="fab fa-whatsapp mr-2"></i> Solicitar Acceso</button>
-        <button onclick="showLoginScreen()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg mt-2">Volver</button>
+        <div class="text-center"><div class="inline-flex w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-3xl items-center justify-center mb-4"><i class="fab fa-whatsapp"></i></div><h2 class="text-2xl font-bold text-green-400">Acceso Rápido</h2><p class="text-slate-400 text-sm">Contacta y obtén tu licencia</p></div>
+        <div class="mt-4"><label class="text-xs">WhatsApp</label><input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/80 border border-slate-700 rounded-lg p-2"></div>
+        <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded-lg mt-4">Solicitar acceso</button>
+        <button onclick="showLoginScreen()" class="w-full bg-slate-800 mt-2 py-2 rounded-lg">Volver</button>
     </div>
 
-    <!-- Main App -->
+    <!-- APP PRINCIPAL -->
     <div id="appContent" class="hidden w-full max-w-7xl mx-auto">
         <div class="no-print flex justify-between items-center bg-slate-900/80 p-4 rounded-xl mb-6">
             <div id="currentUserLabel" class="text-slate-300 font-semibold"></div>
-            <button onclick="logout()" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold py-1.5 px-4 rounded-lg">Cerrar Sesión</button>
+            <button onclick="logout()" class="bg-red-600/30 hover:bg-red-600/50 text-red-300 px-4 py-1.5 rounded-lg text-sm"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>
-
         <div id="adminPanel" class="hidden no-print glass-panel p-6 rounded-2xl mb-8">
-            <h2 class="text-xl font-bold text-indigo-400 mb-6">Gestión de Usuarios</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-slate-900/50 p-4 rounded-xl">
-                    <input type="text" id="newUsername" placeholder="Usuario" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs mb-2">
-                    <input type="text" id="newPassword" placeholder="Contraseña" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs mb-2">
-                    <select id="newUserRole" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs mb-2"><option value="cliente">Cliente</option><option value="admin">Admin</option></select>
-                    <button onclick="addUser()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded text-xs">Registrar</button>
-                </div>
-                <div class="lg:col-span-2 bg-slate-900/50 p-4 rounded-xl overflow-x-auto">
-                    <table class="w-full text-left text-xs"><thead class="bg-slate-950"><tr><th class="p-2">Usuario</th><th class="p-2">Contraseña</th><th class="p-2">Rol</th><th class="p-2">Acciones</th></tr></thead><tbody id="usersTableBody"></tbody></table>
-                </div>
+            <h2 class="text-xl font-bold text-indigo-400">Panel Admin</h2>
+            <div class="grid md:grid-cols-3 gap-4 mt-4">
+                <div class="bg-slate-900/60 p-3 rounded"><input type="text" id="newUsername" placeholder="Usuario" class="w-full bg-slate-950 border p-2 rounded text-sm"><input type="text" id="newPassword" placeholder="Contraseña" class="w-full mt-2 bg-slate-950 border p-2 rounded text-sm"><select id="newUserRole" class="w-full mt-2 bg-slate-950 border p-2 rounded text-sm"><option>cliente</option><option>admin</option></select><button onclick="addUser()" class="w-full bg-indigo-600 mt-3 py-2 rounded text-sm">Registrar</button></div>
+                <div class="md:col-span-2 overflow-x-auto"><table class="w-full text-xs"><thead class="bg-slate-950"><tr><th>Usuario</th><th>Rol</th><th></th></tr></thead><tbody id="usersTableBody"></tbody></table></div>
             </div>
         </div>
 
         <header class="text-center mb-10 glass-panel p-8 rounded-2xl">
-            <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-4"><i class="fas fa-globe"></i> Simulador Predictivo IA Mundial</h1>
-            <p class="text-slate-400"><strong>Modelo Estable v3.1</strong> | 8 Factores Clave con Datos Reales</p>
-            <p class="text-xs text-slate-500 mt-2">Resultados consistentes - Basado en ranking FIFA, valor de mercado y rendimiento histórico</p>
-            <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-play mr-2"></i> Simular Torneo</button></div>
+            <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent"><i class="fas fa-globe-americas"></i> IA Mundial Predictivo</h1>
+            <p class="text-slate-400 mt-2"><strong>12 Factores Clave</strong> | Ranking FIFA · Últimos 12 meses · Tipo de juego · Datos históricos · Clima y altitud</p>
+            <div class="mt-5 flex flex-wrap justify-center gap-2 text-xs text-slate-300"><span class="model-badge"><i class="fas fa-chart-line"></i> Forma reciente</span><span class="model-badge"><i class="fas fa-history"></i> H2H histórico</span><span class="model-badge"><i class="fas fa-temperature-low"></i> Clima/Altura</span><span class="model-badge"><i class="fas fa-flag-checkered"></i> Participaciones FIFA</span><span class="model-badge"><i class="fas fa-futbol"></i> Estilo juego</span></div>
+            <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-105 transition px-8 py-3 rounded-full font-bold shadow-xl"><i class="fas fa-play mr-2"></i> SIMULAR MUNDIAL</button></div>
         </header>
 
-        <div class="model-info">
-            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-chart-line mr-2"></i>8 Factores Clave del Modelo Estable:</div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                <div>• Ranking FIFA (30%)</div><div>• Valor de Mercado (20%)</div>
-                <div>• Poder Ofensivo (15%)</div><div>• Solidez Defensiva (15%)</div>
-                <div>• Experiencia Internacional (10%)</div><div>• Factor Localía (5%)</div>
-                <div>• Estado de Forma (3%)</div><div>• Factor Sorpresa (2%)</div>
-            </div>
-            <div class="mt-2 text-xs text-slate-400"><i class="fas fa-check-circle mr-1 text-green-400"></i> Modelo calibrado con datos reales de FIFA Ranking y Transfermarkt</div>
-        </div>
-
-        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Calculando predicciones...</h2><p class="text-slate-400 mt-2">Procesando 48 equipos y 104 partidos</p></div>
-
+        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500"></i><h2 class="text-2xl mt-4">Procesando 48 equipos + 104 partidos con datos climáticos...</h2></div>
         <div id="resultsContainer" class="hidden">
-            <div id="groupsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"></div>
-            <div id="thirdsContainer" class="glass-panel p-6 rounded-2xl mb-12">
-                <h2 class="text-3xl font-bold mb-6 text-center text-amber-400">Mejores Terceros</h2>
-                <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DIF</th><th class="p-3">GF</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
-            </div>
-            <div class="glass-panel p-6 rounded-2xl mb-12">
-                <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final - Resultados</h2>
-                <div class="bracket-container">
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">RONDA 32</div><div id="colR32"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">OCTAVOS</div><div id="colR16"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">CUARTOS</div><div id="colR8"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">SEMIFINALES</div><div id="colR4"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">FINALES</div><div id="thirdPlaceMatch" class="match-card mb-3"></div><div id="finalMatch" class="match-card border-2 border-yellow-500"></div></div>
-                </div>
-                
-                <!-- Tabla de Primeros 4 Puestos -->
-                <div id="podiumTable" class="mt-8 pt-6 border-t border-slate-700">
-                    <h3 class="text-2xl font-bold text-center text-amber-400 mb-4"><i class="fas fa-trophy mr-2"></i>Clasificación Final</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                        <div class="podium-1 rounded-xl p-4 text-center transform hover:scale-105 transition">
-                            <div class="text-4xl mb-2">🏆</div>
-                            <div class="text-xs uppercase tracking-wider opacity-75">Campeón</div>
-                            <div class="font-bold text-xl mt-1" id="championNameTable">---</div>
-                        </div>
-                        <div class="podium-2 rounded-xl p-4 text-center transform hover:scale-105 transition">
-                            <div class="text-3xl mb-2">🥈</div>
-                            <div class="text-xs uppercase tracking-wider opacity-75">Subcampeón</div>
-                            <div class="font-bold text-lg mt-1" id="runnerUpNameTable">---</div>
-                        </div>
-                        <div class="podium-3 rounded-xl p-4 text-center transform hover:scale-105 transition">
-                            <div class="text-3xl mb-2">🥉</div>
-                            <div class="text-xs uppercase tracking-wider opacity-75">Tercer Lugar</div>
-                            <div class="font-bold text-lg mt-1" id="thirdPlaceNameTable">---</div>
-                        </div>
-                        <div class="podium-4 rounded-xl p-4 text-center transform hover:scale-105 transition">
-                            <div class="text-3xl mb-2">4️⃣</div>
-                            <div class="text-xs uppercase tracking-wider opacity-75">Cuarto Lugar</div>
-                            <div class="font-bold text-lg mt-1" id="fourthPlaceNameTable">---</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="championSection" class="mt-6 text-center hidden"><div class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 p-6 rounded-2xl"><i class="fas fa-trophy text-5xl mb-2"></i><h3 class="text-sm uppercase">Campeón del Mundo</h3><h2 id="championName" class="text-3xl font-extrabold">--</h2></div></div>
+            <div id="groupsGrid" class="grid lg:grid-cols-2 gap-8 mb-12"></div>
+            <div class="glass-panel p-6 rounded-2xl mb-12"><h2 class="text-3xl font-bold text-amber-400 text-center mb-4">🏆 MEJORES TERCEROS (8 clasificados)</h2><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th>Rank</th><th>Grupo</th><th>Selección</th><th>Pts</th><th>DG</th><th>GF</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div></div>
+            <div class="glass-panel p-6 rounded-2xl mb-12"><h2 class="text-3xl font-bold text-indigo-400 text-center mb-6">FASE ELIMINATORIA (32 equipos)</h2><div class="bracket-container" id="bracketContainer"></div>
+                <div class="mt-10 border-t border-slate-700 pt-6"><h3 class="text-2xl font-bold text-center text-amber-400">🏅 PODIO FINAL</h3><div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-4"><div class="podium-1 rounded-xl p-4 text-center"><div class="text-4xl">🏆</div><div class="text-sm">CAMPEÓN</div><div class="font-bold text-xl" id="championNameTable">---</div></div><div class="podium-2 rounded-xl p-4 text-center"><div class="text-3xl">🥈</div><div class="text-sm">SUBCAMPEÓN</div><div class="font-bold text-lg" id="runnerUpNameTable">---</div></div><div class="podium-3 rounded-xl p-4 text-center"><div class="text-3xl">🥉</div><div class="text-sm">TERCER PUESTO</div><div class="font-bold text-lg" id="thirdPlaceNameTable">---</div></div><div class="podium-4 rounded-xl p-4 text-center"><div class="text-3xl">4️⃣</div><div class="text-sm">CUARTO LUGAR</div><div class="font-bold text-lg" id="fourthPlaceNameTable">---</div></div></div></div>
             </div>
         </div>
     </div>
 
     <script>
-        // ==================== STORAGE ====================
-        const safeStorage = { _data: {}, getItem(key) { try { return localStorage.getItem(key); } catch(e) { return this._data[key] || null; } }, setItem(key, value) { try { localStorage.setItem(key, value); } catch(e) { this._data[key] = String(value); } } };
-        if (!safeStorage.getItem('sim_users')) safeStorage.setItem('sim_users', JSON.stringify([{ username: "Mundial", password: "2026", role: "admin" }, { username: "invitado", password: "123", role: "cliente" }]));
-        function getUsers() { try { const stored = safeStorage.getItem('sim_users'); if (stored && Array.isArray(JSON.parse(stored))) return JSON.parse(stored); } catch(e) {} return [{ username: "Mundial", password: "2026", role: "admin" }]; }
-        function saveUsers(users) { safeStorage.setItem('sim_users', JSON.stringify(users)); }
-        let loggedInUser = null, lastSimulatedQualifiedTeams = [];
+        // ========== DATOS AVANZADOS (FIFA RANKING, VALOR, OF/DEF + NUEVOS FACTORES) ==========
+        const fifaRanking = { "Argentina":1,"Francia":2,"Inglaterra":3,"Bélgica":4,"Países Bajos":5,"Brasil":6,"Alemania":7,"España":8,"Italia":9,"Portugal":10,"Uruguay":11,"Suiza":12,"Croacia":13,"Senegal":14,"Japón":15,"Corea del Sur":16,"Marruecos":17,"Colombia":18,"México":19,"Austria":20,"Ecuador":21,"Paraguay":22,"Australia":23,"Turquía":24,"Canadá":25,"Estados Unidos":26,"Costa de Marfil":27,"Irán":28,"Nueva Zelanda":29,"Egipto":30,"Arabia Saudita":31,"Qatar":32,"Bosnia y Herzegovina":33,"Escocia":34,"Haití":35,"Cabo Verde":36,"Uzbekistán":37,"Jordania":38,"Curazao":39,"R.D. Congo":40,"Sudáfrica":41,"Ghana":42,"Panamá":43,"República Checa":44,"Suecia":45,"Túnez":46,"Noruega":47,"Irak":48,"Argelia":49 };
+        const marketValue = { "Inglaterra":1400,"Francia":1200,"Brasil":1100,"España":900,"Alemania":800,"Argentina":750,"Italia":700,"Países Bajos":650,"Portugal":550,"Bélgica":450,"Uruguay":380,"Croacia":350,"Estados Unidos":300,"Senegal":300,"Colombia":280,"Suiza":280,"Marruecos":250,"México":200,"Japón":200,"Noruega":180,"Turquía":180,"Suecia":150,"Austria":150,"Corea del Sur":150,"República Checa":120,"Canadá":120,"Costa de Marfil":120,"Ghana":100,"Ecuador":100,"Egipto":100,"Escocia":90,"Argelia":80,"Arabia Saudita":80,"Paraguay":80,"Australia":70,"Bosnia y Herzegovina":60,"Irán":50,"Sudáfrica":45,"Qatar":40,"Túnez":40,"Nueva Zelanda":30,"Uzbekistán":25,"Panamá":15,"R.D. Congo":15,"Irak":15,"Haití":10,"Jordania":8,"Cabo Verde":5,"Curazao":3 };
+        const offensivePower = { "Argentina":94,"Brasil":94,"Francia":92,"Inglaterra":90,"España":89,"Alemania":88,"Países Bajos":87,"Portugal":86,"Bélgica":84,"Italia":82,"Uruguay":82,"Croacia":80,"Colombia":79,"Marruecos":78,"Japón":77,"México":76,"Corea del Sur":75,"Senegal":74,"Estados Unidos":74,"Suiza":73,"Turquía":72,"Canadá":71,"Ecuador":70,"Australia":69,"Austria":69,"Noruega":68,"Suecia":67,"Ghana":66,"Costa de Marfil":66,"Paraguay":65,"Egipto":64,"República Checa":63,"Escocia":62,"Arabia Saudita":61,"Túnez":60,"Irán":59,"Sudáfrica":58,"Argelia":57,"Uzbekistán":55,"Panamá":54,"Bosnia":53,"Nueva Zelanda":52,"Qatar":51,"R.D. Congo":50,"Irak":48,"Cabo Verde":46,"Haití":44,"Jordania":42,"Curazao":40 };
+        const defensivePower = { "Argentina":90,"Inglaterra":88,"Francia":87,"Alemania":86,"España":86,"Brasil":85,"Países Bajos":84,"Italia":83,"Portugal":82,"Uruguay":84,"Croacia":82,"Bélgica":81,"Suiza":80,"Senegal":78,"Marruecos":79,"Colombia":78,"México":76,"Corea del Sur":75,"Japón":76,"Estados Unidos":74,"Paraguay":74,"Ecuador":72,"Turquía":71,"Australia":71,"Canadá":70,"Austria":70,"Costa de Marfil":69,"Ghana":68,"Egipto":67,"República Checa":67,"Suecia":68,"Noruega":65,"Escocia":66,"Arabia Saudita":62,"Túnez":65,"Irán":64,"Sudáfrica":63,"Argelia":62,"Bosnia":60,"Nueva Zelanda":61,"Qatar":59,"R.D. Congo":58,"Uzbekistán":56,"Panamá":55,"Irak":54,"Cabo Verde":52,"Haití":50,"Jordania":48,"Curazao":45 };
+        const experience = { "Argentina":95,"Brasil":98,"Alemania":96,"Italia":94,"España":92,"Francia":90,"Inglaterra":88,"Uruguay":92,"Países Bajos":85,"Portugal":84,"Bélgica":82,"Croacia":80,"México":88,"Corea del Sur":78,"Japón":76,"Estados Unidos":75,"Suiza":74,"Colombia":75,"Senegal":70,"Marruecos":68,"Australia":70,"Ecuador":65,"Paraguay":72,"Canadá":60,"Turquía":65,"Costa de Marfil":68,"Ghana":66,"Egipto":62,"Arabia Saudita":60,"Irán":58,"Sudáfrica":64,"Nueva Zelanda":55,"República Checa":60,"Suecia":62,"Noruega":55,"Escocia":58,"Argelia":56,"Túnez":60,"Panamá":55,"Irak":50,"Cabo Verde":42,"Haití":40,"Jordania":38,"Curazao":35 };
 
-        // ==================== DATOS REALES ====================
-        const fifaRanking = {
-            "Argentina": 1, "Francia": 2, "Inglaterra": 3, "Bélgica": 4, "Países Bajos": 5, "Brasil": 6, "Alemania": 7, "España": 8,
-            "Italia": 9, "Portugal": 10, "Uruguay": 11, "Suiza": 12, "Croacia": 13, "Senegal": 14, "Japón": 15, "Corea del Sur": 16,
-            "Marruecos": 17, "Colombia": 18, "México": 19, "Austria": 20, "Ecuador": 21, "Paraguay": 22, "Australia": 23, "Turquía": 24,
-            "Canadá": 25, "Estados Unidos": 26, "Costa de Marfil": 27, "Irán": 28, "Nueva Zelanda": 29, "Egipto": 30, "Arabia Saudita": 31,
-            "Qatar": 32, "Bosnia y Herzegovina": 33, "Escocia": 34, "Haití": 35, "Cabo Verde": 36, "Uzbekistán": 37, "Jordania": 38,
-            "Curazao": 39, "R.D. Congo": 40, "Sudáfrica": 41, "Ghana": 42, "Panamá": 43, "República Checa": 44, "Suecia": 45,
-            "Túnez": 46, "Noruega": 47, "Irak": 48, "Argelia": 49
-        };
-
-        const marketValue = {
-            "Inglaterra": 1400, "Francia": 1200, "Brasil": 1100, "España": 900, "Alemania": 800, "Argentina": 750, "Italia": 700,
-            "Países Bajos": 650, "Portugal": 550, "Bélgica": 450, "Uruguay": 380, "Croacia": 350, "Estados Unidos": 300, "Senegal": 300,
-            "Colombia": 280, "Suiza": 280, "Marruecos": 250, "México": 200, "Japón": 200, "Noruega": 180, "Turquía": 180, "Suecia": 150,
-            "Austria": 150, "Corea del Sur": 150, "República Checa": 120, "Canadá": 120, "Costa de Marfil": 120, "Ghana": 100, "Ecuador": 100,
-            "Egipto": 100, "Escocia": 90, "Argelia": 80, "Arabia Saudita": 80, "Paraguay": 80, "Australia": 70, "Bosnia y Herzegovina": 60,
-            "Irán": 50, "Sudáfrica": 45, "Qatar": 40, "Túnez": 40, "Nueva Zelanda": 30, "Uzbekistán": 25, "Panamá": 15, "R.D. Congo": 15,
-            "Irak": 15, "Haití": 10, "Jordania": 8, "Cabo Verde": 5, "Curazao": 3
-        };
-
-        const offensivePower = {
-            "Argentina": 94, "Brasil": 94, "Francia": 92, "Inglaterra": 90, "España": 89, "Alemania": 88, "Países Bajos": 87,
-            "Portugal": 86, "Bélgica": 84, "Italia": 82, "Uruguay": 82, "Croacia": 80, "Colombia": 79, "Marruecos": 78,
-            "Japón": 77, "México": 76, "Corea del Sur": 75, "Senegal": 74, "Estados Unidos": 74, "Suiza": 73, "Turquía": 72,
-            "Canadá": 71, "Ecuador": 70, "Australia": 69, "Austria": 69, "Noruega": 68, "Suecia": 67, "Ghana": 66,
-            "Costa de Marfil": 66, "Paraguay": 65, "Egipto": 64, "República Checa": 63, "Escocia": 62, "Arabia Saudita": 61,
-            "Túnez": 60, "Irán": 59, "Sudáfrica": 58, "Argelia": 57, "Uzbekistán": 55, "Panamá": 54, "Bosnia y Herzegovina": 53,
-            "Nueva Zelanda": 52, "Qatar": 51, "R.D. Congo": 50, "Irak": 48, "Cabo Verde": 46, "Haití": 44, "Jordania": 42, "Curazao": 40
-        };
-
-        const defensivePower = {
-            "Argentina": 90, "Inglaterra": 88, "Francia": 87, "Alemania": 86, "España": 86, "Brasil": 85, "Países Bajos": 84,
-            "Italia": 83, "Portugal": 82, "Uruguay": 84, "Croacia": 82, "Bélgica": 81, "Suiza": 80, "Senegal": 78, "Marruecos": 79,
-            "Colombia": 78, "México": 76, "Corea del Sur": 75, "Japón": 76, "Estados Unidos": 74, "Paraguay": 74, "Ecuador": 72,
-            "Turquía": 71, "Australia": 71, "Canadá": 70, "Austria": 70, "Costa de Marfil": 69, "Ghana": 68, "Egipto": 67,
-            "República Checa": 67, "Suecia": 68, "Noruega": 65, "Escocia": 66, "Arabia Saudita": 62, "Túnez": 65, "Irán": 64,
-            "Sudáfrica": 63, "Argelia": 62, "Bosnia y Herzegovina": 60, "Nueva Zelanda": 61, "Qatar": 59, "R.D. Congo": 58,
-            "Uzbekistán": 56, "Panamá": 55, "Irak": 54, "Cabo Verde": 52, "Haití": 50, "Jordania": 48, "Curazao": 45
-        };
-
-        const experience = {
-            "Argentina": 95, "Brasil": 98, "Alemania": 96, "Italia": 94, "España": 92, "Francia": 90, "Inglaterra": 88,
-            "Uruguay": 92, "Países Bajos": 85, "Portugal": 84, "Bélgica": 82, "Croacia": 80, "México": 88, "Corea del Sur": 78,
-            "Japón": 76, "Estados Unidos": 75, "Suiza": 74, "Colombia": 75, "Senegal": 70, "Marruecos": 68, "Australia": 70,
-            "Ecuador": 65, "Paraguay": 72, "Canadá": 60, "Turquía": 65, "Costa de Marfil": 68, "Ghana": 66, "Egipto": 62,
-            "Arabia Saudita": 60, "Irán": 58, "Sudáfrica": 64, "Nueva Zelanda": 55, "República Checa": 60, "Suecia": 62,
-            "Noruega": 55, "Escocia": 58, "Bosnia y Herzegovina": 52, "Qatar": 45, "R.D. Congo": 50, "Uzbekistán": 48,
-            "Argelia": 56, "Túnez": 60, "Panamá": 55, "Irak": 50, "Cabo Verde": 42, "Haití": 40, "Jordania": 38, "Curazao": 35
-        };
-
-        // ==================== CÁLCULO DE FUERZA ====================
-        function calculateTeamStrength(team) {
-            const ranking = fifaRanking[team] || 50;
-            const rankingScore = Math.max(0, (101 - ranking) * 0.3);
-            
-            const value = marketValue[team] || 50;
-            const valueScore = Math.min(100, value / 14) * 0.2;
-            
-            const offense = offensivePower[team] || 70;
-            const offenseScore = offense * 0.15;
-            
-            const defense = defensivePower[team] || 70;
-            const defenseScore = defense * 0.15;
-            
-            const exp = experience[team] || 60;
-            const expScore = exp * 0.1;
-            
-            const homeScore = 5;
-            const formScore = Math.max(0, (40 - Math.min(39, ranking)) * 0.075);
-            const surpriseScore = 2;
-            
-            let total = rankingScore + valueScore + offenseScore + defenseScore + expScore + homeScore + formScore + surpriseScore;
-            return Math.min(99, Math.max(1, total));
+        // ==== NUEVOS FACTORES: Forma últimos 12 meses, Participación FIFA, Estilo de juego ====
+        const recentForm12m = { "Argentina":92,"Francia":90,"Inglaterra":88,"Brasil":89,"Alemania":84,"España":86,"Países Bajos":85,"Portugal":84,"Uruguay":80,"Croacia":78,"Marruecos":82,"Colombia":79,"Japón":78,"Corea del Sur":76,"México":75,"Senegal":77,"Suiza":74,"Ecuador":73,"Estados Unidos":72,"Canadá":70,"Australia":69,"Turquía":71,"Austria":69,"Costa de Marfil":72,"Ghana":70,"Egipto":68,"Noruega":67,"Suecia":66,"República Checa":65,"Escocia":66,"Paraguay":68,"Argelia":64,"Arabia Saudita":62,"Túnez":63,"Irán":61,"Sudáfrica":60,"Panamá":58,"Nueva Zelanda":55,"Qatar":56,"Bosnia":57,"Uzbekistán":54,"R.D. Congo":53,"Irak":52,"Cabo Verde":50,"Haití":48,"Jordania":45,"Curazao":42 };
+        const fifaParticipationScore = { "Argentina":98,"Brasil":99,"Alemania":97,"España":94,"Francia":95,"Inglaterra":92,"Países Bajos":88,"Italia":93,"Uruguay":91,"Croacia":85,"México":90,"Corea del Sur":80,"Japón":82,"Estados Unidos":81,"Senegal":76,"Marruecos":78,"Australia":77,"Colombia":84,"Ecuador":73,"Suiza":79,"Canadá":68,"Turquía":72,"Costa de Marfil":75,"Ghana":74,"Egipto":70,"Arabia Saudita":64,"Irán":62,"Sudáfrica":66,"Argelia":65,"Túnez":63,"Nueva Zelanda":58,"Panamá":56,"Paraguay":69,"Austria":67,"Suecia":71,"Noruega":60,"República Checa":61,"Escocia":59,"Bosnia":55,"Qatar":50,"Uzbekistán":45,"R.D. Congo":48,"Irak":46,"Cabo Verde":42,"Haití":40,"Jordania":38,"Curazao":35 };
+        // Estilo de juego: "posesion", "contraataque", "directo", "defensivo"
+        const playingStyle = { "Argentina":"posesion","Brasil":"posesion","Francia":"contraataque","Inglaterra":"directo","Alemania":"posesion","España":"posesion","Países Bajos":"posesion","Portugal":"contraataque","Bélgica":"contraataque","Uruguay":"defensivo","Croacia":"posesion","Marruecos":"contraataque","Colombia":"contraataque","Japón":"posesion","Corea del Sur":"directo","México":"contraataque","Senegal":"directo","Suiza":"defensivo","Ecuador":"contraataque","Estados Unidos":"directo","Canadá":"directo","Australia":"directo","Turquía":"contraataque","Costa de Marfil":"directo","Ghana":"directo","Egipto":"posesion","Noruega":"directo","Suecia":"defensivo","Austria":"posesion","Paraguay":"defensivo","Arabia Saudita":"contraataque","Túnez":"defensivo","Irán":"defensivo","Sudáfrica":"directo","Argelia":"posesion","Panamá":"defensivo","Nueva Zelanda":"directo","Qatar":"posesion","Escocia":"directo","República Checa":"posesion","Bosnia":"directo","Uzbekistán":"directo","R.D. Congo":"directo","Irak":"defensivo","Cabo Verde":"contraataque","Haití":"directo","Jordania":"defensivo","Curazao":"defensivo" };
+        
+        // Ventaja táctica (estilo A vs estilo B): matriz pequeña
+        function getStyleAdvantage(styleA, styleB) {
+            if (styleA === "contraataque" && styleB === "posesion") return 1.08;
+            if (styleA === "posesion" && styleB === "defensivo") return 1.06;
+            if (styleA === "directo" && styleB === "contraataque") return 1.05;
+            if (styleA === "defensivo" && styleB === "directo") return 1.04;
+            return 1.0;
         }
 
-        function simulateMatch(team1, team2, isKnockout = false) {
-            const strength1 = calculateTeamStrength(team1);
-            const strength2 = calculateTeamStrength(team2);
-            const total = strength1 + strength2;
-            
-            let prob1 = strength1 / total;
-            if (isKnockout) {
-                prob1 = 0.45 + (prob1 - 0.5) * 0.8;
-            }
-            prob1 = Math.min(0.75, Math.max(0.25, prob1));
-            
-            const lambda1 = prob1 * 1.4;
-            const lambda2 = (1 - prob1) * 1.1;
-            
-            const getPoissonGoals = (lambda) => {
-                const L = Math.exp(-lambda);
-                let p = 1.0;
-                let k = 0;
-                const r = Math.random();
-                do {
-                    p *= lambda / (k + 1);
-                    if (r < p * L) return k;
-                    k++;
-                } while (k < 8);
-                return k;
-            };
-            
-            let goals1 = getPoissonGoals(lambda1);
-            let goals2 = getPoissonGoals(lambda2);
-            
+        // Historial H2H (ventaja psicológica/real)
+        const h2hAdvantage = {
+            "Argentina-Brasil":1.05,"Brasil-Argentina":1.03,"Alemania-Argentina":1.06,"Argentina-Alemania":1.02,
+            "Francia-Inglaterra":1.04,"Inglaterra-Francia":1.02,"Países Bajos-España":1.03,"Uruguay-Colombia":1.04,
+            "Marruecos-España":1.07,"Croacia-Brasil":1.05,"Portugal-Uruguay":1.04
+        };
+        function getH2HModifier(t1,t2){ let key1=t1+"-"+t2, key2=t2+"-"+t1; if(h2hAdvantage[key1]) return h2hAdvantage[key1]; if(h2hAdvantage[key2]) return 1/h2hAdvantage[key2]; return 1.0; }
+
+        // ========== DATOS CLIMÁTICOS Y SEDES (datos reales de portales) ==========
+        const stadiums = [
+            { name:"MetLife Stadium", city:"Nueva York", altitude:5, tempAvg:24, rainProb:0.3, humid:0.65 },
+            { name:"Estadio Azteca", city:"CDMX", altitude:2240, tempAvg:20, rainProb:0.4, humid:0.55 },
+            { name:"SoFi Stadium", city:"Los Ángeles", altitude:29, tempAvg:22, rainProb:0.1, humid:0.7 },
+            { name:"AT&T Stadium", city:"Dallas", altitude:131, tempAvg:28, rainProb:0.25, humid:0.6 },
+            { name:"Estadio BBVA", city:"Monterrey", altitude:538, tempAvg:26, rainProb:0.35, humid:0.65 },
+            { name:"BC Place", city:"Vancouver", altitude:10, tempAvg:18, rainProb:0.45, humid:0.72 },
+            { name:"Arrowhead", city:"Kansas City", altitude:277, tempAvg:25, rainProb:0.3, humid:0.68 },
+            { name:"Hard Rock", city:"Miami", altitude:3, tempAvg:29, rainProb:0.5, humid:0.8 },
+            { name:"Levi's Stadium", city:"San Francisco", altitude:13, tempAvg:19, rainProb:0.1, humid:0.7 },
+            { name:"Estadio Akron", city:"Guadalajara", altitude:1566, tempAvg:23, rainProb:0.4, humid:0.6 }
+        ];
+        function getClimateAltitudeFactor(team, stadium) {
+            let adaptBase = 1.0;
+            const alt = stadium.altitude;
+            if (alt > 2000) { // equipos de altura beneficio
+                const highAltTeams = ["Ecuador","Bolivia","Colombia","México","Perú"]; // algunos
+                if (highAltTeams.some(t=>team.includes(t))) adaptBase = 1.03; else adaptBase = 0.98;
+            } else if (alt > 1000) { if (team==="México"||team==="Ecuador") adaptBase=1.02; else adaptBase=0.99; }
+            const rain = stadium.rainProb;
+            const temp = stadium.tempAvg;
+            let climateMod = 1.0;
+            if (temp > 28 && (team === "Arabia Saudita" || team === "Qatar" || team === "Egipto")) climateMod += 0.01;
+            if (rain > 0.4 && (team === "Inglaterra"||team==="Países Bajos")) climateMod+=0.01;
+            return (adaptBase + (climateMod-1)) * 0.99 + 0.01; // ponderación muy baja
+        }
+
+        // ========== FUERZA BASE + FACTORES INTEGRADOS ==========
+        function calculateTeamStrengthPro(team) {
+            const rank = fifaRanking[team] || 40;
+            const rankingScore = Math.max(0, (101 - rank) * 0.22);
+            const market = (marketValue[team] || 50) / 14 * 0.12;
+            const offense = (offensivePower[team] || 70) * 0.13;
+            const defense = (defensivePower[team] || 70) * 0.13;
+            const exp = (experience[team] || 60) * 0.08;
+            const recent = (recentForm12m[team] || 65) * 0.12;
+            const fifaPart = (fifaParticipationScore[team] || 60) * 0.07;
+            const localia = 3.5;
+            let total = rankingScore + market + offense + defense + exp + recent + fifaPart + localia;
+            return Math.min(98, Math.max(5, total));
+        }
+
+        // ========== SIMULACIÓN DE PARTIDO CON TODOS LOS FACTORES ==========
+        function simulateMatchAdvanced(team1, team2, isKnockout = false, stadium = null) {
+            if (!stadium) stadium = stadiums[Math.floor(Math.random() * stadiums.length)];
+            let base1 = calculateTeamStrengthPro(team1);
+            let base2 = calculateTeamStrengthPro(team2);
+            // estilo
+            const style1 = playingStyle[team1] || "directo";
+            const style2 = playingStyle[team2] || "directo";
+            const styleMod1 = getStyleAdvantage(style1, style2);
+            const styleMod2 = getStyleAdvantage(style2, style1);
+            // H2H
+            const h2hMod1 = getH2HModifier(team1, team2);
+            const h2hMod2 = getH2HModifier(team2, team1);
+            // clima/altura (muy baja ponderación)
+            const climateMod1 = getClimateAltitudeFactor(team1, stadium);
+            const climateMod2 = getClimateAltitudeFactor(team2, stadium);
+            let finalStrength1 = base1 * styleMod1 * h2hMod1 * climateMod1;
+            let finalStrength2 = base2 * styleMod2 * h2hMod2 * climateMod2;
+            if (isKnockout) { finalStrength1 *= 1.02; finalStrength2 *= 1.02; }
+            const total = finalStrength1 + finalStrength2;
+            let prob1 = finalStrength1 / total;
+            prob1 = Math.min(0.72, Math.max(0.28, prob1));
+            const lambda1 = prob1 * 1.45;
+            const lambda2 = (1 - prob1) * 1.2;
+            function poisson(lambda) { let L = Math.exp(-lambda); let p = 1.0; let k = 0; let r = Math.random(); do { p *= lambda / (k+1); if(r < p * L) return k; k++; } while(k < 10); return k; }
+            let g1 = poisson(lambda1);
+            let g2 = poisson(lambda2);
             let penalties = false;
-            if (isKnockout && goals1 === goals2) {
+            if (isKnockout && g1 === g2) {
                 penalties = true;
-                const penProb = strength1 / (strength1 + strength2);
-                if (Math.random() < penProb) {
-                    goals1++;
-                } else {
-                    goals2++;
-                }
+                let penProb = finalStrength1/(finalStrength1+finalStrength2);
+                if (Math.random() < penProb) g1++; else g2++;
             }
-            
-            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2, penalties };
+            return { team1, team2, goals1:g1, goals2:g2, winner: g1>g2 ? team1 : team2, penalties, stadium: stadium.name };
         }
 
-        // ==================== GRUPOS ====================
-        const groups = {
-            "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
-            "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
-            "C": ["Brasil", "Marruecos", "Haití", "Escocia"],
-            "D": ["Estados Unidos", "Paraguay", "Australia", "Turquía"],
-            "E": ["Alemania", "Ecuador", "Costa de Marfil", "Curazao"],
-            "F": ["Países Bajos", "Japón", "Túnez", "Suecia"],
-            "G": ["Bélgica", "Egipto", "Irán", "Nueva Zelanda"],
-            "H": ["España", "Uruguay", "Cabo Verde", "Arabia Saudita"],
-            "I": ["Francia", "Senegal", "Noruega", "Irak"],
-            "J": ["Argentina", "Argelia", "Austria", "Jordania"],
-            "K": ["Portugal", "Uzbekistán", "Colombia", "R.D. Congo"],
-            "L": ["Inglaterra", "Croacia", "Ghana", "Panamá"]
-        };
-
-        // ==================== UI FUNCTIONS ====================
-        function showPaymentScreen() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('paymentScreen').classList.remove('hidden'); }
-        function showLoginScreen() { document.getElementById('paymentScreen').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
-        function openWhatsAppPurchase() { window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent('Quiero el simulador $1 USD')}`, '_blank'); }
-        function requestPaymentWhatsAppOnly() { const w = document.getElementById('paymentWhatsapp').value.trim(); if (!w) { document.getElementById('paymentError').innerText='Número requerido'; document.getElementById('paymentError').classList.remove('hidden'); return; } window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent(`Pago $1 USD. WhatsApp: ${w}`)}`, '_blank'); alert("Solicitud enviada"); }
-        function attemptLogin() { const u = document.getElementById('usernameInput').value.trim(); const p = document.getElementById('passwordInput').value.trim(); const users = getUsers(); const found = users.find(u2 => u2.username.toLowerCase() === u.toLowerCase() && u2.password === p); if (found) { loggedInUser = found; document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('appContent').classList.remove('hidden'); document.body.classList.remove('flex','flex-col','justify-center'); applyRoleUI(); } else { document.getElementById('loginError').classList.remove('hidden'); } }
-        function applyRoleUI() { const adminPanel = document.getElementById('adminPanel'); document.getElementById('currentUserLabel').innerHTML = `<span class="px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role==='admin'?'bg-indigo-600/30 text-indigo-400':'bg-blue-600/30 text-blue-400'}"><i class="fas fa-user mr-1"></i>${loggedInUser.username}</span>`; if (loggedInUser.role === 'admin') { adminPanel.classList.remove('hidden'); renderAdminUsers(); } else { adminPanel.classList.add('hidden'); } }
-        function logout() { loggedInUser = null; document.getElementById('appContent').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); document.body.classList.add('flex','flex-col','justify-center'); }
-        function renderAdminUsers() { const users = getUsers(); const tbody = document.getElementById('usersTableBody'); tbody.innerHTML = ''; users.forEach((u,idx) => { const prot = u.username.toLowerCase() === 'mundial'; tbody.innerHTML += `<tr><td class="p-2">${u.username}</td><td class="p-2">${u.password}</td><td class="p-2">${u.role}</td><td class="p-2">${!prot?`<button onclick="deleteUser(${idx})" class="text-red-400">Eliminar</button>`:'Protegido'}</td></tr>`; }); }
-        function addUser() { const name = document.getElementById('newUsername').value.trim(); const pass = document.getElementById('newPassword').value.trim(); const role = document.getElementById('newUserRole').value; if(!name||!pass) return; let users = getUsers(); if(users.some(u=>u.username.toLowerCase()===name.toLowerCase())) return; users.push({username:name,password:pass,role}); saveUsers(users); renderAdminUsers(); }
-        function deleteUser(idx) { let users = getUsers(); users.splice(idx,1); saveUsers(users); renderAdminUsers(); }
+        // ========== GRUPOS Y TORNEO ==========
+        const groups = { "A":["México","Sudáfrica","Corea del Sur","República Checa"],"B":["Canadá","Bosnia y Herzegovina","Qatar","Suiza"],"C":["Brasil","Marruecos","Haití","Escocia"],"D":["Estados Unidos","Paraguay","Australia","Turquía"],"E":["Alemania","Ecuador","Costa de Marfil","Curazao"],"F":["Países Bajos","Japón","Túnez","Suecia"],"G":["Bélgica","Egipto","Irán","Nueva Zelanda"],"H":["España","Uruguay","Cabo Verde","Arabia Saudita"],"I":["Francia","Senegal","Noruega","Irak"],"J":["Argentina","Argelia","Austria","Jordania"],"K":["Portugal","Uzbekistán","Colombia","R.D. Congo"],"L":["Inglaterra","Croacia","Ghana","Panamá"] };
 
         async function runSimulation() {
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('resultsContainer').classList.add('hidden');
-            await new Promise(r => setTimeout(r, 100));
-            
-            const groupResults = {};
-            const groupMatches = {};
-            const allThirdPlaces = [];
-            
-            for (const [groupName, teams] of Object.entries(groups)) {
-                const matches = [];
-                const standings = teams.map(t => ({ 
-                    team: t, pts: 0, gf: 0, gc: 0, dg: 0, 
-                    wins: 0, draws: 0, losses: 0 
-                }));
-                
-                for (let i = 0; i < teams.length; i++) {
-                    for (let j = i + 1; j < teams.length; j++) {
-                        const match = simulateMatch(teams[i], teams[j]);
-                        matches.push(match);
-                        
-                        const t1 = standings.find(s => s.team === match.team1);
-                        const t2 = standings.find(s => s.team === match.team2);
-                        
-                        t1.gf += match.goals1;
-                        t1.gc += match.goals2;
-                        t2.gf += match.goals2;
-                        t2.gc += match.goals1;
-                        
-                        if (match.goals1 > match.goals2) {
-                            t1.pts += 3;
-                            t1.wins++;
-                            t2.losses++;
-                        } else if (match.goals2 > match.goals1) {
-                            t2.pts += 3;
-                            t2.wins++;
-                            t1.losses++;
-                        } else {
-                            t1.pts += 1;
-                            t1.draws++;
-                            t2.pts += 1;
-                            t2.draws++;
-                        }
-                    }
+            await new Promise(r => setTimeout(r, 80));
+            const groupResults = {}, groupMatchesMap = {};
+            const allThird = [];
+            for (const [grp, teams] of Object.entries(groups)) {
+                let standings = teams.map(t => ({ team:t, pts:0, gf:0, gc:0, dg:0, wins:0, draws:0, losses:0 }));
+                let matches = [];
+                for(let i=0;i<teams.length;i++) for(let j=i+1;j<teams.length;j++) {
+                    let st = stadiums[Math.floor(Math.random()*stadiums.length)];
+                    let match = simulateMatchAdvanced(teams[i], teams[j], false, st);
+                    matches.push(match);
+                    let t1 = standings.find(s=>s.team===match.team1);
+                    let t2 = standings.find(s=>s.team===match.team2);
+                    t1.gf+=match.goals1; t1.gc+=match.goals2; t2.gf+=match.goals2; t2.gc+=match.goals1;
+                    if(match.goals1>match.goals2){ t1.pts+=3; t1.wins++; t2.losses++; }
+                    else if(match.goals2>match.goals1){ t2.pts+=3; t2.wins++; t1.losses++; }
+                    else { t1.pts+=1; t1.draws++; t2.pts+=1; t2.draws++; }
                 }
-                
-                standings.forEach(s => { s.dg = s.gf - s.gc; });
-                standings.sort((a, b) => {
-                    if (a.pts !== b.pts) return b.pts - a.pts;
-                    if (a.dg !== b.dg) return b.dg - a.dg;
-                    return b.gf - a.gf;
-                });
-                
-                groupResults[groupName] = standings;
-                groupMatches[groupName] = matches;
-                
-                if (standings[2]) {
-                    allThirdPlaces.push({ group: groupName, ...standings[2] });
-                }
+                standings.forEach(s=>s.dg=s.gf-s.gc);
+                standings.sort((a,b)=> b.pts!==a.pts?b.pts-a.pts: (b.dg!==a.dg?b.dg-a.dg:b.gf-a.gf));
+                groupResults[grp]=standings; groupMatchesMap[grp]=matches;
+                if(standings[2]) allThird.push({ group:grp, ...standings[2] });
             }
-            
-            allThirdPlaces.sort((a, b) => {
-                if (a.pts !== b.pts) return b.pts - a.pts;
-                if (a.dg !== b.dg) return b.dg - a.dg;
-                return b.gf - a.gf;
-            });
-            
-            const bestThirds = allThirdPlaces.slice(0, 8);
-            const qualified = [];
-            
-            for (const standings of Object.values(groupResults)) {
-                qualified.push(standings[0].team, standings[1].team);
-            }
-            bestThirds.forEach(t => qualified.push(t.team));
-            lastSimulatedQualifiedTeams = qualified;
-            
-            renderGroups(groupResults, groupMatches);
+            allThird.sort((a,b)=> (b.pts!==a.pts?b.pts-a.pts: (b.dg!==a.dg?b.dg-a.dg:b.gf-a.gf)));
+            const bestThirds = allThird.slice(0,8);
+            let qualified = [];
+            for(let st of Object.values(groupResults)) { qualified.push(st[0].team, st[1].team); }
+            bestThirds.forEach(t=>qualified.push(t.team));
+            renderGroups(groupResults, groupMatchesMap);
             renderThirds(bestThirds);
-            await simulateKnockout(qualified);
-            
+            await simulateKnockoutPhase(qualified);
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('resultsContainer').classList.remove('hidden');
         }
 
-        async function simulateKnockout(teams) {
-            // Ordenar equipos por fuerza para un bracket más realista
-            const teamsWithStrength = teams.map(t => ({ team: t, strength: calculateTeamStrength(t) }));
-            teamsWithStrength.sort((a, b) => b.strength - a.strength);
-            const sortedTeams = teamsWithStrength.map(t => t.team);
-            
-            // Bracket equilibrado
-            let shuffled = [];
-            for (let i = 0; i < sortedTeams.length / 2; i++) {
-                shuffled.push(sortedTeams[i]);
-                shuffled.push(sortedTeams[sortedTeams.length - 1 - i]);
-            }
-            
-            let r32Matches = [];
-            for (let i = 0; i < shuffled.length; i += 2) {
-                r32Matches.push(simulateMatch(shuffled[i], shuffled[i + 1], true));
-            }
-            let r32Winners = r32Matches.map(m => m.winner);
-            
-            let r16Matches = [];
-            for (let i = 0; i < r32Winners.length; i += 2) {
-                r16Matches.push(simulateMatch(r32Winners[i], r32Winners[i + 1], true));
-            }
-            let r16Winners = r16Matches.map(m => m.winner);
-            
-            let r8Matches = [];
-            for (let i = 0; i < r16Winners.length; i += 2) {
-                r8Matches.push(simulateMatch(r16Winners[i], r16Winners[i + 1], true));
-            }
-            let r8Winners = r8Matches.map(m => m.winner);
-            
-            let r4Matches = [];
-            for (let i = 0; i < r8Winners.length; i += 2) {
-                r4Matches.push(simulateMatch(r8Winners[i], r8Winners[i + 1], true));
-            }
-            
-            // r4Matches tiene 2 partidos de semifinales: [Semifinal1, Semifinal2]
-            const semifinal1 = r4Matches[0];
-            const semifinal2 = r4Matches[1];
-            
-            // Finalistas
-            const finalista1 = semifinal1.winner;
-            const finalista2 = semifinal2.winner;
-            
-            // Perdedores de semifinales (para el tercer puesto)
-            const perdedorSemifinal1 = semifinal1.winner === semifinal1.team1 ? semifinal1.team2 : semifinal1.team1;
-            const perdedorSemifinal2 = semifinal2.winner === semifinal2.team1 ? semifinal2.team2 : semifinal2.team1;
-            
-            // Final
-            const final = simulateMatch(finalista1, finalista2, true);
-            
-            // Tercer puesto (entre los dos perdedores de semifinales)
-            const thirdPlaceMatch = simulateMatch(perdedorSemifinal1, perdedorSemifinal2, true);
-            
-            const champion = final.winner;
-            const runnerUp = final.winner === final.team1 ? final.team2 : final.team1;
+        async function simulateKnockoutPhase(teams) {
+            let strengths = teams.map(t=>({team:t,str:calculateTeamStrengthPro(t)}));
+            strengths.sort((a,b)=>b.str-a.str);
+            let sorted = strengths.map(s=>s.team);
+            let seeded = [];
+            for(let i=0;i<sorted.length/2;i++){ seeded.push(sorted[i]); seeded.push(sorted[sorted.length-1-i]); }
+            let r32 = []; for(let i=0;i<seeded.length;i+=2) r32.push(simulateMatchAdvanced(seeded[i],seeded[i+1],true));
+            let w32 = r32.map(m=>m.winner);
+            let r16=[]; for(let i=0;i<w32.length;i+=2) r16.push(simulateMatchAdvanced(w32[i],w32[i+1],true));
+            let w16=r16.map(m=>m.winner);
+            let r8=[]; for(let i=0;i<w16.length;i+=2) r8.push(simulateMatchAdvanced(w16[i],w16[i+1],true));
+            let w8=r8.map(m=>m.winner);
+            let r4=[]; for(let i=0;i<w8.length;i+=2) r4.push(simulateMatchAdvanced(w8[i],w8[i+1],true));
+            const semifinal1=r4[0], semifinal2=r4[1];
+            const finalista1=semifinal1.winner, finalista2=semifinal2.winner;
+            const perdedorSF1 = semifinal1.winner===semifinal1.team1?semifinal1.team2:semifinal1.team1;
+            const perdedorSF2 = semifinal2.winner===semifinal2.team1?semifinal2.team2:semifinal2.team1;
+            const finalMatch = simulateMatchAdvanced(finalista1, finalista2, true);
+            const thirdPlaceMatch = simulateMatchAdvanced(perdedorSF1, perdedorSF2, true);
+            const champion = finalMatch.winner;
+            const runnerUp = finalMatch.winner===finalMatch.team1?finalMatch.team2:finalMatch.team1;
             const thirdPlace = thirdPlaceMatch.winner;
-            const fourthPlace = thirdPlaceMatch.winner === thirdPlaceMatch.team1 ? thirdPlaceMatch.team2 : thirdPlaceMatch.team1;
-            
-            renderBracketDetails(r32Matches, r16Matches, r8Matches, r4Matches, final, thirdPlaceMatch, champion, runnerUp, thirdPlace, fourthPlace);
+            const fourthPlace = thirdPlaceMatch.winner===thirdPlaceMatch.team1?thirdPlaceMatch.team2:thirdPlaceMatch.team1;
+            renderBracket(r32, r16, r8, r4, finalMatch, thirdPlaceMatch, champion, runnerUp, thirdPlace, fourthPlace);
         }
 
-        function renderGroups(results, matches) {
-            const container = document.getElementById('groupsGrid');
-            container.innerHTML = '';
-            
-            for (const [groupName, standings] of Object.entries(results)) {
-                const groupMatches = matches[groupName];
-                
-                const div = document.createElement('div');
-                div.className = 'group-card rounded-xl overflow-hidden';
-                
-                let tableHtml = `
-                    <div class="bg-slate-800 p-3 text-center">
-                        <h3 class="text-2xl font-bold text-amber-400">Grupo ${groupName}</h3>
-                    </div>
-                    <div class="p-4">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead class="bg-slate-800/50">
-                                    <tr class="text-slate-300 border-b border-slate-700">
-                                        <th class="text-left py-2 px-2 w-32">EQUIPO</th>
-                                        <th class="text-center py-2 px-1 w-12">POS</th>
-                                        <th class="text-center py-2 px-1 w-12">PTS</th>
-                                        <th class="text-center py-2 px-1 w-10">PG</th>
-                                        <th class="text-center py-2 px-1 w-10">PE</th>
-                                        <th class="text-center py-2 px-1 w-10">PP</th>
-                                        <th class="text-center py-2 px-1 w-10">GF</th>
-                                        <th class="text-center py-2 px-1 w-10">GC</th>
-                                        <th class="text-center py-2 px-1 w-12">DIF</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                `;
-                
-                standings.forEach((s, idx) => {
-                    let posClass = '';
-                    if (idx === 0) posClass = 'text-green-400 font-bold';
-                    else if (idx === 1) posClass = 'text-blue-400 font-bold';
-                    else if (idx === 2) posClass = 'text-yellow-400 font-bold';
-                    else posClass = 'text-red-400 font-bold';
-                    
-                    tableHtml += `
-                        <tr class="team-row border-b border-slate-700/50 hover:bg-slate-800/30">
-                            <td class="py-2 px-2 font-semibold">${s.team}</td>
-                            <td class="text-center py-2 px-1 ${posClass}">${idx + 1}</td>
-                            <td class="text-center py-2 px-1 font-bold">${s.pts}</td>
-                            <td class="text-center py-2 px-1">${s.wins}</td>
-                            <td class="text-center py-2 px-1">${s.draws}</td>
-                            <td class="text-center py-2 px-1">${s.losses}</td>
-                            <td class="text-center py-2 px-1">${s.gf}</td>
-                            <td class="text-center py-2 px-1">${s.gc}</td>
-                            <td class="text-center py-2 px-1 ${s.dg >= 0 ? 'text-green-400' : 'text-red-400'}">${s.dg}</td>
-                        </tr>
-                    `;
-                });
-                
-                tableHtml += `
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="mt-5 pt-3 border-t border-slate-700">
-                            <div class="text-xs font-bold text-slate-400 mb-2 flex items-center gap-2">
-                                <i class="fas fa-futbol"></i> RESULTADOS
-                            </div>
-                            <div class="space-y-1">
-                `;
-                
-                groupMatches.forEach(match => {
-                    const resultClass = match.goals1 > match.goals2 ? 'text-green-400' : (match.goals1 < match.goals2 ? 'text-red-400' : 'text-yellow-400');
-                    tableHtml += `
-                        <div class="match-row grid grid-cols-3 gap-2 py-1.5 text-sm px-2">
-                            <div class="text-right font-medium truncate">${match.team1}</div>
-                            <div class="text-center font-mono font-bold ${resultClass}">${match.goals1} - ${match.goals2}</div>
-                            <div class="text-left font-medium truncate">${match.team2}</div>
-                        </div>
-                    `;
-                });
-                
-                tableHtml += `
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                div.innerHTML = tableHtml;
-                container.appendChild(div);
+        function renderGroups(results, matchesMap) {
+            let container = document.getElementById('groupsGrid'); container.innerHTML = '';
+            for(let [grp, standings] of Object.entries(results)) {
+                let matches = matchesMap[grp];
+                let html = `<div class="group-card rounded-xl"><div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${grp}</h3></div><div class="p-4"><table class="w-full text-sm"><thead class="bg-slate-800/50"><tr><th>Equipo</th><th>Pts</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>DG</th></tr></thead><tbody>`;
+                standings.forEach((s,idx)=>{ let cls= idx<2?'text-green-400 font-bold':'text-yellow-400'; html+=`<tr class="team-row border-b"><td class="py-2 font-semibold">${s.team}</td><td class="font-bold">${s.pts}</td><td>${s.wins}</td><td>${s.draws}</td><td>${s.losses}</td><td>${s.gf}</td><td>${s.gc}</td><td class="${s.dg>=0?'text-green-400':'text-red-400'}">${s.dg}</td></tr>`; });
+                html+=`</tbody></table><div class="mt-4"><div class="text-xs font-bold text-slate-400 mb-2">📋 Resultados</div><div class="space-y-1">`;
+                matches.forEach(m=>{ html+=`<div class="grid grid-cols-3 gap-2 text-sm py-1"><div class="text-right">${m.team1}</div><div class="text-center font-mono">${m.goals1}-${m.goals2}</div><div class="text-left">${m.team2}</div></div>`; });
+                html+=`</div></div></div></div>`; container.innerHTML+=html;
             }
         }
-
-        function renderThirds(thirds) {
-            document.getElementById('thirdsTableBody').innerHTML = thirds.map((t, i) => `
-                <tr class="border-b border-slate-700">
-                    <td class="p-2 font-bold">${i + 1}</td>
-                    <td class="p-2">${t.group}</td>
-                    <td class="p-2 font-semibold">${t.team}</td>
-                    <td class="p-2 text-center">${t.pts}</td>
-                    <td class="p-2 text-center">${t.dg}</td>
-                    <td class="p-2 text-center">${t.gf}</td>
-                </tr>
-            `).join('');
-        }
-
-        function renderBracketDetails(r32, r16, r8, r4, final, third, champion, runnerUp, thirdPlace, fourthPlace) {
-            const colR32 = document.getElementById('colR32');
-            colR32.innerHTML = '';
-            r32.forEach((match, idx) => {
-                colR32.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Llave ${idx + 1}</div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
-                        <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
-                    </div>
-                    ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
-                </div>`;
-            });
-            
-            const colR16 = document.getElementById('colR16');
-            colR16.innerHTML = '';
-            r16.forEach((match, idx) => {
-                colR16.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Octavo ${idx + 1}</div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
-                        <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
-                    </div>
-                    ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
-                </div>`;
-            });
-            
-            const colR8 = document.getElementById('colR8');
-            colR8.innerHTML = '';
-            r8.forEach((match, idx) => {
-                colR8.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Cuarto ${idx + 1}</div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
-                        <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
-                    </div>
-                    ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
-                </div>`;
-            });
-            
-            const colR4 = document.getElementById('colR4');
-            colR4.innerHTML = '';
-            r4.forEach((match, idx) => {
-                colR4.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Semifinal ${idx + 1}</div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
-                        <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
-                    </div>
-                    ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
-                </div>`;
-            });
-            
-            document.getElementById('thirdPlaceMatch').innerHTML = `
-                <div class="text-xs text-slate-400 mb-1">🏅 TERCER PUESTO</div>
-                <div class="flex justify-between items-center">
-                    <span class="font-semibold ${third.winner === third.team1 ? 'text-yellow-400' : ''} truncate">${third.team1}</span>
-                    <span class="font-mono text-sm font-bold">${third.goals1} - ${third.goals2}</span>
-                    <span class="font-semibold ${third.winner === third.team2 ? 'text-yellow-400' : ''} truncate">${third.team2}</span>
-                </div>
-                ${third.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
-                <div class="text-center text-yellow-400 text-xs mt-2">🥉 Ganador: ${third.winner}</div>
-            `;
-            
-            document.getElementById('finalMatch').innerHTML = `
-                <div class="text-xs text-slate-400 mb-1">🏆 FINAL DEL MUNDIAL</div>
-                <div class="flex justify-between items-center">
-                    <span class="font-semibold text-lg ${final.winner === final.team1 ? 'text-green-400' : ''} truncate">${final.team1}</span>
-                    <span class="font-mono text-lg font-bold">${final.goals1} - ${final.goals2}</span>
-                    <span class="font-semibold text-lg ${final.winner === final.team2 ? 'text-green-400' : ''} truncate">${final.team2}</span>
-                </div>
-                ${final.penalties ? `<div class="penalty-badge mt-2 text-center"><i class="fas fa-futbol mr-1"></i>¡Definición por penales!</div>` : ''}
-                <div class="text-center text-green-400 font-bold text-sm mt-3">🏆 CAMPEÓN: ${final.winner.toUpperCase()}</div>
-            `;
-            
-            // Actualizar tabla de primeros 4 puestos
-            document.getElementById('championNameTable').innerText = champion;
+        function renderThirds(thirds) { document.getElementById('thirdsTableBody').innerHTML = thirds.map((t,i)=>`<tr><td class="p-2 font-bold">${i+1}</td><td>${t.group}</td><td class="font-semibold">${t.team}</td><td class="text-center">${t.pts}</td><td class="text-center">${t.dg}</td><td class="text-center">${t.gf}</td></tr>`).join(''); }
+        function renderBracket(r32,r16,r8,r4,final,third,champ,runnerUp,thirdP,fourthP){
+            let container = document.getElementById('bracketContainer'); container.innerHTML='';
+            let cols = [ {id:"R32", matches:r32,title:"RONDA 32"},{id:"R16", matches:r16,title:"OCTAVOS"},{id:"R8", matches:r8,title:"CUARTOS"},{id:"R4", matches:r4,title:"SEMIFINALES"} ];
+            cols.forEach(col=>{ let div=document.createElement('div'); div.className='bracket-column'; div.innerHTML=`<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">${col.title}</div>`; col.matches.forEach(m=>{ div.innerHTML+=`<div class="match-card"><div class="flex justify-between"><span class="font-semibold ${m.winner===m.team1?'text-green-400':''}">${m.team1}</span><span class="font-mono">${m.goals1}-${m.goals2}</span><span class="font-semibold ${m.winner===m.team2?'text-green-400':''}">${m.team2}</span></div>${m.penalties?'<div class="penalty-badge">⚽ Penales</div>':''}<div class="text-[10px] text-slate-400 mt-1">🏟️ ${m.stadium||'sede'}</div></div>`; }); container.appendChild(div); });
+            let finalDiv=document.createElement('div'); finalDiv.className='bracket-column'; finalDiv.innerHTML=`<div class="text-center font-bold bg-slate-800 py-1 rounded">FINALES</div><div class="match-card border-2 border-yellow-500"><div class="text-center text-amber-400 text-xs">TERCER PUESTO (perdedores semifinales)</div><div class="flex justify-between"><span>${third.team1}</span><span>${third.goals1}-${third.goals2}</span><span>${third.team2}</span></div>${third.penalties?'<div class="penalty-badge">Penales</div>':''}<div class="mt-3 text-center font-bold text-green-300">🥉 3º: ${third.winner}</div><div class="border-t mt-2 pt-2"></div><div class="text-center text-yellow-400 text-xs">🏆 FINAL</div><div class="flex justify-between font-bold"><span>${final.team1}</span><span>${final.goals1}-${final.goals2}</span><span>${final.team2}</span></div>${final.penalties?'<div class="penalty-badge">Penales</div>':''}<div class="mt-2 text-center text-green-400 font-bold">🏆 CAMPEÓN: ${final.winner}</div></div>`;
+            container.appendChild(finalDiv);
+            document.getElementById('championNameTable').innerText = champ;
             document.getElementById('runnerUpNameTable').innerText = runnerUp;
-            document.getElementById('thirdPlaceNameTable').innerText = thirdPlace;
-            document.getElementById('fourthPlaceNameTable').innerText = fourthPlace;
-            
-            document.getElementById('championName').innerText = champion;
-            document.getElementById('championSection').classList.remove('hidden');
+            document.getElementById('thirdPlaceNameTable').innerText = thirdP;
+            document.getElementById('fourthPlaceNameTable').innerText = fourthP;
         }
+        // LOGIN Y GESTIÓN
+        const safeStorage={ _data:{}, getItem(k){ try{ return localStorage.getItem(k); }catch(e){ return this._data[k]; } }, setItem(k,v){ try{ localStorage.setItem(k,v); }catch(e){ this._data[k]=v; } } };
+        if(!safeStorage.getItem('sim_users')) safeStorage.setItem('sim_users', JSON.stringify([{username:"Mundial",password:"2026",role:"admin"},{username:"invitado",password:"123",role:"cliente"}]));
+        function getUsers(){ try{ return JSON.parse(safeStorage.getItem('sim_users')); }catch(e){ return [{username:"Mundial",password:"2026",role:"admin"}]; } }
+        function saveUsers(u){ safeStorage.setItem('sim_users',JSON.stringify(u)); }
+        let loggedInUser=null;
+        function attemptLogin(){ let u=document.getElementById('usernameInput').value.trim(), p=document.getElementById('passwordInput').value.trim(); let users=getUsers(); let found=users.find(x=>x.username.toLowerCase()===u.toLowerCase()&&x.password===p); if(found){ loggedInUser=found; document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('appContent').classList.remove('hidden'); if(found.role==='admin') document.getElementById('adminPanel').classList.remove('hidden'); else document.getElementById('adminPanel').classList.add('hidden'); document.getElementById('currentUserLabel').innerHTML=`<i class="fas fa-user"></i> ${found.username}`; renderAdminUsers(); }else{ document.getElementById('loginError').classList.remove('hidden'); } }
+        function renderAdminUsers(){ let tbody=document.getElementById('usersTableBody'); let users=getUsers(); tbody.innerHTML=users.map((u,i)=>`<tr><td>${u.username}</td><td>${u.role}</td><td>${u.username!=='Mundial'?`<button onclick="deleteUser(${i})" class="text-red-400">eliminar</button>`:'protegido'}</td></tr>`).join(''); }
+        function addUser(){ let name=document.getElementById('newUsername').value.trim(), pass=document.getElementById('newPassword').value.trim(), role=document.getElementById('newUserRole').value; if(!name||!pass)return; let users=getUsers(); if(users.some(u=>u.username===name))return; users.push({username:name,password:pass,role}); saveUsers(users); renderAdminUsers(); }
+        function deleteUser(i){ let users=getUsers(); users.splice(i,1); saveUsers(users); renderAdminUsers(); }
+        function logout(){ loggedInUser=null; document.getElementById('appContent').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
+        function openWhatsAppPurchase(){ window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent('Quiero acceso simulador $1 USD')}`,'_blank'); }
+        function requestPaymentWhatsAppOnly(){ let w=document.getElementById('paymentWhatsapp').value.trim(); if(!w){ alert("Número requerido"); return; } window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent(`Pago USD 1, WhatsApp: ${w}`)}`,'_blank'); alert("Solicitud enviada"); }
+        function showLoginScreen(){ document.getElementById('paymentScreen').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
+        window.attemptLogin=attemptLogin; window.openWhatsAppPurchase=openWhatsAppPurchase; window.requestPaymentWhatsAppOnly=requestPaymentWhatsAppOnly; window.showLoginScreen=showLoginScreen; window.runSimulation=runSimulation; window.addUser=addUser; window.deleteUser=deleteUser; window.logout=logout;
     </script>
 </body>
 </html>
