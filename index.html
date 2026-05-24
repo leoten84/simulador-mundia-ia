@@ -17,9 +17,13 @@
             border: 1px solid #334155;
             transition: transform 0.2s;
             margin-bottom: 1.5rem;
+            overflow: hidden;
         }
         .group-card:hover {
             transform: translateY(-2px);
+        }
+        .team-row {
+            transition: background 0.2s;
         }
         .team-row:nth-child(1), .team-row:nth-child(2) {
             border-left: 4px solid #10b981;
@@ -29,6 +33,9 @@
         }
         .team-row:nth-child(4) {
             border-left: 4px solid #ef4444;
+        }
+        .team-row:hover {
+            background: rgba(51, 65, 85, 0.5);
         }
         .match-row {
             border-bottom: 1px solid #334155;
@@ -87,6 +94,14 @@
             border-radius: 8px;
             font-size: 0.85rem;
         }
+        .table-header {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+        .win { color: #10b981; }
+        .draw { color: #f59e0b; }
+        .loss { color: #ef4444; }
         @media print {
             @page { size: A4 landscape; margin: 5mm; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -94,14 +109,11 @@
             header, #simulateBtn, .no-print, #loginScreen, #adminPanel, #paymentScreen { display: none !important; }
             #appContent { display: block !important; }
         }
-        .win { color: #10b981; }
-        .draw { color: #f59e0b; }
-        .loss { color: #ef4444; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8 flex flex-col justify-center">
 
-    <!-- Login Screen (igual que antes) -->
+    <!-- Login Screen -->
     <div id="loginScreen" class="w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel border border-slate-700 shadow-2xl">
         <div class="text-center mb-6">
             <div class="mx-auto h-24 w-24 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-4xl mb-3 shadow-lg">
@@ -226,7 +238,7 @@
             "República Checa": 120, "Suecia": 150, "Túnez": 40, "Noruega": 180, "Irak": 15, "Argelia": 80
         };
 
-        // ==================== FORMA RECIENTE (0-1, basado en rendimiento real) ====================
+        // ==================== FORMA RECIENTE (0-1) ====================
         const recentForm = {
             "Argentina": 0.95, "Francia": 0.82, "Inglaterra": 0.85, "Bélgica": 0.70, "Países Bajos": 0.75, "Brasil": 0.88,
             "Alemania": 0.78, "España": 0.80, "Italia": 0.68, "Portugal": 0.82, "Uruguay": 0.72, "Suiza": 0.75, "Croacia": 0.72,
@@ -245,10 +257,10 @@
             "Portugal": 85, "Bélgica": 84, "Uruguay": 82, "Croacia": 80, "Colombia": 81, "México": 78, "Japón": 76,
             "Corea del Sur": 75, "Marruecos": 74, "Senegal": 73, "Estados Unidos": 76, "Canadá": 72, "Ecuador": 71,
             "Australia": 70, "Suiza": 72, "Turquía": 71, "Austria": 70, "Paraguay": 68, "Costa de Marfil": 72,
-            "Ghana": 71, "Egipto": 70, "Nigeria": 72, "Noruega": 70, "Suecia": 69, "República Checa": 68,
-            "Escocia": 67, "Arabia Saudita": 65, "Qatar": 63, "Irán": 62, "Nueva Zelanda": 60, "Sudáfrica": 64,
-            "Uzbekistán": 58, "Jordania": 55, "Cabo Verde": 54, "R.D. Congo": 56, "Panamá": 57, "Haití": 52,
-            "Curazao": 50, "Irak": 55, "Argelia": 62, "Túnez": 66, "Bosnia y Herzegovina": 60
+            "Ghana": 71, "Egipto": 70, "Noruega": 70, "Suecia": 69, "República Checa": 68, "Escocia": 67,
+            "Arabia Saudita": 65, "Qatar": 63, "Irán": 62, "Nueva Zelanda": 60, "Sudáfrica": 64, "Uzbekistán": 58,
+            "Jordania": 55, "Cabo Verde": 54, "R.D. Congo": 56, "Panamá": 57, "Haití": 52, "Curazao": 50,
+            "Irak": 55, "Argelia": 62, "Túnez": 66, "Bosnia y Herzegovina": 60
         };
 
         const defensivePower = {
@@ -256,80 +268,64 @@
             "Portugal": 82, "Bélgica": 80, "Uruguay": 84, "Croacia": 82, "Colombia": 78, "México": 76, "Japón": 78,
             "Corea del Sur": 74, "Marruecos": 80, "Senegal": 76, "Estados Unidos": 74, "Canadá": 70, "Ecuador": 72,
             "Australia": 72, "Suiza": 78, "Turquía": 70, "Austria": 72, "Paraguay": 74, "Costa de Marfil": 70,
-            "Ghana": 68, "Egipto": 68, "Nigeria": 70, "Noruega": 66, "Suecia": 70, "República Checa": 68,
-            "Escocia": 68, "Arabia Saudita": 62, "Qatar": 60, "Irán": 65, "Nueva Zelanda": 62, "Sudáfrica": 62,
-            "Uzbekistán": 60, "Jordania": 58, "Cabo Verde": 56, "R.D. Congo": 60, "Panamá": 58, "Haití": 55,
-            "Curazao": 52, "Irak": 56, "Argelia": 64, "Túnez": 68, "Bosnia y Herzegovina": 62
+            "Ghana": 68, "Egipto": 68, "Noruega": 66, "Suecia": 70, "República Checa": 68, "Escocia": 68,
+            "Arabia Saudita": 62, "Qatar": 60, "Irán": 65, "Nueva Zelanda": 62, "Sudáfrica": 62, "Uzbekistán": 60,
+            "Jordania": 58, "Cabo Verde": 56, "R.D. Congo": 60, "Panamá": 58, "Haití": 55, "Curazao": 52,
+            "Irak": 56, "Argelia": 64, "Túnez": 68, "Bosnia y Herzegovina": 62
         };
 
         // ==================== CÁLCULO DE FUERZA ESTABLE ====================
         function calculateTeamStrength(team) {
             const ranking = fifaRanking[team] || 50;
-            const rankingScore = Math.max(0, (101 - ranking) * 0.8); // 20% - Ranking FIFA
+            const rankingScore = Math.max(0, (101 - ranking) * 0.8);
             
-            const eloScore = 50 + (Math.random() * 10); // Simulación ELO base (15%)
+            const eloScore = 50 + (Math.random() * 10);
             
             const value = marketValue[team] || 50;
-            const valueScore = Math.min(100, value / 15); // 15% - Valor mercado
+            const valueScore = Math.min(100, value / 15);
             
             const form = recentForm[team] || 0.6;
-            const formScore = form * 100; // 10% - Forma reciente
+            const formScore = form * 100;
             
             const offense = offensivePower[team] || 70;
-            const offenseScore = offense * 0.08; // 8% - Poder ofensivo
+            const offenseScore = offense * 0.08;
             
             const defense = defensivePower[team] || 70;
-            const defenseScore = defense * 0.08; // 8% - Solidez defensiva
+            const defenseScore = defense * 0.08;
             
-            // Experiencia (basada en ranking + antigüedad)
-            const expScore = Math.min(100, (51 - ranking) * 1.5) * 0.05; // 5%
-            
-            // Moral (basada en forma reciente)
-            const moralScore = form * 5; // 5%
-            
-            // Lesiones (factor aleatorio controlado)
+            const expScore = Math.min(100, (51 - ranking) * 1.5) * 0.05;
+            const moralScore = form * 5;
             const injuryFactor = 0.92 + (Math.random() * 0.08);
-            const injuryScore = (injuryFactor * 4); // 4%
-            
-            // Localía (1 si es local, 0.8 si no)
-            const homeScore = 3; // 3% fijo para simulación
-            
-            // Factores adicionales estables
-            const altitudeScore = 2; // 2%
-            const fatigueScore = 1.5; // 1.5%
-            const importanceScore = 1; // 1%
-            const climateScore = 1; // 1%
+            const injuryScore = (injuryFactor * 4);
+            const homeScore = 3;
+            const altitudeScore = 2;
+            const fatigueScore = 1.5;
+            const importanceScore = 1;
+            const climateScore = 1;
             
             let total = rankingScore + eloScore + valueScore + formScore + offenseScore + defenseScore + 
                        expScore + moralScore + injuryScore + homeScore + altitudeScore + fatigueScore + 
                        importanceScore + climateScore;
             
-            // Historial directo (pequeña variación)
             total += (Math.random() * 2);
             
             return Math.min(98, Math.max(2, total));
         }
 
-        // Simulación de partido estable (resultados consistentes)
         function simulateMatch(team1, team2, isKnockout = false) {
             const strength1 = calculateTeamStrength(team1);
             const strength2 = calculateTeamStrength(team2);
             const total = strength1 + strength2;
             
-            // Probabilidad base más estable (reducir aleatoriedad)
             let prob1 = strength1 / total;
-            
-            // Factor de corrección para evitar resultados extremos muy seguidos
             prob1 = 0.3 + (prob1 * 0.4);
             prob1 = Math.min(0.85, Math.max(0.15, prob1));
             
-            // Distribución de goles más realista (basada en Poisson)
             const lambda1 = prob1 * 1.6;
             const lambda2 = (1 - prob1) * 1.2;
             
             let goals1 = 0, goals2 = 0;
             
-            // Método más estable: usar probabilidades acumuladas
             const p0_1 = Math.exp(-lambda1);
             const p0_2 = Math.exp(-lambda2);
             const p1_1 = p0_1 * lambda1;
@@ -353,7 +349,6 @@
             let penalties = false;
             if (isKnockout && goals1 === goals2) {
                 penalties = true;
-                // Penales basados en fuerza del equipo
                 const penProb = strength1 / (strength1 + strength2);
                 const penWinner = Math.random() < penProb;
                 if (penWinner) goals1++;
@@ -363,7 +358,7 @@
             return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2, penalties };
         }
 
-        // ==================== GRUPOS ACTUALIZADOS ====================
+        // ==================== GRUPOS ====================
         const groups = {
             "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
             "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
@@ -407,7 +402,6 @@
                     wins: 0, draws: 0, losses: 0 
                 }));
                 
-                // Simular todos los partidos del grupo
                 for (let i = 0; i < teams.length; i++) {
                     for (let j = i + 1; j < teams.length; j++) {
                         const match = simulateMatch(teams[i], teams[j]);
@@ -527,41 +521,82 @@
                 const div = document.createElement('div');
                 div.className = 'group-card rounded-xl overflow-hidden';
                 
-                // Tabla de posiciones
-                let tableHtml = `<div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${groupName}</h3></div>
+                let tableHtml = `
+                    <div class="bg-slate-800 p-3 text-center">
+                        <h3 class="text-2xl font-bold text-amber-400">Grupo ${groupName}</h3>
+                    </div>
                     <div class="p-4">
-                        <div class="grid grid-cols-9 gap-1 text-xs font-bold text-slate-400 mb-2 px-1">
-                            <div class="col-span-3">EQUIPO</div><div class="col-span-1 text-center">POS</div>
-                            <div class="col-span-1 text-center">PTS</div><div class="col-span-1 text-center">PG</div>
-                            <div class="col-span-1 text-center">PE</div><div class="col-span-1 text-center">PP</div>
-                            <div class="col-span-1 text-center">GF</div><div class="col-span-1 text-center">GC</div><div class="col-span-1 text-center">DIF</div>
-                        </div>`;
+                        <!-- TABLA DE POSICIONES -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-slate-800/50">
+                                    <tr class="text-slate-300 border-b border-slate-700">
+                                        <th class="text-left py-2 px-2 w-32">EQUIPO</th>
+                                        <th class="text-center py-2 px-1 w-12">POS</th>
+                                        <th class="text-center py-2 px-1 w-12">PTS</th>
+                                        <th class="text-center py-2 px-1 w-10">PG</th>
+                                        <th class="text-center py-2 px-1 w-10">PE</th>
+                                        <th class="text-center py-2 px-1 w-10">PP</th>
+                                        <th class="text-center py-2 px-1 w-10">GF</th>
+                                        <th class="text-center py-2 px-1 w-10">GC</th>
+                                        <th class="text-center py-2 px-1 w-12">DIF</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
                 
                 standings.forEach((s, idx) => {
-                    tableHtml += `<div class="team-row grid grid-cols-9 gap-1 py-2 px-1 rounded mb-1 bg-slate-800/30 text-sm items-center">
-                        <div class="col-span-3 font-semibold truncate">${s.team}</div>
-                        <div class="col-span-1 text-center font-bold ${idx === 0 ? 'text-green-400' : idx === 1 ? 'text-blue-400' : idx === 2 ? 'text-yellow-400' : 'text-red-400'}">${idx + 1}</div>
-                        <div class="col-span-1 text-center font-bold">${s.pts}</div>
-                        <div class="col-span-1 text-center">${s.wins}</div><div class="col-span-1 text-center">${s.draws}</div>
-                        <div class="col-span-1 text-center">${s.losses}</div><div class="col-span-1 text-center">${s.gf}</div>
-                        <div class="col-span-1 text-center">${s.gc}</div><div class="col-span-1 text-center">${s.dg}</div>
-                    </div>`;
+                    let posClass = '';
+                    if (idx === 0) posClass = 'text-green-400 font-bold';
+                    else if (idx === 1) posClass = 'text-blue-400 font-bold';
+                    else if (idx === 2) posClass = 'text-yellow-400 font-bold';
+                    else posClass = 'text-red-400 font-bold';
+                    
+                    tableHtml += `
+                        <tr class="team-row border-b border-slate-700/50 hover:bg-slate-800/30">
+                            <td class="py-2 px-2 font-semibold">${s.team}</td>
+                            <td class="text-center py-2 px-1 ${posClass}">${idx + 1}</td>
+                            <td class="text-center py-2 px-1 font-bold">${s.pts}</td>
+                            <td class="text-center py-2 px-1">${s.wins}</td>
+                            <td class="text-center py-2 px-1">${s.draws}</td>
+                            <td class="text-center py-2 px-1">${s.losses}</td>
+                            <td class="text-center py-2 px-1">${s.gf}</td>
+                            <td class="text-center py-2 px-1">${s.gc}</td>
+                            <td class="text-center py-2 px-1 ${s.dg >= 0 ? 'text-green-400' : 'text-red-400'}">${s.dg}</td>
+                        </tr>
+                    `;
                 });
                 
-                // Resultados de los partidos
-                tableHtml += `<div class="mt-4 pt-3 border-t border-slate-700">
-                    <div class="text-xs font-bold text-slate-400 mb-2">📋 RESULTADOS</div>`;
+                tableHtml += `
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- RESULTADOS DE PARTIDOS -->
+                        <div class="mt-5 pt-3 border-t border-slate-700">
+                            <div class="text-xs font-bold text-slate-400 mb-2 flex items-center gap-2">
+                                <i class="fas fa-futbol"></i> RESULTADOS
+                            </div>
+                            <div class="space-y-1">
+                `;
                 
                 groupMatches.forEach(match => {
-                    const resultClass = match.goals1 > match.goals2 ? 'win' : (match.goals1 < match.goals2 ? 'loss' : 'draw');
-                    tableHtml += `<div class="match-row grid grid-cols-3 gap-2 py-1.5 text-sm">
-                        <div class="text-right font-medium">${match.team1}</div>
-                        <div class="text-center font-mono font-bold ${resultClass}">${match.goals1} - ${match.goals2}</div>
-                        <div class="text-left font-medium">${match.team2}</div>
-                    </div>`;
+                    const resultClass = match.goals1 > match.goals2 ? 'text-green-400' : (match.goals1 < match.goals2 ? 'text-red-400' : 'text-yellow-400');
+                    tableHtml += `
+                        <div class="match-row grid grid-cols-3 gap-2 py-1.5 text-sm px-2">
+                            <div class="text-right font-medium truncate">${match.team1}</div>
+                            <div class="text-center font-mono font-bold ${resultClass}">${match.goals1} - ${match.goals2}</div>
+                            <div class="text-left font-medium truncate">${match.team2}</div>
+                        </div>
+                    `;
                 });
                 
-                tableHtml += `</div></div>`;
+                tableHtml += `
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
                 div.innerHTML = tableHtml;
                 container.appendChild(div);
             }
@@ -587,9 +622,9 @@
                 colR32.innerHTML += `<div class="match-card">
                     <div class="text-xs text-slate-400 mb-1">Llave ${idx + 1}</div>
                     <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
                     </div>
                     ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
                 </div>`;
@@ -601,9 +636,9 @@
                 colR16.innerHTML += `<div class="match-card">
                     <div class="text-xs text-slate-400 mb-1">Octavo ${idx + 1}</div>
                     <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
                     </div>
                     ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
                 </div>`;
@@ -615,9 +650,9 @@
                 colR8.innerHTML += `<div class="match-card">
                     <div class="text-xs text-slate-400 mb-1">Cuarto ${idx + 1}</div>
                     <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
                     </div>
                     ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
                 </div>`;
@@ -629,9 +664,9 @@
                 colR4.innerHTML += `<div class="match-card">
                     <div class="text-xs text-slate-400 mb-1">Semifinal ${idx + 1}</div>
                     <div class="flex justify-between items-center">
-                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
-                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
                     </div>
                     ${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
                 </div>`;
@@ -640,9 +675,9 @@
             document.getElementById('thirdPlaceMatch').innerHTML = `
                 <div class="text-xs text-slate-400 mb-1">🏅 TERCER PUESTO</div>
                 <div class="flex justify-between items-center">
-                    <span class="font-semibold ${third.winner === third.team1 ? 'text-yellow-400' : ''}">${third.team1}</span>
+                    <span class="font-semibold ${third.winner === third.team1 ? 'text-yellow-400' : ''} truncate">${third.team1}</span>
                     <span class="font-mono text-sm font-bold">${third.goals1} - ${third.goals2}</span>
-                    <span class="font-semibold ${third.winner === third.team2 ? 'text-yellow-400' : ''}">${third.team2}</span>
+                    <span class="font-semibold ${third.winner === third.team2 ? 'text-yellow-400' : ''} truncate">${third.team2}</span>
                 </div>
                 ${third.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
                 <div class="text-center text-yellow-400 text-xs mt-2">🥉 Ganador: ${third.winner}</div>
@@ -651,9 +686,9 @@
             document.getElementById('finalMatch').innerHTML = `
                 <div class="text-xs text-slate-400 mb-1">🏆 FINAL DEL MUNDIAL</div>
                 <div class="flex justify-between items-center">
-                    <span class="font-semibold text-lg ${final.winner === final.team1 ? 'text-green-400' : ''}">${final.team1}</span>
+                    <span class="font-semibold text-lg ${final.winner === final.team1 ? 'text-green-400' : ''} truncate">${final.team1}</span>
                     <span class="font-mono text-lg font-bold">${final.goals1} - ${final.goals2}</span>
-                    <span class="font-semibold text-lg ${final.winner === final.team2 ? 'text-green-400' : ''}">${final.team2}</span>
+                    <span class="font-semibold text-lg ${final.winner === final.team2 ? 'text-green-400' : ''} truncate">${final.team2}</span>
                 </div>
                 ${final.penalties ? `<div class="penalty-badge mt-2 text-center"><i class="fas fa-futbol mr-1"></i>¡Definición por penales!</div>` : ''}
                 <div class="text-center text-green-400 font-bold text-sm mt-3">🏆 CAMPEÓN: ${final.winner.toUpperCase()}</div>
