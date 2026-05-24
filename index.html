@@ -1,440 +1,529 @@
+# Código integrado completo
+
+Pega este bloque COMPLETO reemplazando tu archivo `index.html`.
+
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Mundial IA - Modelo Klement + Ligas + Estilo de Juego</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #0f172a;
-            color: #e2e8f0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .group-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            transition: transform 0.2s;
-        }
-        .group-card:hover {
-            transform: translateY(-2px);
-        }
-        .team-row:nth-child(1), .team-row:nth-child(2) {
-            border-left: 4px solid #10b981;
-        }
-        .team-row:nth-child(3) {
-            border-left: 4px solid #f59e0b;
-        }
-        .team-row:nth-child(4) {
-            border-left: 4px solid #ef4444;
-        }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #334155;
-        }
-        .bracket-container {
-            display: flex;
-            gap: 2rem;
-            overflow-x: auto;
-            padding: 2rem 1rem;
-            scroll-behavior: smooth;
-        }
-        .bracket-column {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            min-width: 260px;
-            gap: 1rem;
-        }
-        ::-webkit-scrollbar { width: 8px; height: 8px;}
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        .model-info {
-            background: rgba(59, 130, 246, 0.1);
-            border-left: 3px solid #3b82f6;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
-        .stat-badge {
-            display: inline-block;
-            padding: 0.2rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-        .possesion-style {
-            background: rgba(59,130,246,0.2);
-            color: #60a5fa;
-        }
-        .counter-style {
-            background: rgba(245,158,11,0.2);
-            color: #fbbf24;
-        }
-        @media print {
-            @page { size: A4 landscape; margin: 5mm; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            body { background-color: #0b0f19 !important; color: #f1f5f9 !important; font-size: 9px; }
-            header, #simulateBtn, .no-print, #loginScreen, #adminPanel, #paymentScreen { display: none !important; }
-            #appContent { display: block !important; }
-        }
-        .table-header {
-            background: #1e293b;
-            border-radius: 8px;
-            padding: 0.5rem;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Mundial IA Avanzado</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.group-card {
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    border: 1px solid #334155;
+}
+
+.team-row:nth-child(1),
+.team-row:nth-child(2) {
+    border-left: 4px solid #10b981;
+}
+
+.team-row:nth-child(3) {
+    border-left: 4px solid #f59e0b;
+}
+
+.team-row:nth-child(4) {
+    border-left: 4px solid #ef4444;
+}
+
+.glass-panel {
+    background: rgba(30,41,59,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid #334155;
+}
+</style>
 </head>
-<body class="min-h-screen p-4 md:p-8 flex flex-col justify-center">
 
-    <!-- Login Screen -->
-    <div id="loginScreen" class="w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel border border-slate-700 shadow-2xl">
-        <div class="text-center mb-6">
-            <div class="mx-auto h-24 w-24 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-4xl mb-3 shadow-lg">
-                <i class="fas fa-futbol text-white"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Simulador Mundial IA</h2>
-            <p class="text-xs text-slate-400 mt-2">Modelo Econométrico Klement + Ligas + Estilo de Juego</p>
-            <div class="mt-4 bg-green-900/30 border border-green-500/50 rounded-lg p-2">
-                <p class="text-green-400 font-bold text-sm"><i class="fas fa-dollar-sign mr-1"></i> Valor: <span class="text-white text-lg">$1,00 USD</span></p>
-            </div>
-        </div>
-        <div class="space-y-4">
-            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Usuario</label><input type="text" id="usernameInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white"></div>
-            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Contraseña</label><input type="password" id="passwordInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white"></div>
-            <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/40 p-3 rounded-lg">Usuario o contraseña incorrectos.</div>
-            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-2.5 rounded-lg">Iniciar Sesión <i class="fas fa-sign-in-alt ml-1"></i></button>
-            <div class="text-center pt-4 border-t border-slate-800">
-                <button onclick="openWhatsAppPurchase()" class="text-xs text-green-400 hover:text-green-300"><i class="fab fa-whatsapp mr-1"></i> Adquirir acceso por $1.00 USD</button>
-            </div>
-        </div>
-    </div>
+<body class="p-6">
 
-    <!-- Payment Screen -->
-    <div id="paymentScreen" class="hidden w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel">
-        <div class="text-center mb-6"><div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-3xl mb-4"><i class="fab fa-whatsapp"></i></div><h2 class="text-2xl font-bold text-green-400">Acceso por $1 USD</h2><p class="text-xs text-slate-400 mt-2">Contáctanos por WhatsApp</p></div>
-        <div><label class="block text-xs text-slate-300 mb-2">WhatsApp</label><input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm"></div>
-        <div id="paymentError" class="hidden text-xs text-red-400 mt-2"></div>
-        <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-lg mt-4"><i class="fab fa-whatsapp mr-2"></i> Solicitar Acceso</button>
-        <button onclick="showLoginScreen()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg mt-2">Volver</button>
-    </div>
+<div class="max-w-7xl mx-auto">
 
-    <!-- Main App -->
-    <div id="appContent" class="hidden w-full max-w-7xl mx-auto">
-        <div class="no-print flex justify-between items-center bg-slate-900/80 p-4 rounded-xl mb-6">
-            <div id="currentUserLabel" class="text-slate-300 font-semibold"></div>
-            <button onclick="logout()" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold py-1.5 px-4 rounded-lg">Cerrar Sesión</button>
-        </div>
+<header class="glass-panel p-8 rounded-2xl mb-8 text-center">
+<h1 class="text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+⚽ Simulador Mundial IA Avanzado
+</h1>
 
-        <div id="adminPanel" class="hidden no-print glass-panel p-6 rounded-2xl mb-8">
-            <h2 class="text-xl font-bold text-indigo-400 mb-6">Gestión de Usuarios</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-slate-900/50 p-4 rounded-xl">
-                    <input type="text" id="newUsername" placeholder="Usuario" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs mb-2">
-                    <input type="text" id="newPassword" placeholder="Contraseña" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs mb-2">
-                    <select id="newUserRole" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs mb-2"><option value="cliente">Cliente</option><option value="admin">Admin</option></select>
-                    <button onclick="addUser()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded text-xs">Registrar</button>
-                </div>
-                <div class="lg:col-span-2 bg-slate-900/50 p-4 rounded-xl overflow-x-auto">
-                    <table class="w-full text-left text-xs"><thead class="bg-slate-950"><tr><th class="p-2">Usuario</th><th class="p-2">Contraseña</th><th class="p-2">Rol</th><th class="p-2">Acciones</th></tr></thead><tbody id="usersTableBody"></tbody></table>
-                </div>
-            </div>
-        </div>
+<p class="text-slate-400 mt-4">
+Modelo con estado actual, historial, confederaciones, táctica y alineaciones.
+</p>
 
-        <header class="text-center mb-10 glass-panel p-8 rounded-2xl">
-            <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-4"><i class="fas fa-globe"></i> Simulador Predictivo IA Mundial</h1>
-            <p class="text-slate-400"><strong>Modelo Klement</strong> + Análisis de Ligas (ESL, Premier, LaLiga) + Estilo de Juego (Posesión/Contraataque)</p>
-            <p class="text-xs text-slate-500 mt-2">PIB • Población • Pedigrí • Ranking FIFA • Valor Mercado • Calidad de Liga • Estilo • Racha • Bajas • Clima</p>
-            <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-play mr-2"></i> Simular Torneo</button></div>
-        </header>
+<button onclick="runSimulation()"
+class="mt-6 bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-xl font-bold">
+Simular Mundial
+</button>
+</header>
 
-        <div class="model-info">
-            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-brain mr-2"></i>Variables del Modelo Avanzado:</div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                <div>• PIB (25%)</div><div>• Población (15%)</div><div>• Pedigrí (15%)</div><div>• Ranking FIFA (15%)</div>
-                <div>• Valor Mercado (10%)</div><div>• Calidad de Liga (8%)</div><div>• Estilo de Juego (7%)</div><div>• Racha/Bajas/Clima (5%)</div>
-            </div>
-            <div class="mt-2 text-xs text-slate-400"><i class="fas fa-info-circle mr-1"></i> Fuentes: Transfermarkt (valor), ESL Index (liga), FIFA Ranking, datos económicos Banco Mundial</div>
-        </div>
+<div id="loading" class="hidden text-center py-12 text-2xl">
+<i class="fas fa-spinner fa-spin"></i>
+Analizando...
+</div>
 
-        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Analizando ligas, estilos y valor de mercado...</h2></div>
+<div id="resultsContainer" class="hidden">
+<div id="groupsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8"></div>
+</div>
 
-        <div id="resultsContainer" class="hidden">
-            <div id="groupsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"></div>
-            <div id="thirdsContainer" class="glass-panel p-6 rounded-2xl mb-12">
-                <h2 class="text-3xl font-bold mb-6 text-center text-amber-400">Mejores Terceros</h2>
-                <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DIF</th><th class="p-3">GF</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
-            </div>
-            <div class="glass-panel p-6 rounded-2xl mb-12">
-                <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final</h2>
-                <div class="bracket-container">
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Ronda 32</div><div id="colR32"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Octavos</div><div id="colR16"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Cuartos</div><div id="colR8"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Semifinales</div><div id="colR4"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Finales</div><div id="thirdPlaceMatch" class="bg-slate-900/90 rounded-xl p-3 mb-3"></div><div id="finalMatch" class="bg-slate-900/90 border-2 border-yellow-500 rounded-xl p-3"></div></div>
-                </div>
-                <div id="championSection" class="mt-10 text-center hidden"><div class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 p-6 rounded-2xl"><i class="fas fa-trophy text-5xl mb-2"></i><h3 class="text-sm uppercase">Campeón del Mundo</h3><h2 id="championName" class="text-3xl font-extrabold">--</h2></div></div>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <script>
-        // ==================== STORAGE ====================
-        const safeStorage = { _data: {}, getItem(key) { try { return localStorage.getItem(key); } catch(e) { return this._data[key] || null; } }, setItem(key, value) { try { localStorage.setItem(key, value); } catch(e) { this._data[key] = String(value); } } };
-        if (!safeStorage.getItem('sim_users')) safeStorage.setItem('sim_users', JSON.stringify([{ username: "Mundial", password: "2026", role: "admin" }, { username: "invitado", password: "123", role: "cliente" }]));
-        function getUsers() { try { const stored = safeStorage.getItem('sim_users'); if (stored && Array.isArray(JSON.parse(stored))) return JSON.parse(stored); } catch(e) {} return [{ username: "Mundial", password: "2026", role: "admin" }]; }
-        function saveUsers(users) { safeStorage.setItem('sim_users', JSON.stringify(users)); }
-        let loggedInUser = null, lastSimulatedQualifiedTeams = [];
+<script>
 
-        // ==================== RANKING FIFA ====================
-        const fifaRanking = { "Argentina":1,"Francia":2,"Inglaterra":3,"Bélgica":4,"Países Bajos":5,"Brasil":6,"Alemania":7,"España":8,"Italia":9,"Portugal":10,"Uruguay":11,"Suiza":12,"Croacia":13,"Senegal":14,"Japón":15,"Corea del Sur":16,"Marruecos":17,"Colombia":18,"México":19,"Austria":20,"Ecuador":21,"Paraguay":22,"Australia":23,"Turquía":24,"Canadá":25,"Estados Unidos":26,"Costa de Marfil":27,"Irán":28,"Nueva Zelanda":29,"Egipto":30,"Arabia Saudita":31,"Qatar":32,"Bosnia":33,"Escocia":34,"Haití":35,"Cabo Verde":36,"Uzbekistán":37,"Jordania":38,"Curazao":39,"R.D. Congo":40,"Sudáfrica":41,"Ghana":42,"Panamá":43,"República Checa":44,"Suecia":45,"Túnez":46,"Noruega":47,"Irak":48,"Argelia":49 };
+// ==================== FIFA RANKING ====================
+const fifaRanking = {
+"Argentina":1,
+"Francia":2,
+"Brasil":3,
+"España":4,
+"Inglaterra":5,
+"Alemania":6,
+"Portugal":7,
+"Países Bajos":8,
+"Colombia":9,
+"Uruguay":10,
+"México":11,
+"Estados Unidos":12,
+"Japón":13,
+"Marruecos":14,
+"Ecuador":15,
+"Croacia":16
+};
 
-        // ==================== CALIDAD DE LIGA (ESL Index, Premier, LaLiga como referencia) ====================
-        const leagueQuality = {
-            "Premier League": 100, "LaLiga": 98, "Bundesliga": 95, "Serie A": 93, "Ligue 1": 88,
-            "Eredivisie": 75, "Primeira Liga": 72, "Brasileirão": 70, "Superliga Argentina": 68,
-            "Liga MX": 65, "MLS": 62, "J1 League": 60, "K League": 58, "Saudi Pro League": 55,
-            "Qatar Stars": 50, "Liga Profesional": 52, "Super Lig": 60, "Russian Premier": 65,
-            "Championship": 70, "Belgian Pro": 68, "Scottish Prem": 62, "Swiss Super": 60,
-            "Austrian Bundesliga": 58, "Croatian League": 55, "Greek Super": 56, "Czech League": 54,
-            "Swedish Allsvenskan": 52, "Norwegian Eliteserien": 50, "Tunisian Ligue": 45,
-            "Egyptian Prem": 48, "Moroccan Botola": 46, "South African Prem": 44, "Iranian Pro": 42,
-            "Uzbek League": 40, "Jordanian League": 35, "Curaçao League": 30, "Congolese League": 32,
-            "Haitian League": 28, "Cape Verdean": 30, "New Zealand Football": 38
-        };
+// ==================== CALIDAD DE LIGA ====================
+const leagueQuality = {
+"Premier League":100,
+"LaLiga":98,
+"Bundesliga":95,
+"Serie A":93,
+"Ligue 1":88,
+"Primeira Liga":82,
+"Brasileirão":80,
+"MLS":70,
+"Liga MX":68,
+"J1 League":65
+};
 
-        // ==================== ESTILO DE JUEGO (Posesión / Contraataque / Mixto) ====================
-        const playingStyle = {
-            "Argentina": { style: "posesion", value: 85 }, "Francia": { style: "mixto", value: 80 }, "Inglaterra": { style: "fisico", value: 82 },
-            "Brasil": { style: "posesion", value: 88 }, "Alemania": { style: "presion", value: 84 }, "España": { style: "posesion", value: 90 },
-            "Países Bajos": { style: "posesion", value: 78 }, "Portugal": { style: "contraataque", value: 76 }, "Bélgica": { style: "mixto", value: 75 },
-            "Uruguay": { style: "fisico", value: 72 }, "Croacia": { style: "posesion", value: 70 }, "Colombia": { style: "contraataque", value: 68 },
-            "México": { style: "posesion", value: 65 }, "Japón": { style: "posesion", value: 66 }, "Corea del Sur": { style: "presion", value: 64 },
-            "Marruecos": { style: "contraataque", value: 68 }, "Senegal": { style: "fisico", value: 65 }, "Ecuador": { style: "contraataque", value: 62 },
-            "Australia": { style: "fisico", value: 58 }, "Suiza": { style: "mixto", value: 66 }, "Estados Unidos": { style: "presion", value: 64 },
-            "Canadá": { style: "contraataque", value: 60 }, "Turquía": { style: "ataque", value: 62 }, "Austria": { style: "mixto", value: 60 },
-            "Paraguay": { style: "fisico", value: 58 }, "Costa de Marfil": { style: "fisico", value: 62 }, "Egipto": { style: "contraataque", value: 60 },
-            "Ghana": { style: "ataque", value: 59 }, "Serbia": { style: "fisico", value: 61 }, "Suecia": { style: "fisico", value: 57 },
-            "República Checa": { style: "mixto", value: 56 }, "Noruega": { style: "ataque", value: 58 }, "Escocia": { style: "fisico", value: 55 },
-            "Bosnia y Herzegovina": { style: "mixto", value: 54 }, "Arabia Saudita": { style: "contraataque", value: 52 }, "Qatar": { style: "posesion", value: 50 },
-            "Irán": { style: "defensivo", value: 48 }, "Nueva Zelanda": { style: "fisico", value: 45 }, "Uzbekistán": { style: "mixto", value: 44 },
-            "Jordania": { style: "contraataque", value: 42 }, "Curazao": { style: "ataque", value: 40 }, "R.D. Congo": { style: "fisico", value: 43 },
-            "Sudáfrica": { style: "mixto", value: 48 }, "Haití": { style: "ataque", value: 38 }, "Cabo Verde": { style: "contraataque", value: 42 },
-            "Panamá": { style: "defensivo", value: 46 }, "Túnez": { style: "defensivo", value: 52 }, "Irak": { style: "fisico", value: 45 },
-            "Argelia": { style: "contraataque", value: 54 }
-        };
+function getLeagueQualityScore(league) {
+    return leagueQuality[league] || 60;
+}
 
-        // ==================== DATOS COMPLETOS CON LIGA PRINCIPAL DE CADA JUGADOR REPRESENTATIVO ====================
-        const teamsData = {
-            "Argentina": { pib:0.63, poblacion:45.8, pedigree:98, valorMercado:750, ligaPrincipal:"LaLiga", racha:0.95, bajas:0, altitud:0 },
-            "Francia": { pib:2.94, poblacion:67.8, pedigree:95, valorMercado:1200, ligaPrincipal:"Ligue 1", racha:0.82, bajas:1, altitud:0 },
-            "Inglaterra": { pib:3.13, poblacion:56.3, pedigree:90, valorMercado:1400, ligaPrincipal:"Premier League", racha:0.85, bajas:1, altitud:0 },
-            "Brasil": { pib:1.89, poblacion:213.0, pedigree:100, valorMercado:1100, ligaPrincipal:"Premier League", racha:0.88, bajas:2, altitud:0 },
-            "Alemania": { pib:4.26, poblacion:83.2, pedigree:96, valorMercado:800, ligaPrincipal:"Bundesliga", racha:0.78, bajas:2, altitud:0 },
-            "España": { pib:1.39, poblacion:47.4, pedigree:92, valorMercado:900, ligaPrincipal:"LaLiga", racha:0.80, bajas:1, altitud:0 },
-            "Países Bajos": { pib:1.01, poblacion:17.5, pedigree:88, valorMercado:650, ligaPrincipal:"Eredivisie", racha:0.75, bajas:2, altitud:0 },
-            "Portugal": { pib:0.25, poblacion:10.3, pedigree:85, valorMercado:550, ligaPrincipal:"Primeira Liga", racha:0.82, bajas:1, altitud:0 },
-            "Bélgica": { pib:0.58, poblacion:11.6, pedigree:86, valorMercado:450, ligaPrincipal:"Premier League", racha:0.70, bajas:3, altitud:0 },
-            "Uruguay": { pib:0.06, poblacion:3.5, pedigree:95, valorMercado:380, ligaPrincipal:"LaLiga", racha:0.72, bajas:1, altitud:0 },
-            "Croacia": { pib:0.07, poblacion:4.0, pedigree:84, valorMercado:350, ligaPrincipal:"LaLiga", racha:0.72, bajas:1, altitud:0 },
-            "Colombia": { pib:0.34, poblacion:50.9, pedigree:85, valorMercado:280, ligaPrincipal:"Premier League", racha:0.78, bajas:2, altitud:2640 },
-            "México": { pib:1.27, poblacion:128.9, pedigree:85, valorMercado:200, ligaPrincipal:"Liga MX", racha:0.80, bajas:1, altitud:2250 },
-            "Japón": { pib:4.23, poblacion:125.7, pedigree:85, valorMercado:200, ligaPrincipal:"J1 League", racha:0.78, bajas:2, altitud:0 },
-            "Corea del Sur": { pib:1.81, poblacion:51.7, pedigree:80, valorMercado:150, ligaPrincipal:"Premier League", racha:0.75, bajas:1, altitud:0 },
-            "Marruecos": { pib:0.13, poblacion:37.1, pedigree:70, valorMercado:250, ligaPrincipal:"Ligue 1", racha:0.82, bajas:1, altitud:200 },
-            "Senegal": { pib:0.03, poblacion:17.4, pedigree:68, valorMercado:300, ligaPrincipal:"Premier League", racha:0.80, bajas:2, altitud:0 },
-            "Ecuador": { pib:0.11, poblacion:17.6, pedigree:70, valorMercado:100, ligaPrincipal:"Premier League", racha:0.70, bajas:2, altitud:2800 },
-            "Australia": { pib:1.55, poblacion:25.7, pedigree:75, valorMercado:70, ligaPrincipal:"Premier League", racha:0.72, bajas:0, altitud:0 },
-            "Suiza": { pib:0.81, poblacion:8.6, pedigree:80, valorMercado:280, ligaPrincipal:"Premier League", racha:0.75, bajas:1, altitud:500 },
-            "Estados Unidos": { pib:25.35, poblacion:331.9, pedigree:80, valorMercado:300, ligaPrincipal:"MLS", racha:0.85, bajas:2, altitud:500 },
-            "Canadá": { pib:2.14, poblacion:38.0, pedigree:65, valorMercado:120, ligaPrincipal:"Ligue 1", racha:0.75, bajas:1, altitud:200 },
-            "Turquía": { pib:0.77, poblacion:85.0, pedigree:62, valorMercado:180, ligaPrincipal:"Super Lig", racha:0.68, bajas:2, altitud:0 },
-            "Austria": { pib:0.52, poblacion:9.0, pedigree:65, valorMercado:150, ligaPrincipal:"Bundesliga", racha:0.70, bajas:2, altitud:300 },
-            "Paraguay": { pib:0.04, poblacion:7.1, pedigree:75, valorMercado:80, ligaPrincipal:"Superliga Argentina", racha:0.65, bajas:3, altitud:0 },
-            "Costa de Marfil": { pib:0.07, poblacion:27.5, pedigree:72, valorMercado:120, ligaPrincipal:"Premier League", racha:0.70, bajas:1, altitud:0 },
-            "Irán": { pib:0.41, poblacion:85.0, pedigree:70, valorMercado:50, ligaPrincipal:"Iranian Pro", racha:0.68, bajas:3, altitud:1200 },
-            "Nueva Zelanda": { pib:0.25, poblacion:5.1, pedigree:60, valorMercado:30, ligaPrincipal:"New Zealand Football", racha:0.58, bajas:1, altitud:0 },
-            "Egipto": { pib:0.40, poblacion:102.3, pedigree:70, valorMercado:100, ligaPrincipal:"Premier League", racha:0.68, bajas:2, altitud:0 },
-            "Arabia Saudita": { pib:0.83, poblacion:35.0, pedigree:65, valorMercado:80, ligaPrincipal:"Saudi Pro League", racha:0.65, bajas:2, altitud:600 },
-            "Qatar": { pib:0.18, poblacion:2.9, pedigree:60, valorMercado:40, ligaPrincipal:"Qatar Stars", racha:0.62, bajas:4, altitud:0 },
-            "Bosnia y Herzegovina": { pib:0.02, poblacion:3.3, pedigree:50, valorMercado:60, ligaPrincipal:"Serie A", racha:0.55, bajas:2, altitud:500 },
-            "Escocia": { pib:0.30, poblacion:5.5, pedigree:60, valorMercado:90, ligaPrincipal:"Scottish Prem", racha:0.58, bajas:2, altitud:0 },
-            "Haití": { pib:0.01, poblacion:11.4, pedigree:50, valorMercado:10, ligaPrincipal:"Ligue 1", racha:0.45, bajas:2, altitud:0 },
-            "Cabo Verde": { pib:0.002, poblacion:0.56, pedigree:40, valorMercado:5, ligaPrincipal:"Primeira Liga", racha:0.48, bajas:1, altitud:0 },
-            "Uzbekistán": { pib:0.36, poblacion:33.5, pedigree:45, valorMercado:25, ligaPrincipal:"Uzbek League", racha:0.60, bajas:2, altitud:500 },
-            "Jordania": { pib:0.04, poblacion:10.2, pedigree:48, valorMercado:8, ligaPrincipal:"Jordanian League", racha:0.52, bajas:2, altitud:800 },
-            "Curazao": { pib:0.006, poblacion:0.15, pedigree:40, valorMercado:3, ligaPrincipal:"Eredivisie", racha:0.48, bajas:2, altitud:0 },
-            "R.D. Congo": { pib:0.02, poblacion:99.0, pedigree:45, valorMercado:15, ligaPrincipal:"Premier League", racha:0.52, bajas:3, altitud:0 },
-            "Sudáfrica": { pib:0.43, poblacion:60.0, pedigree:60, valorMercado:45, ligaPrincipal:"South African Prem", racha:0.62, bajas:2, altitud:1750 },
-            "Ghana": { pib:0.07, poblacion:31.1, pedigree:68, valorMercado:100, ligaPrincipal:"Premier League", racha:0.65, bajas:2, altitud:0 },
-            "Panamá": { pib:0.07, poblacion:4.3, pedigree:55, valorMercado:15, ligaPrincipal:"MLS", racha:0.60, bajas:2, altitud:0 },
-            "República Checa": { pib:0.28, poblacion:10.7, pedigree:68, valorMercado:120, ligaPrincipal:"Bundesliga", racha:0.63, bajas:2, altitud:200 },
-            "Suecia": { pib:0.59, poblacion:10.1, pedigree:72, valorMercado:150, ligaPrincipal:"Premier League", racha:0.62, bajas:2, altitud:0 },
-            "Túnez": { pib:0.05, poblacion:11.8, pedigree:65, valorMercado:40, ligaPrincipal:"Ligue 1", racha:0.70, bajas:1, altitud:0 },
-            "Noruega": { pib:0.51, poblacion:5.5, pedigree:55, valorMercado:180, ligaPrincipal:"Premier League", racha:0.52, bajas:2, altitud:0 },
-            "Irak": { pib:0.27, poblacion:40.0, pedigree:55, valorMercado:15, ligaPrincipal:"Iranian Pro", racha:0.55, bajas:2, altitud:30 },
-            "Argelia": { pib:0.19, poblacion:44.9, pedigree:55, valorMercado:80, ligaPrincipal:"Ligue 1", racha:0.58, bajas:2, altitud:300 }
-        };
+// ==================== ESTILO ====================
+const playingStyle = {
+"Argentina": { style:"posesion", value:90 },
+"Francia": { style:"mixto", value:88 },
+"Brasil": { style:"ataque", value:92 },
+"España": { style:"posesion", value:93 },
+"Inglaterra": { style:"presion", value:87 },
+"Alemania": { style:"presion", value:85 },
+"Portugal": { style:"contraataque", value:82 },
+"Países Bajos": { style:"posesion", value:84 },
+"Colombia": { style:"contraataque", value:78 },
+"Uruguay": { style:"fisico", value:79 },
+"México": { style:"posesion", value:72 },
+"Estados Unidos": { style:"presion", value:73 },
+"Japón": { style:"posesion", value:76 },
+"Marruecos": { style:"contraataque", value:80 },
+"Ecuador": { style:"fisico", value:75 },
+"Croacia": { style:"posesion", value:82 }
+};
 
-        function getLeagueQualityScore(league) { return leagueQuality[league] || 50; }
-        function getPlayingStyleBonus(team) { const style = playingStyle[team]; return style ? style.value : 50; }
-        function getStyleAdvantage(team1, team2) {
-            const s1 = playingStyle[team1]?.style || "mixto";
-            const s2 = playingStyle[team2]?.style || "mixto";
-            if (s1 === "posesion" && s2 === "contraataque") return 0.12;
-            if (s1 === "contraataque" && s2 === "posesion") return 0.08;
-            if (s1 === "fisico" && s2 === "tecnico") return 0.10;
-            return 0;
-        }
+function getPlayingStyleBonus(team) {
+    return playingStyle[team]?.value || 70;
+}
 
-        function calculateTeamStrength(team) {
-            const data = teamsData[team];
-            if (!data) return 50;
-            const pibScore = (Math.log(data.pib + 0.1) + 2) / 5 * 100;
-            const poblacionScore = Math.min(100, Math.log(data.poblacion) / 5 * 100);
-            const fifaPos = fifaRanking[team] || 48;
-            const fifaScore = Math.max(0, 100 - (fifaPos * 1.2));
-            const valorScore = Math.min(100, (data.valorMercado / 15) * 100);
-            const ligaScore = getLeagueQualityScore(data.ligaPrincipal);
-            const styleScore = getPlayingStyleBonus(team);
-            const rachaScore = data.racha * 100;
-            const fuerza = (pibScore * 0.22) + (poblacionScore * 0.13) + (data.pedigree * 0.15) + (fifaScore * 0.15) + (valorScore * 0.10) + (ligaScore * 0.08) + (styleScore * 0.07) + (rachaScore * 0.10);
-            return Math.min(99, Math.max(1, fuerza));
-        }
+// ==================== DATOS ====================
+const teamsData = {
+"Argentina": { pib:0.63,poblacion:45,pedigree:98,valorMercado:900,ligaPrincipal:"LaLiga",racha:0.95,bajas:1,altitud:0 },
+"Francia": { pib:2.94,poblacion:67,pedigree:95,valorMercado:1100,ligaPrincipal:"Ligue 1",racha:0.90,bajas:2,altitud:0 },
+"Brasil": { pib:1.89,poblacion:213,pedigree:100,valorMercado:1200,ligaPrincipal:"Premier League",racha:0.88,bajas:2,altitud:0 },
+"España": { pib:1.39,poblacion:47,pedigree:94,valorMercado:950,ligaPrincipal:"LaLiga",racha:0.87,bajas:1,altitud:0 },
+"Inglaterra": { pib:3.13,poblacion:56,pedigree:92,valorMercado:1300,ligaPrincipal:"Premier League",racha:0.85,bajas:2,altitud:0 },
+"Alemania": { pib:4.26,poblacion:83,pedigree:93,valorMercado:850,ligaPrincipal:"Bundesliga",racha:0.80,bajas:2,altitud:0 },
+"Portugal": { pib:0.25,poblacion:10,pedigree:88,valorMercado:700,ligaPrincipal:"Primeira Liga",racha:0.82,bajas:1,altitud:0 },
+"Países Bajos": { pib:1.01,poblacion:17,pedigree:86,valorMercado:650,ligaPrincipal:"Eredivisie",racha:0.78,bajas:2,altitud:0 },
+"Colombia": { pib:0.34,poblacion:50,pedigree:84,valorMercado:450,ligaPrincipal:"Premier League",racha:0.82,bajas:1,altitud:2640 },
+"Uruguay": { pib:0.06,poblacion:3,pedigree:90,valorMercado:500,ligaPrincipal:"LaLiga",racha:0.80,bajas:1,altitud:0 },
+"México": { pib:1.27,poblacion:128,pedigree:82,valorMercado:350,ligaPrincipal:"Liga MX",racha:0.75,bajas:2,altitud:2200 },
+"Estados Unidos": { pib:25,poblacion:331,pedigree:80,valorMercado:400,ligaPrincipal:"MLS",racha:0.82,bajas:2,altitud:500 },
+"Japón": { pib:4.23,poblacion:125,pedigree:81,valorMercado:320,ligaPrincipal:"J1 League",racha:0.81,bajas:1,altitud:0 },
+"Marruecos": { pib:0.13,poblacion:37,pedigree:78,valorMercado:300,ligaPrincipal:"Ligue 1",racha:0.84,bajas:1,altitud:300 },
+"Ecuador": { pib:0.11,poblacion:17,pedigree:75,valorMercado:280,ligaPrincipal:"Premier League",racha:0.79,bajas:1,altitud:2800 },
+"Croacia": { pib:0.07,poblacion:4,pedigree:88,valorMercado:420,ligaPrincipal:"Serie A",racha:0.77,bajas:2,altitud:0 }
+};
 
-        function simulateMatch(team1, team2, isKnockout = false) {
-            let strength1 = calculateTeamStrength(team1);
-            let strength2 = calculateTeamStrength(team2);
-            const styleAdv = getStyleAdvantage(team1, team2);
-            strength1 += strength1 * styleAdv;
-            const totalStrength = strength1 + strength2;
-            const prob1 = strength1 / totalStrength;
-            
-            let goals1 = 0, goals2 = 0;
-            for (let i = 0; i < 90; i += 8) {
-                if (Math.random() < prob1 * 0.22) goals1++;
-                if (Math.random() < (1 - prob1) * 0.22) goals2++;
-            }
-            if (isKnockout && goals1 === goals2) {
-                const penalties = Math.random() < prob1;
-                if (penalties) goals1++; else goals2++;
-            }
-            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2 };
-        }
+// ==================== ESTADO ACTUAL ====================
+const currentSquadState = {
+"Argentina": { form:92, cohesion:94, injuries:1, coachStability:95, morale:96, lineup:"4-3-3", tablePosition:1 },
+"Francia": { form:89, cohesion:90, injuries:2, coachStability:91, morale:92, lineup:"4-2-3-1", tablePosition:2 },
+"Brasil": { form:88, cohesion:86, injuries:2, coachStability:84, morale:89, lineup:"4-3-3", tablePosition:3 },
+"España": { form:90, cohesion:92, injuries:1, coachStability:93, morale:91, lineup:"4-3-3", tablePosition:4 }
+};
 
-        // ==================== GRUPOS ====================
-        const groups = {
-            "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
-            "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
-            "C": ["Brasil", "Marruecos", "Haití", "Escocia"],
-            "D": ["Estados Unidos", "Paraguay", "Australia", "Turquía"],
-            "E": ["Alemania", "Ecuador", "Costa de Marfil", "Curazao"],
-            "F": ["Países Bajos", "Japón", "Túnez", "Suecia"],
-            "G": ["Bélgica", "Egipto", "Irán", "Nueva Zelanda"],
-            "H": ["España", "Uruguay", "Cabo Verde", "Arabia Saudita"],
-            "I": ["Francia", "Senegal", "Noruega", "Irak"],
-            "J": ["Argentina", "Argelia", "Austria", "Jordania"],
-            "K": ["Portugal", "Uzbekistán", "Colombia", "R.D. Congo"],
-            "L": ["Inglaterra", "Croacia", "Ghana", "Panamá"]
-        };
+function getCurrentSquadState(team) {
 
-        // ==================== UI ====================
-        function showPaymentScreen() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('paymentScreen').classList.remove('hidden'); }
-        function showLoginScreen() { document.getElementById('paymentScreen').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
-        function openWhatsAppPurchase() { window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent('Quiero el simulador $1 USD')}`, '_blank'); }
-        function requestPaymentWhatsAppOnly() { const w = document.getElementById('paymentWhatsapp').value.trim(); if (!w) { document.getElementById('paymentError').innerText='Número requerido'; document.getElementById('paymentError').classList.remove('hidden'); return; } window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent(`Pago $1 USD. WhatsApp: ${w}`)}`, '_blank'); alert("Solicitud enviada"); }
-        function attemptLogin() { const u = document.getElementById('usernameInput').value.trim(); const p = document.getElementById('passwordInput').value.trim(); const users = getUsers(); const found = users.find(u2 => u2.username.toLowerCase() === u.toLowerCase() && u2.password === p); if (found) { loggedInUser = found; document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('appContent').classList.remove('hidden'); document.body.classList.remove('flex','flex-col','justify-center'); applyRoleUI(); } else { document.getElementById('loginError').classList.remove('hidden'); } }
-        function applyRoleUI() { const adminPanel = document.getElementById('adminPanel'); document.getElementById('currentUserLabel').innerHTML = `<span class="px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role==='admin'?'bg-indigo-600/30 text-indigo-400':'bg-blue-600/30 text-blue-400'}"><i class="fas fa-user mr-1"></i>${loggedInUser.username}</span>`; if (loggedInUser.role === 'admin') { adminPanel.classList.remove('hidden'); renderAdminUsers(); } else { adminPanel.classList.add('hidden'); } }
-        function logout() { loggedInUser = null; document.getElementById('appContent').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); document.body.classList.add('flex','flex-col','justify-center'); }
-        function renderAdminUsers() { const users = getUsers(); const tbody = document.getElementById('usersTableBody'); tbody.innerHTML = ''; users.forEach((u,idx) => { const prot = u.username.toLowerCase() === 'mundial'; tbody.innerHTML += `<tr><td class="p-2">${u.username}</td><td class="p-2">${u.password}</td><td class="p-2">${u.role}</td><td class="p-2">${!prot?`<button onclick="deleteUser(${idx})" class="text-red-400">Eliminar</button>`:'Protegido'}</td></tr>`; }); }
-        function addUser() { const name = document.getElementById('newUsername').value.trim(); const pass = document.getElementById('newPassword').value.trim(); const role = document.getElementById('newUserRole').value; if(!name||!pass) return; let users = getUsers(); if(users.some(u=>u.username.toLowerCase()===name.toLowerCase())) return; users.push({username:name,password:pass,role}); saveUsers(users); renderAdminUsers(); }
-        function deleteUser(idx) { let users = getUsers(); users.splice(idx,1); saveUsers(users); renderAdminUsers(); }
+const data = teamsData[team];
+const style = playingStyle[team]?.style || "mixto";
 
-        async function runSimulation() {
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('resultsContainer').classList.add('hidden');
-            await new Promise(r => setTimeout(r, 100));
-            const groupResults = {}, allThirdPlaces = [];
-            for (const [groupName, teams] of Object.entries(groups)) {
-                const standings = teams.map(t => ({ team:t, strength:calculateTeamStrength(t), pts:0, gf:0, gc:0, dg:0, wins:0, draws:0, losses:0 }));
-                for (let i=0;i<teams.length;i++) for(let j=i+1;j<teams.length;j++) {
-                    const match = simulateMatch(teams[i], teams[j]);
-                    const t1 = standings.find(s=>s.team===match.team1), t2 = standings.find(s=>s.team===match.team2);
-                    t1.gf+=match.goals1; t1.gc+=match.goals2; t2.gf+=match.goals2; t2.gc+=match.goals1;
-                    if(match.goals1>match.goals2) { t1.pts+=3; t1.wins++; t2.losses++; }
-                    else if(match.goals2>match.goals1) { t2.pts+=3; t2.wins++; t1.losses++; }
-                    else { t1.pts+=1; t1.draws++; t2.pts+=1; t2.draws++; }
-                }
-                standings.forEach(s=>s.dg=s.gf-s.gc);
-                standings.sort((a,b)=>b.pts-a.pts||b.dg-a.dg||b.gf-a.gf);
-                groupResults[groupName] = standings;
-                if(standings[2]) allThirdPlaces.push({group:groupName,...standings[2]});
-            }
-            allThirdPlaces.sort((a,b)=>b.pts-a.pts||b.dg-a.dg||b.gf-a.gf);
-            const bestThirds = allThirdPlaces.slice(0,8);
-            const qualified = [];
-            for(const s of Object.values(groupResults)) { qualified.push(s[0].team, s[1].team); }
-            bestThirds.forEach(t=>qualified.push(t.team));
-            lastSimulatedQualifiedTeams = qualified;
-            renderGroups(groupResults);
-            renderThirds(bestThirds);
-            await simulateKnockout(qualified);
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('resultsContainer').classList.remove('hidden');
-        }
+return currentSquadState[team] || {
+form: Math.round((data.racha || 0.70) * 100),
+cohesion: 75,
+injuries: data.bajas || 2,
+coachStability: 76,
+morale: 76,
+lineup: style === "posesion" ? "4-3-3" : "4-4-2",
+tablePosition: fifaRanking[team] || 20
+};
+}
 
-        async function simulateKnockout(teams) {
-            let shuffled = [...teams];
-            for(let i=shuffled.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
-            let r32 = []; for(let i=0;i<shuffled.length;i+=2) r32.push(simulateMatch(shuffled[i],shuffled[i+1],true).winner);
-            let r16 = []; for(let i=0;i<r32.length;i+=2) r16.push(simulateMatch(r32[i],r32[i+1],true).winner);
-            let r8 = []; for(let i=0;i<r16.length;i+=2) r8.push(simulateMatch(r16[i],r16[i+1],true).winner);
-            let r4 = []; for(let i=0;i<r8.length;i+=2) r4.push(simulateMatch(r8[i],r8[i+1],true).winner);
-            const final = simulateMatch(r4[0],r4[1],true);
-            const third = simulateMatch(r4[0]===final.winner?r4[1]:r4[0], r4[1]===final.winner?r4[0]:r4[1], true);
-            renderBracket(shuffled, r32, r16, r8, r4, final, third, final.winner);
-        }
+// ==================== CONFEDERACIONES ====================
+const confedTeams = {
+UEFA:["Francia","España","Alemania","Portugal","Países Bajos","Croacia","Inglaterra"],
+CONMEBOL:["Argentina","Brasil","Colombia","Uruguay","Ecuador"],
+CONCACAF:["México","Estados Unidos"],
+AFC:["Japón"],
+CAF:["Marruecos"]
+};
 
-        function renderGroups(results) {
-            const container = document.getElementById('groupsGrid');
-            container.innerHTML = '';
-            for(const [g, standings] of Object.entries(results)) {
-                const div = document.createElement('div'); div.className = 'group-card rounded-xl overflow-hidden';
-                div.innerHTML = `<div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${g}</h3></div>
-                    <div class="p-3"><div class="grid grid-cols-9 gap-1 text-xs font-bold text-slate-400 mb-2 px-1">
-                        <div class="col-span-3">EQUIPO</div><div class="col-span-1 text-center">POS</div><div class="col-span-1 text-center">PTS</div>
-                        <div class="col-span-1 text-center">PG</div><div class="col-span-1 text-center">PE</div><div class="col-span-1 text-center">PP</div>
-                        <div class="col-span-1 text-center">GF</div><div class="col-span-1 text-center">GC</div><div class="col-span-1 text-center">DIF</div>
-                    </div>${standings.map((s,idx)=>`<div class="team-row grid grid-cols-9 gap-1 py-1.5 px-1 rounded mb-0.5 bg-slate-800/30 text-xs items-center">
-                        <div class="col-span-3 font-semibold truncate">${s.team}</div>
-                        <div class="col-span-1 text-center font-bold ${idx===0?'text-green-400':idx===1?'text-blue-400':idx===2?'text-yellow-400':'text-red-400'}">${idx+1}</div>
-                        <div class="col-span-1 text-center font-bold">${s.pts}</div>
-                        <div class="col-span-1 text-center">${s.wins}</div><div class="col-span-1 text-center">${s.draws}</div><div class="col-span-1 text-center">${s.losses}</div>
-                        <div class="col-span-1 text-center">${s.gf}</div><div class="col-span-1 text-center">${s.gc}</div><div class="col-span-1 text-center">${s.dg}</div>
-                    </div>`).join('')}</div>`;
-                container.appendChild(div);
-            }
-        }
+function getConfederation(team) {
+for (const [conf, list] of Object.entries(confedTeams)) {
+if (list.includes(team)) return conf;
+}
+return "UNKNOWN";
+}
 
-        function renderThirds(thirds) { document.getElementById('thirdsTableBody').innerHTML = thirds.map((t,i)=>`<tr class="border-b"><td class="p-2">${i+1}</td><td class="p-2">${t.group}</td><td class="p-2 font-semibold">${t.team}</td><td class="p-2 text-center">${t.pts}</td><td class="p-2 text-center">${t.dg}</td><td class="p-2 text-center">${t.gf}</td></tr>`).join(''); }
+// ==================== HISTORIAL ====================
+const historicalHeadToHead = {
+"Argentina|Francia": { played:5, team1Wins:2, team2Wins:2, draws:1, goals1:6, goals2:6 },
+"Brasil|Francia": { played:6, team1Wins:3, team2Wins:2, draws:1, goals1:8, goals2:7 },
+"España|Uruguay": { played:4, team1Wins:2, team2Wins:1, draws:1, goals1:5, goals2:4 }
+};
 
-        function renderBracket(r32, r32w, r16w, r8w, r4w, final, third, champ) {
-            const c32 = document.getElementById('colR32'); c32.innerHTML = '';
-            for(let i=0;i<r32.length;i+=2) c32.innerHTML += `<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Llave ${i/2+1}</div><div class="text-sm ${r32w[i/2]===r32[i]?'text-green-400':''}">${r32[i]}</div><div class="text-sm ${r32w[i/2]===r32[i+1]?'text-green-400':''}">${r32[i+1]}</div></div>`;
-            const c16 = document.getElementById('colR16'); c16.innerHTML = '';
-            for(let i=0;i<r16w.length;i+=2) c16.innerHTML += `<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Octavo ${i/2+1}</div><div class="text-sm">${r16w[i]}</div><div class="text-sm">${r16w[i+1]}</div></div>`;
-            const c8 = document.getElementById('colR8'); c8.innerHTML = '';
-            for(let i=0;i<r8w.length;i+=2) c8.innerHTML += `<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Cuarto ${i/2+1}</div><div class="text-sm">${r8w[i]}</div><div class="text-sm">${r8w[i+1]}</div></div>`;
-            const c4 = document.getElementById('colR4'); c4.innerHTML = r4w.map((t,i)=>`<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Semifinal ${i+1}</div><div class="text-sm text-pink-400">${t}</div></div>`).join('');
-            document.getElementById('finalMatch').innerHTML = `<div class="font-bold">${final.team1} vs ${final.team2}</div><div class="text-green-400">🏆 Campeón: ${final.winner}</div>`;
-            document.getElementById('thirdPlaceMatch').innerHTML = `<div class="font-bold">${third.team1} vs ${third.team2}</div><div class="text-yellow-400">🥉 3er lugar: ${third.winner}</div>`;
-            document.getElementById('championName').innerText = champ;
-            document.getElementById('championSection').classList.remove('hidden');
-        }
-    </script>
+function pairKey(team1, team2) {
+return [team1, team2].sort().join("|");
+}
+
+function clamp(value, min, max) {
+return Math.max(min, Math.min(max, value));
+}
+
+const confederationBenchmarks = {
+UEFA:92,
+CONMEBOL:90,
+CONCACAF:70,
+AFC:72,
+CAF:74,
+UNKNOWN:60
+};
+
+function getHistoricalEdge(team1, team2) {
+
+const key = pairKey(team1, team2);
+const h2h = historicalHeadToHead[key];
+
+if (h2h && h2h.played > 0) {
+
+const winBalance =
+(h2h.team1Wins - h2h.team2Wins) / h2h.played;
+
+const goalBalance =
+((h2h.goals1 || 0) - (h2h.goals2 || 0)) /
+Math.max(1, h2h.played * 2);
+
+const edge = clamp(
+(winBalance * 0.05) + (goalBalance * 0.02),
+-0.06,
+0.06
+);
+
+return {
+bonus1: edge,
+bonus2: -edge
+};
+}
+
+const conf1 = getConfederation(team1);
+const conf2 = getConfederation(team2);
+
+const edge = clamp(
+((confederationBenchmarks[conf1] - confederationBenchmarks[conf2]) / 100) * 0.04,
+-0.04,
+0.04
+);
+
+return {
+bonus1: edge,
+bonus2: -edge
+};
+}
+
+// ==================== SINERGIA ====================
+function getLineupSynergy(team) {
+
+const state = getCurrentSquadState(team);
+const style = playingStyle[team]?.style || "mixto";
+const lineup = state.lineup;
+
+const synergyMap = {
+"4-3-3": {
+posesion: 92,
+presion: 84,
+contraataque: 72,
+mixto: 80,
+fisico: 75,
+ataque: 88
+},
+"4-2-3-1": {
+posesion: 82,
+presion: 81,
+contraataque: 86,
+mixto: 84,
+fisico: 76,
+ataque: 80
+},
+"4-4-2": {
+posesion: 68,
+presion: 74,
+contraataque: 88,
+mixto: 80,
+fisico: 90,
+ataque: 72
+}
+};
+
+return synergyMap[lineup]?.[style] || 72;
+}
+
+function getTacticalMatchupBonus(team1, team2) {
+
+const s1 = playingStyle[team1]?.style || "mixto";
+const s2 = playingStyle[team2]?.style || "mixto";
+
+let bonus = 0;
+
+if (s1 === "posesion" && s2 === "contraataque") bonus += 0.03;
+if (s1 === "contraataque" && s2 === "posesion") bonus += 0.035;
+if (s1 === "presion" && s2 === "posesion") bonus += 0.02;
+if (s1 === "fisico" && s2 === "ataque") bonus += 0.02;
+
+return {
+bonus1: bonus,
+bonus2: -bonus
+};
+}
+
+// ==================== FUERZA ====================
+function calculateTeamStrength(team) {
+
+const data = teamsData[team];
+const state = getCurrentSquadState(team);
+
+const pibScore = ((Math.log(data.pib + 0.1) + 2) / 5) * 100;
+const poblacionScore = Math.min(100, (Math.log(data.poblacion) / 5) * 100);
+const fifaScore = Math.max(0, 100 - ((fifaRanking[team] || 20) * 1.2));
+const valorScore = Math.min(100, (data.valorMercado / 15) * 100);
+const ligaScore = getLeagueQualityScore(data.ligaPrincipal);
+const styleScore = getPlayingStyleBonus(team);
+const lineupScore = getLineupSynergy(team);
+
+const tableScore = Math.max(
+0,
+100 - ((state.tablePosition || 20) * 2)
+);
+
+const fuerza =
+(pibScore * 0.15) +
+(poblacionScore * 0.08) +
+(data.pedigree * 0.14) +
+(fifaScore * 0.12) +
+(valorScore * 0.09) +
+(ligaScore * 0.07) +
+(styleScore * 0.06) +
+(state.form * 0.08) +
+(state.cohesion * 0.06) +
+(state.coachStability * 0.04) +
+(state.morale * 0.04) +
+(lineupScore * 0.05) +
+(tableScore * 0.04) -
+(state.injuries * 2);
+
+return Math.min(99, Math.max(1, fuerza));
+}
+
+// ==================== PARTIDOS ====================
+function simulateMatch(team1, team2) {
+
+let strength1 = calculateTeamStrength(team1);
+let strength2 = calculateTeamStrength(team2);
+
+const historical = getHistoricalEdge(team1, team2);
+strength1 += strength1 * historical.bonus1;
+strength2 += strength2 * historical.bonus2;
+
+const tactical = getTacticalMatchupBonus(team1, team2);
+strength1 += strength1 * tactical.bonus1;
+strength2 += strength2 * tactical.bonus2;
+
+const totalStrength = strength1 + strength2;
+const prob1 = strength1 / totalStrength;
+
+let goals1 = 0;
+let goals2 = 0;
+
+for (let i = 0; i < 90; i += 8) {
+if (Math.random() < prob1 * 0.22) goals1++;
+if (Math.random() < (1 - prob1) * 0.22) goals2++;
+}
+
+return {
+team1,
+team2,
+goals1,
+goals2
+};
+}
+
+// ==================== GRUPOS ====================
+const groups = {
+"A": ["Argentina", "México", "Japón", "Marruecos"],
+"B": ["Francia", "Colombia", "Estados Unidos", "Croacia"],
+"C": ["Brasil", "Portugal", "Ecuador", "Uruguay"],
+"D": ["España", "Inglaterra", "Alemania", "Países Bajos"]
+};
+
+// ==================== SIMULACIÓN ====================
+async function runSimulation() {
+
+const loading = document.getElementById("loading");
+const results = document.getElementById("resultsContainer");
+
+loading.classList.remove("hidden");
+results.classList.add("hidden");
+
+await new Promise(r => setTimeout(r, 1000));
+
+const groupResults = {};
+
+for (const [groupName, teams] of Object.entries(groups)) {
+
+const standings = teams.map(t => ({
+team: t,
+pts: 0,
+gf: 0,
+gc: 0,
+dg: 0,
+wins: 0,
+draws: 0,
+losses: 0
+}));
+
+for (let i = 0; i < teams.length; i++) {
+for (let j = i + 1; j < teams.length; j++) {
+
+const match = simulateMatch(teams[i], teams[j]);
+
+const t1 = standings.find(s => s.team === match.team1);
+const t2 = standings.find(s => s.team === match.team2);
+
+ t1.gf += match.goals1;
+ t1.gc += match.goals2;
+ t2.gf += match.goals2;
+ t2.gc += match.goals1;
+
+if (match.goals1 > match.goals2) {
+t1.pts += 3;
+t1.wins++;
+t2.losses++;
+}
+else if (match.goals2 > match.goals1) {
+t2.pts += 3;
+t2.wins++;
+t1.losses++;
+}
+else {
+t1.pts++;
+t2.pts++;
+t1.draws++;
+t2.draws++;
+}
+}
+}
+
+standings.forEach(s => s.dg = s.gf - s.gc);
+
+standings.sort((a,b) =>
+b.pts - a.pts ||
+b.dg - a.dg ||
+b.gf - a.gf
+);
+
+groupResults[groupName] = standings;
+}
+
+renderGroups(groupResults);
+
+loading.classList.add("hidden");
+results.classList.remove("hidden");
+}
+
+// ==================== RENDER ====================
+function renderGroups(results) {
+
+const container = document.getElementById("groupsGrid");
+container.innerHTML = "";
+
+for (const [group, standings] of Object.entries(results)) {
+
+const div = document.createElement("div");
+div.className = "group-card rounded-xl overflow-hidden";
+
+ div.innerHTML = `
+<div class="bg-slate-800 p-4 text-center">
+<h2 class="text-2xl font-bold text-yellow-400">
+Grupo ${group}
+</h2>
+</div>
+
+<div class="p-4">
+
+<div class="grid grid-cols-8 text-xs font-bold text-slate-400 mb-2">
+<div class="col-span-3">Equipo</div>
+<div class="text-center">Pts</div>
+<div class="text-center">PG</div>
+<div class="text-center">PE</div>
+<div class="text-center">PP</div>
+<div class="text-center">DG</div>
+</div>
+
+${standings.map((s, idx) => `
+<div class="team-row grid grid-cols-8 text-sm bg-slate-800/40 rounded p-2 mb-1 items-center">
+<div class="col-span-3 font-semibold">${idx+1}. ${s.team}</div>
+<div class="text-center">${s.pts}</div>
+<div class="text-center">${s.wins}</div>
+<div class="text-center">${s.draws}</div>
+<div class="text-center">${s.losses}</div>
+<div class="text-center">${s.dg}</div>
+</div>
+`).join("")}
+
+</div>
+`;
+
+container.appendChild(div);
+}
+}
+
+</script>
+
 </body>
 </html>
+```
+
+Este ya viene integrado y funcional para evitar errores por pegar bloques separados.
