@@ -69,7 +69,9 @@
             @page { size: A4 landscape; margin: 5mm; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             body { background-color: #0b0f19 !important; color: #f1f5f9 !important; font-size: 10px; }
-            header, #simulateBtn, #printBtn, #manualSetupBtn, #toggleAdvancedBtn, #outsiderAlert, .no-print, #loginScreen, #manualClassificationPanel, #advancedOptionsContainer, #adminPanel, #paymentScreen { display: none !important; }
+            header, #simulateBtn, #printBtn, #manualSetupBtn, #toggleAdvancedBtn, #outsiderAlert, .no-print, #loginScreen, #manualClassificationPanel, #advancedOptionsContainer, #adminPanel, #paymentScreen {
+                display: none !important;
+            }
             #appContent { display: block !important; }
             .glass-panel, .group-card { background: #111827 !important; border: 1px solid #1f2937 !important; }
         }
@@ -80,7 +82,7 @@
     <!-- Login Screen -->
     <div id="loginScreen" class="w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel border border-slate-700 shadow-2xl">
         <div class="text-center mb-6">
-            <img src="logo estudiarte.jpeg" alt="Estudiarte" class="mx-auto h-24 w-24 object-contain rounded-full mb-3 border border-slate-700/60 shadow-lg" onerror="this.src='https://placehold.co/100x100?text=Estudiarte'">
+            <img src="logo estudiarte.jpeg" alt="Estudiarte" class="mx-auto h-24 w-24 object-contain rounded-full mb-3 border border-slate-700/60 shadow-lg" onerror="this.src='https://placehold.co/100x100/1e293b/10b981?text=Logo'">
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Acceso Autorizado</h2>
             <p class="text-xs text-slate-400 mt-2">Ingrese las credenciales del Mundial de Fútbol 2026</p>
             <div class="mt-4 bg-green-900/30 border border-green-500/50 rounded-lg p-2">
@@ -96,7 +98,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fas fa-user"></i>
                     </span>
-                    <input type="text" id="usernameInput" placeholder="Nombre de usuario" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" id="usernameInput" placeholder="Nombre de usuario" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                 </div>
             </div>
             <div>
@@ -105,14 +107,14 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fas fa-lock"></i>
                     </span>
-                    <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500" onkeydown="if(event.key === 'Enter') attemptLogin()">
+                    <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                 </div>
             </div>
             <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/40 border border-red-800/80 p-3 rounded-lg flex items-center space-x-2">
                 <i class="fas fa-exclamation-circle"></i>
                 <span>Usuario o contraseña incorrectos.</span>
             </div>
-            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md transform transition hover:scale-[1.02]">
+            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md transition duration-200">
                 Iniciar Sesión <i class="fas fa-sign-in-alt ml-1"></i>
             </button>
             <div class="text-center mt-4 pt-4 border-t border-slate-800">
@@ -135,16 +137,16 @@
         <div class="space-y-4">
             <div>
                 <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Tu Número de WhatsApp</label>
-                <input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                <input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500">
             </div>
             <div id="paymentError" class="hidden text-xs text-red-400 bg-red-950/40 border border-red-800/80 p-3 rounded-lg">
                 <i class="fas fa-exclamation-circle"></i>
                 <span id="paymentErrorMsg">Complete el número de WhatsApp correctamente.</span>
             </div>
-            <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-2.5 rounded-lg text-sm">
+            <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-2.5 rounded-lg text-sm transition duration-200">
                 <i class="fab fa-whatsapp mr-2"></i> Solicitar Acceso por WhatsApp
             </button>
-            <button onclick="showLoginScreen()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg text-sm">
+            <button onclick="showLoginScreen()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg text-sm transition duration-200">
                 <i class="fas fa-arrow-left mr-2"></i> Volver
             </button>
         </div>
@@ -154,7 +156,7 @@
     <div id="appContent" class="hidden w-full max-w-7xl mx-auto">
         <div class="no-print flex justify-between items-center bg-slate-900/80 border border-slate-700/60 p-4 rounded-xl mb-6">
             <div id="currentUserLabel" class="text-slate-300 font-semibold"></div>
-            <button onclick="logout()" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold py-1.5 px-4 rounded-lg">
+            <button onclick="logout()" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold py-1.5 px-4 rounded-lg transition duration-200">
                 <i class="fas fa-sign-out-alt mr-1"></i> Cerrar Sesión
             </button>
         </div>
@@ -167,14 +169,14 @@
                 <div class="bg-slate-900/50 p-4 rounded-xl">
                     <h3 class="text-sm font-bold text-slate-300 mb-4">Crear Usuario</h3>
                     <div class="space-y-3">
-                        <input type="text" id="newUsername" placeholder="Usuario" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs">
-                        <input type="text" id="newPassword" placeholder="Contraseña" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs">
-                        <select id="newUserRole" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs">
+                        <input type="text" id="newUsername" placeholder="Usuario" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs focus:outline-none focus:border-blue-500">
+                        <input type="text" id="newPassword" placeholder="Contraseña" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs focus:outline-none focus:border-blue-500">
+                        <select id="newUserRole" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs focus:outline-none focus:border-blue-500">
                             <option value="cliente">Cliente</option>
                             <option value="admin">Administrador</option>
                         </select>
                         <div id="adminAddUserError" class="hidden text-xs text-red-400"></div>
-                        <button onclick="addUser()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded text-xs">
+                        <button onclick="addUser()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded text-xs transition duration-200">
                             Registrar
                         </button>
                     </div>
@@ -199,15 +201,15 @@
             </h1>
             <p class="text-slate-400 mb-6">Modelo Econométrico de Joachim Klement (PIB, población, pedigrí y localía)</p>
             <div class="flex flex-wrap justify-center gap-4">
-                <button id="simulateBtn" onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                <button id="simulateBtn" onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 px-8 rounded-full transition duration-200 shadow-lg">
                     <i class="fas fa-play mr-2"></i> Simular Torneo
                 </button>
-                <button id="toggleAdvancedBtn" onclick="toggleAdvancedOptions()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-6 rounded-full">
+                <button id="toggleAdvancedBtn" onclick="toggleAdvancedOptions()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-6 rounded-full transition duration-200">
                     <i class="fas fa-sliders-h mr-2"></i> Opciones Avanzadas
                 </button>
             </div>
             <div id="advancedOptionsContainer" class="hidden mt-4">
-                <button onclick="initManualBracketSetup()" class="bg-gradient-to-r from-amber-600 to-yellow-600 text-white font-bold py-2 px-6 rounded-full">
+                <button onclick="initManualBracketSetup()" class="bg-gradient-to-r from-amber-600 to-yellow-600 text-white font-bold py-2 px-6 rounded-full transition duration-200">
                     <i class="fas fa-cogs mr-2"></i> Configurar Llaves
                 </button>
             </div>
@@ -221,7 +223,7 @@
         <div id="manualClassificationPanel" class="hidden glass-panel p-6 rounded-2xl mb-12">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-amber-400">Configurar Llaves</h2>
-                <button onclick="runBracketSimulationFromForm()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-6 rounded-lg">
+                <button onclick="runBracketSimulationFromForm()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
                     Simular Fase Final
                 </button>
             </div>
@@ -344,7 +346,7 @@
         function applyRoleUI() {
             const adminPanel = document.getElementById('adminPanel');
             const userLabel = document.getElementById('currentUserLabel');
-            userLabel.innerHTML = `<span class="mr-2 px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role === 'admin' ? 'bg-indigo-600/30 text-indigo-400' : 'bg-blue-600/30 text-blue-400'}">${loggedInUser.role === 'admin' ? 'ADMIN' : 'CLIENTE'}</span> Bienvenido, <strong>${loggedInUser.username}</strong>`;
+            userLabel.innerHTML = `<span class="mr-2 px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role === 'admin' ? 'bg-indigo-600/30 text-indigo-400' : 'bg-blue-600/30 text-blue-400'}"><i class="fas fa-user-circle mr-1"></i>${loggedInUser.username}</span>`;
             if (loggedInUser.role === 'admin') {
                 adminPanel.classList.remove('hidden');
                 renderAdminUsers();
@@ -370,7 +372,7 @@
                     <td class="p-3">${u.username}</td>
                     <td class="p-3">${u.password}</td>
                     <td class="p-3"><span class="px-2 py-0.5 rounded text-xs ${u.role === 'admin' ? 'bg-indigo-600/30 text-indigo-400' : 'bg-blue-600/30 text-blue-400'}">${u.role}</span></td>
-                    <td class="p-3 text-right">${!isProtected ? `<button onclick="deleteUser(${idx})" class="text-red-400">Eliminar</button>` : '<span class="text-slate-500">Protegido</span>'}</td>
+                    <td class="p-3 text-right">${!isProtected ? `<button onclick="deleteUser(${idx})" class="text-red-400 hover:text-red-300">Eliminar</button>` : '<span class="text-slate-500">Protegido</span>'}</td>
                 </tr>`;
             });
         }
@@ -536,7 +538,10 @@
                     pts: 0,
                     gf: 0,
                     gc: 0,
-                    dg: 0
+                    dg: 0,
+                    wins: 0,
+                    draws: 0,
+                    losses: 0
                 }));
                 
                 matches.forEach(match => {
@@ -548,11 +553,17 @@
                     t2.gc += match.goals1;
                     if (match.goals1 > match.goals2) {
                         t1.pts += 3;
+                        t1.wins++;
+                        t2.losses++;
                     } else if (match.goals2 > match.goals1) {
                         t2.pts += 3;
+                        t2.wins++;
+                        t1.losses++;
                     } else {
                         t1.pts += 1;
+                        t1.draws++;
                         t2.pts += 1;
+                        t2.draws++;
                     }
                 });
                 
@@ -634,10 +645,12 @@
             // Final
             const final = simulateMatch(semifinalWinners[0], semifinalWinners[1], true);
             const champion = final.winner;
+            const runnerUp = final.winner === semifinalWinners[0] ? semifinalWinners[1] : semifinalWinners[0];
             
-            // Tercer puesto
-            const thirdPlace = simulateMatch(semifinalWinners[0] === champion ? semifinalWinners[1] : semifinalWinners[0], 
-                                            semifinalWinners[0] === champion ? semifinalWinners[1] : semifinalWinners[0], true);
+            // Tercer puesto - CORREGIDO: equipos diferentes
+            const thirdPlaceTeam1 = semifinalWinners[0] === champion ? semifinalWinners[1] : semifinalWinners[0];
+            const thirdPlaceTeam2 = semifinalWinners[1] === champion ? semifinalWinners[0] : semifinalWinners[1];
+            const thirdPlace = simulateMatch(thirdPlaceTeam1, thirdPlaceTeam2, true);
             
             renderBrackets(shuffled, r32Winners, r16Winners, r8Winners, semifinalWinners, final, thirdPlace, champion);
         }
@@ -668,10 +681,10 @@
                         ${standings.map((s, idx) => `
                             <div class="team-row grid grid-cols-12 gap-2 py-2 px-2 rounded-lg mb-1 bg-slate-800/30 items-center text-sm">
                                 <div class="col-span-5 font-semibold truncate">${s.team}</div>
-                                <div class="col-span-1 text-center">4</div>
-                                <div class="col-span-1 text-center">${Math.floor(s.pts/3)}</div>
-                                <div class="col-span-1 text-center">${s.pts % 3 === 1 ? 1 : (s.pts % 3 === 0 ? 0 : (s.pts === 4 ? 1 : 0))}</div>
-                                <div class="col-span-1 text-center">${(s.pts % 3 === 0 ? 4 - s.pts/3 : (s.pts === 4 ? 0 : 4 - Math.floor(s.pts/3) - 1))}</div>
+                                <div class="col-span-1 text-center">3</div>
+                                <div class="col-span-1 text-center">${s.wins}</div>
+                                <div class="col-span-1 text-center">${s.draws}</div>
+                                <div class="col-span-1 text-center">${s.losses}</div>
                                 <div class="col-span-1 text-center">${s.gf}</div>
                                 <div class="col-span-1 text-center">${s.gc}</div>
                                 <div class="col-span-1 text-center">${s.dg}</div>
@@ -742,8 +755,8 @@
             </div>`).join('');
             
             // Final y tercer puesto
-            document.getElementById('finalMatch').innerHTML = `<div class="font-bold text-xl">${final.team1} vs ${final.team2}</div><div class="text-green-400 font-bold mt-1">Campeón: ${final.winner}</div>`;
-            document.getElementById('thirdPlaceMatch').innerHTML = `<div class="font-bold">${third.team1} vs ${third.team2}</div><div class="text-yellow-400">Tercero: ${third.winner}</div>`;
+            document.getElementById('finalMatch').innerHTML = `<div class="font-bold text-xl mb-2">${final.team1} vs ${final.team2}</div><div class="text-green-400 font-bold">✓ Campeón: ${final.winner}</div>`;
+            document.getElementById('thirdPlaceMatch').innerHTML = `<div class="font-bold mb-2">${third.team1} vs ${third.team2}</div><div class="text-yellow-400">🥉 Tercero: ${third.winner}</div>`;
             
             document.getElementById('championName').innerText = champion;
             document.getElementById('championSection').classList.remove('hidden');
