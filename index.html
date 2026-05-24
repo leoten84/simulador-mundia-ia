@@ -45,8 +45,28 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            min-width: 260px;
+            min-width: 280px;
             gap: 1rem;
+        }
+        .match-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 0.75rem;
+            border-left: 3px solid #3b82f6;
+            transition: all 0.2s;
+        }
+        .match-card:hover {
+            background: #334155;
+            transform: translateX(4px);
+        }
+        .penalty-badge {
+            background: #f59e0b20;
+            color: #fbbf24;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-top: 0.25rem;
         }
         ::-webkit-scrollbar { width: 8px; height: 8px;}
         ::-webkit-scrollbar-track { background: #0f172a; }
@@ -59,32 +79,12 @@
             border-radius: 8px;
             font-size: 0.85rem;
         }
-        .stat-badge {
-            display: inline-block;
-            padding: 0.2rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-        .possesion-style {
-            background: rgba(59,130,246,0.2);
-            color: #60a5fa;
-        }
-        .counter-style {
-            background: rgba(245,158,11,0.2);
-            color: #fbbf24;
-        }
         @media print {
             @page { size: A4 landscape; margin: 5mm; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             body { background-color: #0b0f19 !important; color: #f1f5f9 !important; font-size: 9px; }
             header, #simulateBtn, .no-print, #loginScreen, #adminPanel, #paymentScreen { display: none !important; }
             #appContent { display: block !important; }
-        }
-        .table-header {
-            background: #1e293b;
-            border-radius: 8px;
-            padding: 0.5rem;
         }
     </style>
 </head>
@@ -146,8 +146,8 @@
 
         <header class="text-center mb-10 glass-panel p-8 rounded-2xl">
             <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-4"><i class="fas fa-globe"></i> Simulador Predictivo IA Mundial</h1>
-            <p class="text-slate-400"><strong>Modelo Klement</strong> + Análisis de Ligas (ESL, Premier, LaLiga) + Estilo de Juego (Posesión/Contraataque)</p>
-            <p class="text-xs text-slate-500 mt-2">PIB • Población • Pedigrí • Ranking FIFA • Valor Mercado • Calidad de Liga • Estilo • Racha • Bajas • Clima</p>
+            <p class="text-slate-400"><strong>Modelo Klement</strong> + Análisis de Ligas + Estilo de Juego + Resultados detallados</p>
+            <p class="text-xs text-slate-500 mt-2">PIB • Población • Pedigrí • Ranking FIFA • Valor Mercado • Calidad de Liga • Estilo • Racha</p>
             <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-play mr-2"></i> Simular Torneo</button></div>
         </header>
 
@@ -155,27 +155,26 @@
             <div class="font-bold text-blue-400 mb-2"><i class="fas fa-brain mr-2"></i>Variables del Modelo Avanzado:</div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
                 <div>• PIB (25%)</div><div>• Población (15%)</div><div>• Pedigrí (15%)</div><div>• Ranking FIFA (15%)</div>
-                <div>• Valor Mercado (10%)</div><div>• Calidad de Liga (8%)</div><div>• Estilo de Juego (7%)</div><div>• Racha/Bajas/Clima (5%)</div>
+                <div>• Valor Mercado (10%)</div><div>• Calidad de Liga (8%)</div><div>• Estilo de Juego (7%)</div><div>• Racha (5%)</div>
             </div>
-            <div class="mt-2 text-xs text-slate-400"><i class="fas fa-info-circle mr-1"></i> Fuentes: Transfermarkt (valor), ESL Index (liga), FIFA Ranking, datos económicos Banco Mundial</div>
         </div>
 
-        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Analizando ligas, estilos y valor de mercado...</h2></div>
+        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Analizando variables y simulando partidos...</h2></div>
 
         <div id="resultsContainer" class="hidden">
             <div id="groupsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"></div>
             <div id="thirdsContainer" class="glass-panel p-6 rounded-2xl mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-center text-amber-400">Mejores Terceros</h2>
-                <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DIF</th><th class="p-3">GF</th><tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
+                <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DIF</th><th class="p-3">GF</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
             </div>
             <div class="glass-panel p-6 rounded-2xl mb-12">
-                <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final</h2>
+                <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final - Resultados Detallados</h2>
                 <div class="bracket-container">
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Ronda 32</div><div id="colR32"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Octavos</div><div id="colR16"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Cuartos</div><div id="colR8"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Semifinales</div><div id="colR4"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">Finales</div><div id="thirdPlaceMatch" class="bg-slate-900/90 rounded-xl p-3 mb-3"></div><div id="finalMatch" class="bg-slate-900/90 border-2 border-yellow-500 rounded-xl p-3"></div></div>
+                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">RONDA 32</div><div id="colR32"></div></div>
+                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">OCTAVOS</div><div id="colR16"></div></div>
+                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">CUARTOS</div><div id="colR8"></div></div>
+                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">SEMIFINALES</div><div id="colR4"></div></div>
+                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">FINALES</div><div id="thirdPlaceMatch" class="match-card mb-3"></div><div id="finalMatch" class="match-card border-2 border-yellow-500"></div></div>
                 </div>
                 <div id="championSection" class="mt-10 text-center hidden"><div class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 p-6 rounded-2xl"><i class="fas fa-trophy text-5xl mb-2"></i><h3 class="text-sm uppercase">Campeón del Mundo</h3><h2 id="championName" class="text-3xl font-extrabold">--</h2></div></div>
             </div>
@@ -193,21 +192,16 @@
         // ==================== RANKING FIFA ====================
         const fifaRanking = { "Argentina":1,"Francia":2,"Inglaterra":3,"Bélgica":4,"Países Bajos":5,"Brasil":6,"Alemania":7,"España":8,"Italia":9,"Portugal":10,"Uruguay":11,"Suiza":12,"Croacia":13,"Senegal":14,"Japón":15,"Corea del Sur":16,"Marruecos":17,"Colombia":18,"México":19,"Austria":20,"Ecuador":21,"Paraguay":22,"Australia":23,"Turquía":24,"Canadá":25,"Estados Unidos":26,"Costa de Marfil":27,"Irán":28,"Nueva Zelanda":29,"Egipto":30,"Arabia Saudita":31,"Qatar":32,"Bosnia":33,"Escocia":34,"Haití":35,"Cabo Verde":36,"Uzbekistán":37,"Jordania":38,"Curazao":39,"R.D. Congo":40,"Sudáfrica":41,"Ghana":42,"Panamá":43,"República Checa":44,"Suecia":45,"Túnez":46,"Noruega":47,"Irak":48,"Argelia":49 };
 
-        // ==================== CALIDAD DE LIGA (ESL Index, Premier, LaLiga como referencia) ====================
         const leagueQuality = {
             "Premier League": 100, "LaLiga": 98, "Bundesliga": 95, "Serie A": 93, "Ligue 1": 88,
             "Eredivisie": 75, "Primeira Liga": 72, "Brasileirão": 70, "Superliga Argentina": 68,
             "Liga MX": 65, "MLS": 62, "J1 League": 60, "K League": 58, "Saudi Pro League": 55,
-            "Qatar Stars": 50, "Liga Profesional": 52, "Super Lig": 60, "Russian Premier": 65,
-            "Championship": 70, "Belgian Pro": 68, "Scottish Prem": 62, "Swiss Super": 60,
-            "Austrian Bundesliga": 58, "Croatian League": 55, "Greek Super": 56, "Czech League": 54,
-            "Swedish Allsvenskan": 52, "Norwegian Eliteserien": 50, "Tunisian Ligue": 45,
-            "Egyptian Prem": 48, "Moroccan Botola": 46, "South African Prem": 44, "Iranian Pro": 42,
-            "Uzbek League": 40, "Jordanian League": 35, "Curaçao League": 30, "Congolese League": 32,
-            "Haitian League": 28, "Cape Verdean": 30, "New Zealand Football": 38
+            "Qatar Stars": 50, "Super Lig": 60, "Scottish Prem": 62, "Swiss Super": 60,
+            "Austrian Bundesliga": 58, "Czech League": 54, "Swedish Allsvenskan": 52, "Norwegian Eliteserien": 50,
+            "Egyptian Prem": 48, "South African Prem": 44, "Iranian Pro": 42, "Uzbek League": 40,
+            "Jordanian League": 35, "New Zealand Football": 38
         };
 
-        // ==================== ESTILO DE JUEGO (Posesión / Contraataque / Mixto) ====================
         const playingStyle = {
             "Argentina": { style: "posesion", value: 85 }, "Francia": { style: "mixto", value: 80 }, "Inglaterra": { style: "fisico", value: 82 },
             "Brasil": { style: "posesion", value: 88 }, "Alemania": { style: "presion", value: 84 }, "España": { style: "posesion", value: 90 },
@@ -218,66 +212,64 @@
             "Australia": { style: "fisico", value: 58 }, "Suiza": { style: "mixto", value: 66 }, "Estados Unidos": { style: "presion", value: 64 },
             "Canadá": { style: "contraataque", value: 60 }, "Turquía": { style: "ataque", value: 62 }, "Austria": { style: "mixto", value: 60 },
             "Paraguay": { style: "fisico", value: 58 }, "Costa de Marfil": { style: "fisico", value: 62 }, "Egipto": { style: "contraataque", value: 60 },
-            "Ghana": { style: "ataque", value: 59 }, "Serbia": { style: "fisico", value: 61 }, "Suecia": { style: "fisico", value: 57 },
-            "República Checa": { style: "mixto", value: 56 }, "Noruega": { style: "ataque", value: 58 }, "Escocia": { style: "fisico", value: 55 },
-            "Bosnia y Herzegovina": { style: "mixto", value: 54 }, "Arabia Saudita": { style: "contraataque", value: 52 }, "Qatar": { style: "posesion", value: 50 },
-            "Irán": { style: "defensivo", value: 48 }, "Nueva Zelanda": { style: "fisico", value: 45 }, "Uzbekistán": { style: "mixto", value: 44 },
-            "Jordania": { style: "contraataque", value: 42 }, "Curazao": { style: "ataque", value: 40 }, "R.D. Congo": { style: "fisico", value: 43 },
-            "Sudáfrica": { style: "mixto", value: 48 }, "Haití": { style: "ataque", value: 38 }, "Cabo Verde": { style: "contraataque", value: 42 },
-            "Panamá": { style: "defensivo", value: 46 }, "Túnez": { style: "defensivo", value: 52 }, "Irak": { style: "fisico", value: 45 },
-            "Argelia": { style: "contraataque", value: 54 }
+            "Ghana": { style: "ataque", value: 59 }, "Suecia": { style: "fisico", value: 57 }, "República Checa": { style: "mixto", value: 56 },
+            "Noruega": { style: "ataque", value: 58 }, "Escocia": { style: "fisico", value: 55 }, "Arabia Saudita": { style: "contraataque", value: 52 },
+            "Qatar": { style: "posesion", value: 50 }, "Irán": { style: "defensivo", value: 48 }, "Nueva Zelanda": { style: "fisico", value: 45 },
+            "Uzbekistán": { style: "mixto", value: 44 }, "Jordania": { style: "contraataque", value: 42 }, "Curazao": { style: "ataque", value: 40 },
+            "R.D. Congo": { style: "fisico", value: 43 }, "Sudáfrica": { style: "mixto", value: 48 }, "Haití": { style: "ataque", value: 38 },
+            "Cabo Verde": { style: "contraataque", value: 42 }, "Panamá": { style: "defensivo", value: 46 }, "Túnez": { style: "defensivo", value: 52 },
+            "Irak": { style: "fisico", value: 45 }, "Argelia": { style: "contraataque", value: 54 }, "Bosnia y Herzegovina": { style: "mixto", value: 54 }
         };
 
-        // ==================== DATOS COMPLETOS CON LIGA PRINCIPAL DE CADA JUGADOR REPRESENTATIVO ====================
         const teamsData = {
-            "Argentina": { pib:0.63, poblacion:45.8, pedigree:98, valorMercado:750, ligaPrincipal:"LaLiga", racha:0.95, bajas:0, altitud:0 },
-            "Francia": { pib:2.94, poblacion:67.8, pedigree:95, valorMercado:1200, ligaPrincipal:"Ligue 1", racha:0.82, bajas:1, altitud:0 },
-            "Inglaterra": { pib:3.13, poblacion:56.3, pedigree:90, valorMercado:1400, ligaPrincipal:"Premier League", racha:0.85, bajas:1, altitud:0 },
-            "Brasil": { pib:1.89, poblacion:213.0, pedigree:100, valorMercado:1100, ligaPrincipal:"Premier League", racha:0.88, bajas:2, altitud:0 },
-            "Alemania": { pib:4.26, poblacion:83.2, pedigree:96, valorMercado:800, ligaPrincipal:"Bundesliga", racha:0.78, bajas:2, altitud:0 },
-            "España": { pib:1.39, poblacion:47.4, pedigree:92, valorMercado:900, ligaPrincipal:"LaLiga", racha:0.80, bajas:1, altitud:0 },
-            "Países Bajos": { pib:1.01, poblacion:17.5, pedigree:88, valorMercado:650, ligaPrincipal:"Eredivisie", racha:0.75, bajas:2, altitud:0 },
-            "Portugal": { pib:0.25, poblacion:10.3, pedigree:85, valorMercado:550, ligaPrincipal:"Primeira Liga", racha:0.82, bajas:1, altitud:0 },
-            "Bélgica": { pib:0.58, poblacion:11.6, pedigree:86, valorMercado:450, ligaPrincipal:"Premier League", racha:0.70, bajas:3, altitud:0 },
-            "Uruguay": { pib:0.06, poblacion:3.5, pedigree:95, valorMercado:380, ligaPrincipal:"LaLiga", racha:0.72, bajas:1, altitud:0 },
-            "Croacia": { pib:0.07, poblacion:4.0, pedigree:84, valorMercado:350, ligaPrincipal:"LaLiga", racha:0.72, bajas:1, altitud:0 },
-            "Colombia": { pib:0.34, poblacion:50.9, pedigree:85, valorMercado:280, ligaPrincipal:"Premier League", racha:0.78, bajas:2, altitud:2640 },
-            "México": { pib:1.27, poblacion:128.9, pedigree:85, valorMercado:200, ligaPrincipal:"Liga MX", racha:0.80, bajas:1, altitud:2250 },
-            "Japón": { pib:4.23, poblacion:125.7, pedigree:85, valorMercado:200, ligaPrincipal:"J1 League", racha:0.78, bajas:2, altitud:0 },
-            "Corea del Sur": { pib:1.81, poblacion:51.7, pedigree:80, valorMercado:150, ligaPrincipal:"Premier League", racha:0.75, bajas:1, altitud:0 },
-            "Marruecos": { pib:0.13, poblacion:37.1, pedigree:70, valorMercado:250, ligaPrincipal:"Ligue 1", racha:0.82, bajas:1, altitud:200 },
-            "Senegal": { pib:0.03, poblacion:17.4, pedigree:68, valorMercado:300, ligaPrincipal:"Premier League", racha:0.80, bajas:2, altitud:0 },
-            "Ecuador": { pib:0.11, poblacion:17.6, pedigree:70, valorMercado:100, ligaPrincipal:"Premier League", racha:0.70, bajas:2, altitud:2800 },
-            "Australia": { pib:1.55, poblacion:25.7, pedigree:75, valorMercado:70, ligaPrincipal:"Premier League", racha:0.72, bajas:0, altitud:0 },
-            "Suiza": { pib:0.81, poblacion:8.6, pedigree:80, valorMercado:280, ligaPrincipal:"Premier League", racha:0.75, bajas:1, altitud:500 },
-            "Estados Unidos": { pib:25.35, poblacion:331.9, pedigree:80, valorMercado:300, ligaPrincipal:"MLS", racha:0.85, bajas:2, altitud:500 },
-            "Canadá": { pib:2.14, poblacion:38.0, pedigree:65, valorMercado:120, ligaPrincipal:"Ligue 1", racha:0.75, bajas:1, altitud:200 },
-            "Turquía": { pib:0.77, poblacion:85.0, pedigree:62, valorMercado:180, ligaPrincipal:"Super Lig", racha:0.68, bajas:2, altitud:0 },
-            "Austria": { pib:0.52, poblacion:9.0, pedigree:65, valorMercado:150, ligaPrincipal:"Bundesliga", racha:0.70, bajas:2, altitud:300 },
-            "Paraguay": { pib:0.04, poblacion:7.1, pedigree:75, valorMercado:80, ligaPrincipal:"Superliga Argentina", racha:0.65, bajas:3, altitud:0 },
-            "Costa de Marfil": { pib:0.07, poblacion:27.5, pedigree:72, valorMercado:120, ligaPrincipal:"Premier League", racha:0.70, bajas:1, altitud:0 },
-            "Irán": { pib:0.41, poblacion:85.0, pedigree:70, valorMercado:50, ligaPrincipal:"Iranian Pro", racha:0.68, bajas:3, altitud:1200 },
-            "Nueva Zelanda": { pib:0.25, poblacion:5.1, pedigree:60, valorMercado:30, ligaPrincipal:"New Zealand Football", racha:0.58, bajas:1, altitud:0 },
-            "Egipto": { pib:0.40, poblacion:102.3, pedigree:70, valorMercado:100, ligaPrincipal:"Premier League", racha:0.68, bajas:2, altitud:0 },
-            "Arabia Saudita": { pib:0.83, poblacion:35.0, pedigree:65, valorMercado:80, ligaPrincipal:"Saudi Pro League", racha:0.65, bajas:2, altitud:600 },
-            "Qatar": { pib:0.18, poblacion:2.9, pedigree:60, valorMercado:40, ligaPrincipal:"Qatar Stars", racha:0.62, bajas:4, altitud:0 },
-            "Bosnia y Herzegovina": { pib:0.02, poblacion:3.3, pedigree:50, valorMercado:60, ligaPrincipal:"Serie A", racha:0.55, bajas:2, altitud:500 },
-            "Escocia": { pib:0.30, poblacion:5.5, pedigree:60, valorMercado:90, ligaPrincipal:"Scottish Prem", racha:0.58, bajas:2, altitud:0 },
-            "Haití": { pib:0.01, poblacion:11.4, pedigree:50, valorMercado:10, ligaPrincipal:"Ligue 1", racha:0.45, bajas:2, altitud:0 },
-            "Cabo Verde": { pib:0.002, poblacion:0.56, pedigree:40, valorMercado:5, ligaPrincipal:"Primeira Liga", racha:0.48, bajas:1, altitud:0 },
-            "Uzbekistán": { pib:0.36, poblacion:33.5, pedigree:45, valorMercado:25, ligaPrincipal:"Uzbek League", racha:0.60, bajas:2, altitud:500 },
-            "Jordania": { pib:0.04, poblacion:10.2, pedigree:48, valorMercado:8, ligaPrincipal:"Jordanian League", racha:0.52, bajas:2, altitud:800 },
-            "Curazao": { pib:0.006, poblacion:0.15, pedigree:40, valorMercado:3, ligaPrincipal:"Eredivisie", racha:0.48, bajas:2, altitud:0 },
-            "R.D. Congo": { pib:0.02, poblacion:99.0, pedigree:45, valorMercado:15, ligaPrincipal:"Premier League", racha:0.52, bajas:3, altitud:0 },
-            "Sudáfrica": { pib:0.43, poblacion:60.0, pedigree:60, valorMercado:45, ligaPrincipal:"South African Prem", racha:0.62, bajas:2, altitud:1750 },
-            "Ghana": { pib:0.07, poblacion:31.1, pedigree:68, valorMercado:100, ligaPrincipal:"Premier League", racha:0.65, bajas:2, altitud:0 },
-            "Panamá": { pib:0.07, poblacion:4.3, pedigree:55, valorMercado:15, ligaPrincipal:"MLS", racha:0.60, bajas:2, altitud:0 },
-            "República Checa": { pib:0.28, poblacion:10.7, pedigree:68, valorMercado:120, ligaPrincipal:"Bundesliga", racha:0.63, bajas:2, altitud:200 },
-            "Suecia": { pib:0.59, poblacion:10.1, pedigree:72, valorMercado:150, ligaPrincipal:"Premier League", racha:0.62, bajas:2, altitud:0 },
-            "Túnez": { pib:0.05, poblacion:11.8, pedigree:65, valorMercado:40, ligaPrincipal:"Ligue 1", racha:0.70, bajas:1, altitud:0 },
-            "Noruega": { pib:0.51, poblacion:5.5, pedigree:55, valorMercado:180, ligaPrincipal:"Premier League", racha:0.52, bajas:2, altitud:0 },
-            "Irak": { pib:0.27, poblacion:40.0, pedigree:55, valorMercado:15, ligaPrincipal:"Iranian Pro", racha:0.55, bajas:2, altitud:30 },
-            "Argelia": { pib:0.19, poblacion:44.9, pedigree:55, valorMercado:80, ligaPrincipal:"Ligue 1", racha:0.58, bajas:2, altitud:300 }
+            "Argentina": { pib:0.63, poblacion:45.8, pedigree:98, valorMercado:750, ligaPrincipal:"LaLiga", racha:0.95, bajas:0 },
+            "Francia": { pib:2.94, poblacion:67.8, pedigree:95, valorMercado:1200, ligaPrincipal:"Ligue 1", racha:0.82, bajas:1 },
+            "Inglaterra": { pib:3.13, poblacion:56.3, pedigree:90, valorMercado:1400, ligaPrincipal:"Premier League", racha:0.85, bajas:1 },
+            "Brasil": { pib:1.89, poblacion:213.0, pedigree:100, valorMercado:1100, ligaPrincipal:"Premier League", racha:0.88, bajas:2 },
+            "Alemania": { pib:4.26, poblacion:83.2, pedigree:96, valorMercado:800, ligaPrincipal:"Bundesliga", racha:0.78, bajas:2 },
+            "España": { pib:1.39, poblacion:47.4, pedigree:92, valorMercado:900, ligaPrincipal:"LaLiga", racha:0.80, bajas:1 },
+            "Países Bajos": { pib:1.01, poblacion:17.5, pedigree:88, valorMercado:650, ligaPrincipal:"Eredivisie", racha:0.75, bajas:2 },
+            "Portugal": { pib:0.25, poblacion:10.3, pedigree:85, valorMercado:550, ligaPrincipal:"Primeira Liga", racha:0.82, bajas:1 },
+            "Bélgica": { pib:0.58, poblacion:11.6, pedigree:86, valorMercado:450, ligaPrincipal:"Premier League", racha:0.70, bajas:3 },
+            "Uruguay": { pib:0.06, poblacion:3.5, pedigree:95, valorMercado:380, ligaPrincipal:"LaLiga", racha:0.72, bajas:1 },
+            "Croacia": { pib:0.07, poblacion:4.0, pedigree:84, valorMercado:350, ligaPrincipal:"LaLiga", racha:0.72, bajas:1 },
+            "Colombia": { pib:0.34, poblacion:50.9, pedigree:85, valorMercado:280, ligaPrincipal:"Premier League", racha:0.78, bajas:2 },
+            "México": { pib:1.27, poblacion:128.9, pedigree:85, valorMercado:200, ligaPrincipal:"Liga MX", racha:0.80, bajas:1 },
+            "Japón": { pib:4.23, poblacion:125.7, pedigree:85, valorMercado:200, ligaPrincipal:"J1 League", racha:0.78, bajas:2 },
+            "Corea del Sur": { pib:1.81, poblacion:51.7, pedigree:80, valorMercado:150, ligaPrincipal:"Premier League", racha:0.75, bajas:1 },
+            "Marruecos": { pib:0.13, poblacion:37.1, pedigree:70, valorMercado:250, ligaPrincipal:"Ligue 1", racha:0.82, bajas:1 },
+            "Senegal": { pib:0.03, poblacion:17.4, pedigree:68, valorMercado:300, ligaPrincipal:"Premier League", racha:0.80, bajas:2 },
+            "Ecuador": { pib:0.11, poblacion:17.6, pedigree:70, valorMercado:100, ligaPrincipal:"Premier League", racha:0.70, bajas:2 },
+            "Australia": { pib:1.55, poblacion:25.7, pedigree:75, valorMercado:70, ligaPrincipal:"Premier League", racha:0.72, bajas:0 },
+            "Suiza": { pib:0.81, poblacion:8.6, pedigree:80, valorMercado:280, ligaPrincipal:"Premier League", racha:0.75, bajas:1 },
+            "Estados Unidos": { pib:25.35, poblacion:331.9, pedigree:80, valorMercado:300, ligaPrincipal:"MLS", racha:0.85, bajas:2 },
+            "Canadá": { pib:2.14, poblacion:38.0, pedigree:65, valorMercado:120, ligaPrincipal:"Ligue 1", racha:0.75, bajas:1 },
+            "Turquía": { pib:0.77, poblacion:85.0, pedigree:62, valorMercado:180, ligaPrincipal:"Super Lig", racha:0.68, bajas:2 },
+            "Austria": { pib:0.52, poblacion:9.0, pedigree:65, valorMercado:150, ligaPrincipal:"Bundesliga", racha:0.70, bajas:2 },
+            "Paraguay": { pib:0.04, poblacion:7.1, pedigree:75, valorMercado:80, ligaPrincipal:"Superliga Argentina", racha:0.65, bajas:3 },
+            "Costa de Marfil": { pib:0.07, poblacion:27.5, pedigree:72, valorMercado:120, ligaPrincipal:"Premier League", racha:0.70, bajas:1 },
+            "Irán": { pib:0.41, poblacion:85.0, pedigree:70, valorMercado:50, ligaPrincipal:"Iranian Pro", racha:0.68, bajas:3 },
+            "Nueva Zelanda": { pib:0.25, poblacion:5.1, pedigree:60, valorMercado:30, ligaPrincipal:"New Zealand Football", racha:0.58, bajas:1 },
+            "Egipto": { pib:0.40, poblacion:102.3, pedigree:70, valorMercado:100, ligaPrincipal:"Premier League", racha:0.68, bajas:2 },
+            "Arabia Saudita": { pib:0.83, poblacion:35.0, pedigree:65, valorMercado:80, ligaPrincipal:"Saudi Pro League", racha:0.65, bajas:2 },
+            "Qatar": { pib:0.18, poblacion:2.9, pedigree:60, valorMercado:40, ligaPrincipal:"Qatar Stars", racha:0.62, bajas:4 },
+            "Bosnia y Herzegovina": { pib:0.02, poblacion:3.3, pedigree:50, valorMercado:60, ligaPrincipal:"Serie A", racha:0.55, bajas:2 },
+            "Escocia": { pib:0.30, poblacion:5.5, pedigree:60, valorMercado:90, ligaPrincipal:"Scottish Prem", racha:0.58, bajas:2 },
+            "Haití": { pib:0.01, poblacion:11.4, pedigree:50, valorMercado:10, ligaPrincipal:"Ligue 1", racha:0.45, bajas:2 },
+            "Cabo Verde": { pib:0.002, poblacion:0.56, pedigree:40, valorMercado:5, ligaPrincipal:"Primeira Liga", racha:0.48, bajas:1 },
+            "Uzbekistán": { pib:0.36, poblacion:33.5, pedigree:45, valorMercado:25, ligaPrincipal:"Uzbek League", racha:0.60, bajas:2 },
+            "Jordania": { pib:0.04, poblacion:10.2, pedigree:48, valorMercado:8, ligaPrincipal:"Jordanian League", racha:0.52, bajas:2 },
+            "Curazao": { pib:0.006, poblacion:0.15, pedigree:40, valorMercado:3, ligaPrincipal:"Eredivisie", racha:0.48, bajas:2 },
+            "R.D. Congo": { pib:0.02, poblacion:99.0, pedigree:45, valorMercado:15, ligaPrincipal:"Premier League", racha:0.52, bajas:3 },
+            "Sudáfrica": { pib:0.43, poblacion:60.0, pedigree:60, valorMercado:45, ligaPrincipal:"South African Prem", racha:0.62, bajas:2 },
+            "Ghana": { pib:0.07, poblacion:31.1, pedigree:68, valorMercado:100, ligaPrincipal:"Premier League", racha:0.65, bajas:2 },
+            "Panamá": { pib:0.07, poblacion:4.3, pedigree:55, valorMercado:15, ligaPrincipal:"MLS", racha:0.60, bajas:2 },
+            "República Checa": { pib:0.28, poblacion:10.7, pedigree:68, valorMercado:120, ligaPrincipal:"Bundesliga", racha:0.63, bajas:2 },
+            "Suecia": { pib:0.59, poblacion:10.1, pedigree:72, valorMercado:150, ligaPrincipal:"Premier League", racha:0.62, bajas:2 },
+            "Túnez": { pib:0.05, poblacion:11.8, pedigree:65, valorMercado:40, ligaPrincipal:"Ligue 1", racha:0.70, bajas:1 },
+            "Noruega": { pib:0.51, poblacion:5.5, pedigree:55, valorMercado:180, ligaPrincipal:"Premier League", racha:0.52, bajas:2 },
+            "Irak": { pib:0.27, poblacion:40.0, pedigree:55, valorMercado:15, ligaPrincipal:"Iranian Pro", racha:0.55, bajas:2 },
+            "Argelia": { pib:0.19, poblacion:44.9, pedigree:55, valorMercado:80, ligaPrincipal:"Ligue 1", racha:0.58, bajas:2 }
         };
 
         function getLeagueQualityScore(league) { return leagueQuality[league] || 50; }
@@ -287,7 +279,6 @@
             const s2 = playingStyle[team2]?.style || "mixto";
             if (s1 === "posesion" && s2 === "contraataque") return 0.12;
             if (s1 === "contraataque" && s2 === "posesion") return 0.08;
-            if (s1 === "fisico" && s2 === "tecnico") return 0.10;
             return 0;
         }
 
@@ -302,8 +293,7 @@
             const ligaScore = getLeagueQualityScore(data.ligaPrincipal);
             const styleScore = getPlayingStyleBonus(team);
             const rachaScore = data.racha * 100;
-            const fuerza = (pibScore * 0.22) + (poblacionScore * 0.13) + (data.pedigree * 0.15) + (fifaScore * 0.15) + (valorScore * 0.10) + (ligaScore * 0.08) + (styleScore * 0.07) + (rachaScore * 0.10);
-            return Math.min(99, Math.max(1, fuerza));
+            return (pibScore * 0.22) + (poblacionScore * 0.13) + (data.pedigree * 0.15) + (fifaScore * 0.15) + (valorScore * 0.10) + (ligaScore * 0.08) + (styleScore * 0.07) + (rachaScore * 0.10);
         }
 
         function simulateMatch(team1, team2, isKnockout = false) {
@@ -319,14 +309,17 @@
                 if (Math.random() < prob1 * 0.22) goals1++;
                 if (Math.random() < (1 - prob1) * 0.22) goals2++;
             }
+            
+            let penalties = false;
             if (isKnockout && goals1 === goals2) {
-                const penalties = Math.random() < prob1;
-                if (penalties) goals1++; else goals2++;
+                penalties = true;
+                const penWinner = Math.random() < prob1;
+                if (penWinner) goals1++; else goals2++;
             }
-            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2 };
+            
+            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2, penalties };
         }
 
-        // ==================== GRUPOS ====================
         const groups = {
             "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
             "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
@@ -358,6 +351,7 @@
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('resultsContainer').classList.add('hidden');
             await new Promise(r => setTimeout(r, 100));
+            
             const groupResults = {}, allThirdPlaces = [];
             for (const [groupName, teams] of Object.entries(groups)) {
                 const standings = teams.map(t => ({ team:t, strength:calculateTeamStrength(t), pts:0, gf:0, gc:0, dg:0, wins:0, draws:0, losses:0 }));
@@ -374,15 +368,18 @@
                 groupResults[groupName] = standings;
                 if(standings[2]) allThirdPlaces.push({group:groupName,...standings[2]});
             }
+            
             allThirdPlaces.sort((a,b)=>b.pts-a.pts||b.dg-a.dg||b.gf-a.gf);
             const bestThirds = allThirdPlaces.slice(0,8);
             const qualified = [];
             for(const s of Object.values(groupResults)) { qualified.push(s[0].team, s[1].team); }
             bestThirds.forEach(t=>qualified.push(t.team));
             lastSimulatedQualifiedTeams = qualified;
+            
             renderGroups(groupResults);
             renderThirds(bestThirds);
             await simulateKnockout(qualified);
+            
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('resultsContainer').classList.remove('hidden');
         }
@@ -390,13 +387,114 @@
         async function simulateKnockout(teams) {
             let shuffled = [...teams];
             for(let i=shuffled.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
-            let r32 = []; for(let i=0;i<shuffled.length;i+=2) r32.push(simulateMatch(shuffled[i],shuffled[i+1],true).winner);
-            let r16 = []; for(let i=0;i<r32.length;i+=2) r16.push(simulateMatch(r32[i],r32[i+1],true).winner);
-            let r8 = []; for(let i=0;i<r16.length;i+=2) r8.push(simulateMatch(r16[i],r16[i+1],true).winner);
-            let r4 = []; for(let i=0;i<r8.length;i+=2) r4.push(simulateMatch(r8[i],r8[i+1],true).winner);
-            const final = simulateMatch(r4[0],r4[1],true);
-            const third = simulateMatch(r4[0]===final.winner?r4[1]:r4[0], r4[1]===final.winner?r4[0]:r4[1], true);
-            renderBracket(shuffled, r32, r16, r8, r4, final, third, final.winner);
+            
+            let r32Matches = [];
+            for(let i=0;i<shuffled.length;i+=2) r32Matches.push(simulateMatch(shuffled[i],shuffled[i+1],true));
+            let r32Winners = r32Matches.map(m => m.winner);
+            
+            let r16Matches = [];
+            for(let i=0;i<r32Winners.length;i+=2) r16Matches.push(simulateMatch(r32Winners[i],r32Winners[i+1],true));
+            let r16Winners = r16Matches.map(m => m.winner);
+            
+            let r8Matches = [];
+            for(let i=0;i<r16Winners.length;i+=2) r8Matches.push(simulateMatch(r16Winners[i],r16Winners[i+1],true));
+            let r8Winners = r8Matches.map(m => m.winner);
+            
+            let r4Matches = [];
+            for(let i=0;i<r8Winners.length;i+=2) r4Matches.push(simulateMatch(r8Winners[i],r8Winners[i+1],true));
+            let r4Winners = r4Matches.map(m => m.winner);
+            
+            const final = simulateMatch(r4Winners[0], r4Winners[1], true);
+            const thirdPlaceMatch = simulateMatch(
+                r4Winners[0] === final.winner ? r4Winners[1] : r4Winners[0],
+                r4Winners[1] === final.winner ? r4Winners[0] : r4Winners[1],
+                true
+            );
+            
+            renderBracketDetails(r32Matches, r16Matches, r8Matches, r4Matches, final, thirdPlaceMatch);
+        }
+
+        function renderBracketDetails(r32, r16, r8, r4, final, third) {
+            const colR32 = document.getElementById('colR32'); colR32.innerHTML = '';
+            r32.forEach((match, idx) => {
+                const isPenalty = match.penalties;
+                colR32.innerHTML += `<div class="match-card">
+                    <div class="text-xs text-slate-400 mb-1">Llave ${idx+1}</div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-mono text-sm">${match.goals1} - ${match.goals2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                    </div>
+                    ${isPenalty ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Definición por penales</div>` : ''}
+                </div>`;
+            });
+            
+            const colR16 = document.getElementById('colR16'); colR16.innerHTML = '';
+            r16.forEach((match, idx) => {
+                const isPenalty = match.penalties;
+                colR16.innerHTML += `<div class="match-card">
+                    <div class="text-xs text-slate-400 mb-1">Octavo ${idx+1}</div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-mono text-sm">${match.goals1} - ${match.goals2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                    </div>
+                    ${isPenalty ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
+                </div>`;
+            });
+            
+            const colR8 = document.getElementById('colR8'); colR8.innerHTML = '';
+            r8.forEach((match, idx) => {
+                const isPenalty = match.penalties;
+                colR8.innerHTML += `<div class="match-card">
+                    <div class="text-xs text-slate-400 mb-1">Cuarto ${idx+1}</div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-mono text-sm">${match.goals1} - ${match.goals2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                    </div>
+                    ${isPenalty ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
+                </div>`;
+            });
+            
+            const colR4 = document.getElementById('colR4'); colR4.innerHTML = '';
+            r4.forEach((match, idx) => {
+                const isPenalty = match.penalties;
+                colR4.innerHTML += `<div class="match-card">
+                    <div class="text-xs text-slate-400 mb-1">Semifinal ${idx+1}</div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
+                        <span class="font-mono text-sm">${match.goals1} - ${match.goals2}</span>
+                        <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''}">${match.team2}</span>
+                    </div>
+                    ${isPenalty ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}
+                </div>`;
+            });
+            
+            document.getElementById('thirdPlaceMatch').innerHTML = `
+                <div class="text-xs text-slate-400 mb-1">🏅 TERCER PUESTO</div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold ${third.winner === third.team1 ? 'text-yellow-400' : ''}">${third.team1}</span>
+                    <span class="font-mono text-sm font-bold">${third.goals1} - ${third.goals2}</span>
+                    <span class="font-semibold ${third.winner === third.team2 ? 'text-yellow-400' : ''}">${third.team2}</span>
+                </div>
+                ${third.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Definición por penales</div>` : ''}
+                <div class="text-center text-yellow-400 text-xs mt-2">🥉 Ganador: ${third.winner}</div>
+            `;
+            
+            document.getElementById('finalMatch').innerHTML = `
+                <div class="text-xs text-slate-400 mb-1">🏆 FINAL DEL MUNDIAL</div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-lg ${final.winner === final.team1 ? 'text-green-400' : ''}">${final.team1}</span>
+                    <span class="font-mono text-lg font-bold">${final.goals1} - ${final.goals2}</span>
+                    <span class="font-semibold text-lg ${final.winner === final.team2 ? 'text-green-400' : ''}">${final.team2}</span>
+                </div>
+                ${final.penalties ? `<div class="penalty-badge mt-2 text-center"><i class="fas fa-futbol mr-1"></i>¡Definición por penales!</div>` : ''}
+                <div class="text-center text-green-400 font-bold text-sm mt-3">🏆 CAMPEÓN: ${final.winner.toUpperCase()}</div>
+            `;
+            
+            document.getElementById('championName').innerText = final.winner;
+            document.getElementById('championSection').classList.remove('hidden');
         }
 
         function renderGroups(results) {
@@ -421,20 +519,6 @@
         }
 
         function renderThirds(thirds) { document.getElementById('thirdsTableBody').innerHTML = thirds.map((t,i)=>`<tr class="border-b"><td class="p-2">${i+1}</td><td class="p-2">${t.group}</td><td class="p-2 font-semibold">${t.team}</td><td class="p-2 text-center">${t.pts}</td><td class="p-2 text-center">${t.dg}</td><td class="p-2 text-center">${t.gf}</td></tr>`).join(''); }
-
-        function renderBracket(r32, r32w, r16w, r8w, r4w, final, third, champ) {
-            const c32 = document.getElementById('colR32'); c32.innerHTML = '';
-            for(let i=0;i<r32.length;i+=2) c32.innerHTML += `<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Llave ${i/2+1}</div><div class="text-sm ${r32w[i/2]===r32[i]?'text-green-400':''}">${r32[i]}</div><div class="text-sm ${r32w[i/2]===r32[i+1]?'text-green-400':''}">${r32[i+1]}</div></div>`;
-            const c16 = document.getElementById('colR16'); c16.innerHTML = '';
-            for(let i=0;i<r16w.length;i+=2) c16.innerHTML += `<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Octavo ${i/2+1}</div><div class="text-sm">${r16w[i]}</div><div class="text-sm">${r16w[i+1]}</div></div>`;
-            const c8 = document.getElementById('colR8'); c8.innerHTML = '';
-            for(let i=0;i<r8w.length;i+=2) c8.innerHTML += `<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Cuarto ${i/2+1}</div><div class="text-sm">${r8w[i]}</div><div class="text-sm">${r8w[i+1]}</div></div>`;
-            const c4 = document.getElementById('colR4'); c4.innerHTML = r4w.map((t,i)=>`<div class="bg-slate-800 rounded p-2 mb-2"><div class="text-xs text-slate-400">Semifinal ${i+1}</div><div class="text-sm text-pink-400">${t}</div></div>`).join('');
-            document.getElementById('finalMatch').innerHTML = `<div class="font-bold">${final.team1} vs ${final.team2}</div><div class="text-green-400">🏆 Campeón: ${final.winner}</div>`;
-            document.getElementById('thirdPlaceMatch').innerHTML = `<div class="font-bold">${third.team1} vs ${third.team2}</div><div class="text-yellow-400">🥉 3er lugar: ${third.winner}</div>`;
-            document.getElementById('championName').innerText = champ;
-            document.getElementById('championSection').classList.remove('hidden');
-        }
     </script>
 </body>
 </html>
