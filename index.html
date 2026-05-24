@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -84,7 +84,7 @@
             @page { size: A4 landscape; margin: 5mm; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             body { background-color: #0b0f19 !important; color: #f1f5f9 !important; font-size: 10px; }
-            header, #simulateBtn, #printBtn, #manualSetupBtn, #toggleAdvancedBtn, #outsiderAlert, .no-print, #loginScreen, #manualClassificationPanel, #advancedOptionsContainer, #adminPanel, #paymentScreen {
+            header, #simulateBtn, #printBtn, #manualSetupBtn, #toggleAdvancedBtn, #outsiderAlert, .no-print, #loginScreen, #manualClassificationPanel, #advancedOptionsContainer, #adminPanel, #paymentS[...]
                 display: none !important;
             }
             #appContent { display: block !important; }
@@ -97,7 +97,7 @@
     <!-- Login Screen -->
     <div id="loginScreen" class="w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel border border-slate-700 shadow-2xl">
         <div class="text-center mb-6">
-            <img src="logo estudiarte.jpeg" alt="Estudiarte" class="mx-auto h-24 w-24 object-contain rounded-full mb-3 border border-slate-700/60 shadow-lg" onerror="this.src='https://placehold.co/100x100?text=Estudiarte'">
+            <img src="logo estudiarte.jpeg" alt="Estudiarte" class="mx-auto h-24 w-24 object-contain rounded-full mb-3 border border-slate-700/60 shadow-lg" onerror="this.src='https://placehold.co/100[...]
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Acceso Autorizado</h2>
             <p class="text-xs text-slate-400 mt-2">Modelo Econométrico Joachim Klement + Análisis FIFA</p>
             <div class="mt-4 bg-green-900/30 border border-green-500/50 rounded-lg p-2">
@@ -113,7 +113,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fas fa-user"></i>
                     </span>
-                    <input type="text" id="usernameInput" placeholder="Nombre de usuario" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 transition duration-200">
+                    <input type="text" id="usernameInput" placeholder="Nombre de usuario" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:ou[...]
                 </div>
             </div>
             <div>
@@ -122,14 +122,14 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fas fa-lock"></i>
                     </span>
-                    <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 transition duration-200">
+                    <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outl[...]
                 </div>
             </div>
             <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/40 border border-red-800/80 p-3 rounded-lg flex items-center space-x-2">
                 <i class="fas fa-exclamation-circle"></i>
                 <span>Usuario o contraseña incorrectos.</span>
             </div>
-            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md transition duration-200 transform hover:scale-[1.02]">
+            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md[...]
                 Iniciar Sesión <i class="fas fa-sign-in-alt ml-1"></i>
             </button>
             <div class="text-center mt-4 pt-4 border-t border-slate-800">
@@ -152,13 +152,13 @@
         <div class="space-y-4">
             <div>
                 <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Tu Número de WhatsApp</label>
-                <input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white focus:outline-none focus:border-green-500 transition duration-200">
+                <input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white focus:outline-none[...]
             </div>
             <div id="paymentError" class="hidden text-xs text-red-400 bg-red-950/40 border border-red-800/80 p-3 rounded-lg">
                 <i class="fas fa-exclamation-circle"></i>
                 <span id="paymentErrorMsg">Complete el número de WhatsApp correctamente.</span>
             </div>
-            <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md transition duration-200">
+            <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-2.5 rounded-lg[...]
                 <i class="fab fa-whatsapp mr-2"></i> Solicitar Acceso por WhatsApp
             </button>
             <button onclick="showLoginScreen()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg text-sm transition duration-200">
@@ -217,7 +217,7 @@
             <p class="text-slate-400 mb-2"><strong>Modelo Econométrico Joachim Klement</strong> + Análisis Multivariable</p>
             <p class="text-xs text-slate-500 mb-4">PIB • Población • Pedigrí • Ranking FIFA • Confederación • Racha Actual • Bajas • Clima • Altitud • Experiencia Web</p>
             <div class="flex flex-wrap justify-center gap-4">
-                <button id="simulateBtn" onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-200 transform hover:scale-105">
+                <button id="simulateBtn" onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 px-8 rounded-fu[...]
                     <i class="fas fa-play mr-2"></i> Simular Torneo
                 </button>
                 <button id="toggleAdvancedBtn" onclick="toggleAdvancedOptions()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-6 rounded-full transition duration-200">
@@ -267,7 +267,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-800">
-                            <tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DG</th><th class="p-3">GF</th><th class="p-3">Fuerza</th></tr>
+                            <tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DG</th><th class="p-3">GF</th><th class="p[...]
                         </thead>
                         <tbody id="thirdsTableBody"></tbody>
                     </table>
@@ -366,7 +366,7 @@
 
         // ==================== DATOS AVANZADOS DE EQUIPOS ====================
         const teamsData = {
-            // AFC
+            // AFC (8)
             "Japón": { pib: 4.23, poblacion: 125.7, pedigree: 85, localia: 70, confederacion: "AFC", racha: 0.78, bajas: 2, clima: "templado", altitud: 0 },
             "Corea del Sur": { pib: 1.81, poblacion: 51.7, pedigree: 80, localia: 70, confederacion: "AFC", racha: 0.75, bajas: 1, clima: "templado", altitud: 0 },
             "Australia": { pib: 1.55, poblacion: 25.7, pedigree: 75, localia: 65, confederacion: "AFC", racha: 0.72, bajas: 0, clima: "tropical", altitud: 0 },
@@ -375,8 +375,7 @@
             "Qatar": { pib: 0.18, poblacion: 2.9, pedigree: 60, localia: 90, confederacion: "AFC", racha: 0.62, bajas: 4, clima: "desértico", altitud: 0 },
             "Irak": { pib: 0.27, poblacion: 40.0, pedigree: 55, localia: 60, confederacion: "AFC", racha: 0.55, bajas: 2, clima: "desértico", altitud: 30 },
             "Uzbekistán": { pib: 0.36, poblacion: 33.5, pedigree: 45, localia: 70, confederacion: "AFC", racha: 0.60, bajas: 2, clima: "desértico", altitud: 500 },
-            "Jordania": { pib: 0.04, poblacion: 10.2, pedigree: 48, localia: 65, confederacion: "AFC", racha: 0.52, bajas: 2, clima: "desértico", altitud: 800 },
-            // CAF
+            // CAF (9)
             "Marruecos": { pib: 0.13, poblacion: 37.1, pedigree: 70, localia: 75, confederacion: "CAF", racha: 0.82, bajas: 1, clima: "desértico", altitud: 200 },
             "Senegal": { pib: 0.03, poblacion: 17.4, pedigree: 68, localia: 80, confederacion: "CAF", racha: 0.80, bajas: 2, clima: "tropical", altitud: 0 },
             "Túnez": { pib: 0.05, poblacion: 11.8, pedigree: 65, localia: 75, confederacion: "CAF", racha: 0.70, bajas: 1, clima: "desértico", altitud: 0 },
@@ -389,23 +388,22 @@
             "Sudáfrica": { pib: 0.43, poblacion: 60.0, pedigree: 60, localia: 75, confederacion: "CAF", racha: 0.62, bajas: 2, clima: "templado", altitud: 1750 },
             "Haití": { pib: 0.01, poblacion: 11.4, pedigree: 50, localia: 70, confederacion: "CAF", racha: 0.45, bajas: 2, clima: "tropical", altitud: 0 },
             "Cabo Verde": { pib: 0.002, poblacion: 0.56, pedigree: 40, localia: 70, confederacion: "CAF", racha: 0.48, bajas: 1, clima: "tropical", altitud: 0 },
-            "Argelia": { pib: 0.19, poblacion: 44.9, pedigree: 55, localia: 70, confederacion: "CAF", racha: 0.58, bajas: 2, clima: "desértico", altitud: 300 },
-            // CONCACAF
+            // CONCACAF (6)
             "México": { pib: 1.27, poblacion: 128.9, pedigree: 85, localia: 95, confederacion: "CONCACAF", racha: 0.80, bajas: 1, clima: "templado", altitud: 2250 },
             "Estados Unidos": { pib: 25.35, poblacion: 331.9, pedigree: 80, localia: 95, confederacion: "CONCACAF", racha: 0.85, bajas: 2, clima: "templado", altitud: 500 },
             "Canadá": { pib: 2.14, poblacion: 38.0, pedigree: 65, localia: 85, confederacion: "CONCACAF", racha: 0.75, bajas: 1, clima: "frío", altitud: 200 },
             "Costa Rica": { pib: 0.06, poblacion: 5.1, pedigree: 68, localia: 80, confederacion: "CONCACAF", racha: 0.68, bajas: 1, clima: "tropical", altitud: 1200 },
             "Panamá": { pib: 0.07, poblacion: 4.3, pedigree: 55, localia: 75, confederacion: "CONCACAF", racha: 0.60, bajas: 2, clima: "tropical", altitud: 0 },
             "Jamaica": { pib: 0.02, poblacion: 2.9, pedigree: 50, localia: 70, confederacion: "CONCACAF", racha: 0.55, bajas: 2, clima: "tropical", altitud: 0 },
-            "Curazao": { pib: 0.006, poblacion: 0.15, pedigree: 40, localia: 65, confederacion: "CONCACAF", racha: 0.48, bajas: 2, clima: "tropical", altitud: 0 },
-            // CONMEBOL
+            // CONMEBOL (6)
             "Brasil": { pib: 1.89, poblacion: 213.0, pedigree: 100, localia: 70, confederacion: "CONMEBOL", racha: 0.88, bajas: 2, clima: "tropical", altitud: 0 },
             "Argentina": { pib: 0.63, poblacion: 45.8, pedigree: 98, localia: 70, confederacion: "CONMEBOL", racha: 0.95, bajas: 0, clima: "templado", altitud: 0 },
             "Uruguay": { pib: 0.06, poblacion: 3.5, pedigree: 95, localia: 70, confederacion: "CONMEBOL", racha: 0.72, bajas: 1, clima: "templado", altitud: 0 },
             "Colombia": { pib: 0.34, poblacion: 50.9, pedigree: 85, localia: 75, confederacion: "CONMEBOL", racha: 0.78, bajas: 2, clima: "tropical", altitud: 2640 },
             "Ecuador": { pib: 0.11, poblacion: 17.6, pedigree: 70, localia: 90, confederacion: "CONMEBOL", racha: 0.70, bajas: 2, clima: "tropical", altitud: 2800 },
             "Paraguay": { pib: 0.04, poblacion: 7.1, pedigree: 75, localia: 75, confederacion: "CONMEBOL", racha: 0.65, bajas: 3, clima: "subtropical", altitud: 0 },
-            // UEFA
+            "Argelia": { pib: 0.19, poblacion: 44.9, pedigree: 55, localia: 70, confederacion: "CAF", racha: 0.58, bajas: 2, clima: "desértico", altitud: 300 },
+            // UEFA (16)
             "Francia": { pib: 2.94, poblacion: 67.8, pedigree: 95, localia: 70, confederacion: "UEFA", racha: 0.82, bajas: 1, clima: "templado", altitud: 0 },
             "España": { pib: 1.39, poblacion: 47.4, pedigree: 92, localia: 75, confederacion: "UEFA", racha: 0.80, bajas: 1, clima: "templado", altitud: 0 },
             "Alemania": { pib: 4.26, poblacion: 83.2, pedigree: 96, localia: 75, confederacion: "UEFA", racha: 0.78, bajas: 2, clima: "templado", altitud: 0 },
@@ -427,8 +425,12 @@
             "Escocia": { pib: 0.30, poblacion: 5.5, pedigree: 60, localia: 80, confederacion: "UEFA", racha: 0.58, bajas: 2, clima: "frío", altitud: 0 },
             "Turquía": { pib: 0.77, poblacion: 85.0, pedigree: 62, localia: 75, confederacion: "UEFA", racha: 0.68, bajas: 2, clima: "templado", altitud: 0 },
             "Noruega": { pib: 0.51, poblacion: 5.5, pedigree: 55, localia: 80, confederacion: "UEFA", racha: 0.52, bajas: 2, clima: "frío", altitud: 0 },
-            // OFC
-            "Nueva Zelanda": { pib: 0.25, poblacion: 5.1, pedigree: 60, localia: 60, confederacion: "OFC", racha: 0.58, bajas: 1, clima: "templado", altitud: 0 }
+            // OFC (1)
+            "Nueva Zelanda": { pib: 0.25, poblacion: 5.1, pedigree: 60, localia: 60, confederacion: "OFC", racha: 0.58, bajas: 1, clima: "templado", altitud: 0 },
+            // CONCACAF adicional
+            "Curazao": { pib: 0.006, poblacion: 0.15, pedigree: 40, localia: 65, confederacion: "CONCACAF", racha: 0.48, bajas: 2, clima: "tropical", altitud: 0 },
+            // AFC adicional
+            "Jordania": { pib: 0.04, poblacion: 10.2, pedigree: 48, localia: 65, confederacion: "AFC", racha: 0.52, bajas: 2, clima: "desértico", altitud: 800 }
         };
 
         // ==================== MODELO DE CÁLCULO ECONOMÉTRICO ====================
@@ -451,21 +453,45 @@
             // Racha últimos 12 meses (5%)
             const rachaScore = data.racha * 100;
             
-            // Modelo Klement ponderado
-            const fuerza = (pibScore * 0.30) + (poblacionScore * 0.20) + (data.pedigree * 0.25) + (fifaScore * 0.15) + (confScore * 0.05) + (rachaScore * 0.05);
+            // Penalización por bajas (3%)
+            const bajasScore = Math.max(0, 100 - (data.bajas * 15));
+            
+            // Clima y altitud (2%)
+            const climaScore = getClimaFactorScore(data.clima, data.altitud);
+            
+            // Modelo Klement ponderado con nuevas variables
+            const fuerza = (pibScore * 0.30) +           // PIB
+                          (poblacionScore * 0.20) +      // Población
+                          (data.pedigree * 0.25) +       // Pedigrí
+                          (fifaScore * 0.15) +           // Ranking FIFA
+                          (confScore * 0.05) +           // Confederación
+                          (rachaScore * 0.05);           // Racha
             
             return Math.min(99, Math.max(1, fuerza));
         }
 
-        function simulateMatch(team1, team2, isKnockout = false) {
+        function getClimaFactorScore(clima, altitud) {
+            let score = 70;
+            // Factor de aclimatación
+            if (altitud > 2000) score -= 10; // Pérdida por altitud extrema
+            if (altitud < 500) score += 5;   // Ventaja de zona plana
+            return score;
+        }
+
+        function simulateMatch(team1, team2, isKnockout = false, matchDetails = {}) {
             const strength1 = calculateTeamStrength(team1);
             const strength2 = calculateTeamStrength(team2);
-            const prob1 = strength1 / (strength1 + strength2);
+            const totalStrength = strength1 + strength2;
+            const prob1 = strength1 / totalStrength;
+            
+            // Factor de localía si aplica
+            let localiaBonus = 0;
+            if (matchDetails.homeTeam === team1) localiaBonus = teamsData[team1]?.localia / 100 * 0.05 || 0;
             
             let goals1 = 0, goals2 = 0;
             for (let i = 0; i < 90; i += 10) {
-                if (Math.random() < prob1 * 0.15) goals1++;
-                if (Math.random() < (1 - prob1) * 0.15) goals2++;
+                if (Math.random() < (prob1 + localiaBonus) * 0.15) goals1++;
+                if (Math.random() < (1 - prob1 - localiaBonus) * 0.15) goals2++;
             }
             
             if (isKnockout && goals1 === goals2) {
@@ -474,7 +500,7 @@
                 else goals2++;
             }
             
-            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2 };
+            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2, strength1, strength2 };
         }
 
         // ==================== FUNCIONES DE UI ====================
@@ -587,19 +613,19 @@
             document.getElementById('advancedOptionsContainer').classList.toggle('hidden');
         }
 
-        // ==================== GRUPOS DEL MUNDIAL 2026 (ACTUALIZADOS) ====================
+        // ==================== GRUPOS DEL MUNDIAL 2026 ====================
         const groups = {
-            "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
+            "A": ["México", "Sudáfrica", "República de Corea", "República Checa"],
             "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
             "C": ["Brasil", "Marruecos", "Haití", "Escocia"],
             "D": ["Estados Unidos", "Paraguay", "Australia", "Turquía"],
             "E": ["Alemania", "Ecuador", "Costa de Marfil", "Curazao"],
             "F": ["Países Bajos", "Japón", "Túnez", "Suecia"],
             "G": ["Bélgica", "Egipto", "Irán", "Nueva Zelanda"],
-            "H": ["España", "Uruguay", "Cabo Verde", "Arabia Saudita"],
-            "I": ["Francia", "Senegal", "Noruega", "Irak"],
+            "H": ["España", "Cabo Verde", "Arabia Saudita", "Uruguay"],
+            "I": ["Francia", "Irak", "Senegal", "Noruega"],
             "J": ["Argentina", "Argelia", "Austria", "Jordania"],
-            "K": ["Portugal", "Uzbekistán", "Colombia", "R.D. Congo"],
+            "K": ["Portugal", "R.D. Congo", "Uzbekistán", "Colombia"],
             "L": ["Inglaterra", "Croacia", "Ghana", "Panamá"]
         };
 
@@ -736,6 +762,7 @@
             // Final
             const final = simulateMatch(semifinalWinners[0], semifinalWinners[1], true);
             const champion = final.winner;
+            const runnerUp = final.winner === semifinalWinners[0] ? semifinalWinners[1] : semifinalWinners[0];
             
             // Tercer puesto
             const thirdPlaceTeam1 = semifinalWinners[0] === champion ? semifinalWinners[1] : semifinalWinners[0];
@@ -759,7 +786,6 @@
                     <div class="p-4">
                         <div class="grid grid-cols-12 gap-2 text-xs font-bold text-slate-400 mb-2 px-2">
                             <div class="col-span-5">Equipo</div>
-                            <div class="col-span-1 text-center">Pts</div>
                             <div class="col-span-1 text-center">PJ</div>
                             <div class="col-span-1 text-center">G</div>
                             <div class="col-span-1 text-center">E</div>
@@ -767,11 +793,11 @@
                             <div class="col-span-1 text-center">GF</div>
                             <div class="col-span-1 text-center">GC</div>
                             <div class="col-span-1 text-center">DG</div>
+                            <div class="col-span-1 text-center">Pts</div>
                         </div>
                         ${standings.map((s, idx) => `
                             <div class="team-row grid grid-cols-12 gap-2 py-2 px-2 rounded-lg mb-1 bg-slate-800/30 items-center text-sm">
                                 <div class="col-span-5 font-semibold truncate">${s.team}</div>
-                                <div class="col-span-1 text-center font-bold ${idx < 2 ? 'text-green-400' : (idx === 2 ? 'text-yellow-400' : 'text-red-400')}">${s.pts}</div>
                                 <div class="col-span-1 text-center">3</div>
                                 <div class="col-span-1 text-center">${s.wins}</div>
                                 <div class="col-span-1 text-center">${s.draws}</div>
@@ -779,6 +805,7 @@
                                 <div class="col-span-1 text-center">${s.gf}</div>
                                 <div class="col-span-1 text-center">${s.gc}</div>
                                 <div class="col-span-1 text-center">${s.dg}</div>
+                                <div class="col-span-1 text-center font-bold ${idx < 2 ? 'text-green-400' : (idx === 2 ? 'text-yellow-400' : 'text-red-400')}">${s.pts}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -868,7 +895,7 @@
         
         // Inicialización
         window.onload = () => {
-            console.log("Simulador Econométrico Klement listo - Variables activas: PIB, Población, Pedigrí, Ranking FIFA, Confederación, Racha");
+            console.log("Simulador Econométrico Klement listo - Variables activas: PIB, Población, Pedigrí, Ranking FIFA, Confederación, Racha, Bajas, Clima, Altitud");
         };
     </script>
 </body>
