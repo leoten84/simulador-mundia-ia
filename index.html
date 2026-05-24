@@ -366,7 +366,7 @@
 
         // ==================== DATOS AVANZADOS DE EQUIPOS ====================
         const teamsData = {
-            // AFC (8)
+            // AFC
             "Japón": { pib: 4.23, poblacion: 125.7, pedigree: 85, localia: 70, confederacion: "AFC", racha: 0.78, bajas: 2, clima: "templado", altitud: 0 },
             "Corea del Sur": { pib: 1.81, poblacion: 51.7, pedigree: 80, localia: 70, confederacion: "AFC", racha: 0.75, bajas: 1, clima: "templado", altitud: 0 },
             "Australia": { pib: 1.55, poblacion: 25.7, pedigree: 75, localia: 65, confederacion: "AFC", racha: 0.72, bajas: 0, clima: "tropical", altitud: 0 },
@@ -375,7 +375,8 @@
             "Qatar": { pib: 0.18, poblacion: 2.9, pedigree: 60, localia: 90, confederacion: "AFC", racha: 0.62, bajas: 4, clima: "desértico", altitud: 0 },
             "Irak": { pib: 0.27, poblacion: 40.0, pedigree: 55, localia: 60, confederacion: "AFC", racha: 0.55, bajas: 2, clima: "desértico", altitud: 30 },
             "Uzbekistán": { pib: 0.36, poblacion: 33.5, pedigree: 45, localia: 70, confederacion: "AFC", racha: 0.60, bajas: 2, clima: "desértico", altitud: 500 },
-            // CAF (9)
+            "Jordania": { pib: 0.04, poblacion: 10.2, pedigree: 48, localia: 65, confederacion: "AFC", racha: 0.52, bajas: 2, clima: "desértico", altitud: 800 },
+            // CAF
             "Marruecos": { pib: 0.13, poblacion: 37.1, pedigree: 70, localia: 75, confederacion: "CAF", racha: 0.82, bajas: 1, clima: "desértico", altitud: 200 },
             "Senegal": { pib: 0.03, poblacion: 17.4, pedigree: 68, localia: 80, confederacion: "CAF", racha: 0.80, bajas: 2, clima: "tropical", altitud: 0 },
             "Túnez": { pib: 0.05, poblacion: 11.8, pedigree: 65, localia: 75, confederacion: "CAF", racha: 0.70, bajas: 1, clima: "desértico", altitud: 0 },
@@ -388,22 +389,23 @@
             "Sudáfrica": { pib: 0.43, poblacion: 60.0, pedigree: 60, localia: 75, confederacion: "CAF", racha: 0.62, bajas: 2, clima: "templado", altitud: 1750 },
             "Haití": { pib: 0.01, poblacion: 11.4, pedigree: 50, localia: 70, confederacion: "CAF", racha: 0.45, bajas: 2, clima: "tropical", altitud: 0 },
             "Cabo Verde": { pib: 0.002, poblacion: 0.56, pedigree: 40, localia: 70, confederacion: "CAF", racha: 0.48, bajas: 1, clima: "tropical", altitud: 0 },
-            // CONCACAF (6)
+            "Argelia": { pib: 0.19, poblacion: 44.9, pedigree: 55, localia: 70, confederacion: "CAF", racha: 0.58, bajas: 2, clima: "desértico", altitud: 300 },
+            // CONCACAF
             "México": { pib: 1.27, poblacion: 128.9, pedigree: 85, localia: 95, confederacion: "CONCACAF", racha: 0.80, bajas: 1, clima: "templado", altitud: 2250 },
             "Estados Unidos": { pib: 25.35, poblacion: 331.9, pedigree: 80, localia: 95, confederacion: "CONCACAF", racha: 0.85, bajas: 2, clima: "templado", altitud: 500 },
             "Canadá": { pib: 2.14, poblacion: 38.0, pedigree: 65, localia: 85, confederacion: "CONCACAF", racha: 0.75, bajas: 1, clima: "frío", altitud: 200 },
             "Costa Rica": { pib: 0.06, poblacion: 5.1, pedigree: 68, localia: 80, confederacion: "CONCACAF", racha: 0.68, bajas: 1, clima: "tropical", altitud: 1200 },
             "Panamá": { pib: 0.07, poblacion: 4.3, pedigree: 55, localia: 75, confederacion: "CONCACAF", racha: 0.60, bajas: 2, clima: "tropical", altitud: 0 },
             "Jamaica": { pib: 0.02, poblacion: 2.9, pedigree: 50, localia: 70, confederacion: "CONCACAF", racha: 0.55, bajas: 2, clima: "tropical", altitud: 0 },
-            // CONMEBOL (6)
+            "Curazao": { pib: 0.006, poblacion: 0.15, pedigree: 40, localia: 65, confederacion: "CONCACAF", racha: 0.48, bajas: 2, clima: "tropical", altitud: 0 },
+            // CONMEBOL
             "Brasil": { pib: 1.89, poblacion: 213.0, pedigree: 100, localia: 70, confederacion: "CONMEBOL", racha: 0.88, bajas: 2, clima: "tropical", altitud: 0 },
             "Argentina": { pib: 0.63, poblacion: 45.8, pedigree: 98, localia: 70, confederacion: "CONMEBOL", racha: 0.95, bajas: 0, clima: "templado", altitud: 0 },
             "Uruguay": { pib: 0.06, poblacion: 3.5, pedigree: 95, localia: 70, confederacion: "CONMEBOL", racha: 0.72, bajas: 1, clima: "templado", altitud: 0 },
             "Colombia": { pib: 0.34, poblacion: 50.9, pedigree: 85, localia: 75, confederacion: "CONMEBOL", racha: 0.78, bajas: 2, clima: "tropical", altitud: 2640 },
             "Ecuador": { pib: 0.11, poblacion: 17.6, pedigree: 70, localia: 90, confederacion: "CONMEBOL", racha: 0.70, bajas: 2, clima: "tropical", altitud: 2800 },
             "Paraguay": { pib: 0.04, poblacion: 7.1, pedigree: 75, localia: 75, confederacion: "CONMEBOL", racha: 0.65, bajas: 3, clima: "subtropical", altitud: 0 },
-            "Argelia": { pib: 0.19, poblacion: 44.9, pedigree: 55, localia: 70, confederacion: "CAF", racha: 0.58, bajas: 2, clima: "desértico", altitud: 300 },
-            // UEFA (16)
+            // UEFA
             "Francia": { pib: 2.94, poblacion: 67.8, pedigree: 95, localia: 70, confederacion: "UEFA", racha: 0.82, bajas: 1, clima: "templado", altitud: 0 },
             "España": { pib: 1.39, poblacion: 47.4, pedigree: 92, localia: 75, confederacion: "UEFA", racha: 0.80, bajas: 1, clima: "templado", altitud: 0 },
             "Alemania": { pib: 4.26, poblacion: 83.2, pedigree: 96, localia: 75, confederacion: "UEFA", racha: 0.78, bajas: 2, clima: "templado", altitud: 0 },
@@ -425,12 +427,8 @@
             "Escocia": { pib: 0.30, poblacion: 5.5, pedigree: 60, localia: 80, confederacion: "UEFA", racha: 0.58, bajas: 2, clima: "frío", altitud: 0 },
             "Turquía": { pib: 0.77, poblacion: 85.0, pedigree: 62, localia: 75, confederacion: "UEFA", racha: 0.68, bajas: 2, clima: "templado", altitud: 0 },
             "Noruega": { pib: 0.51, poblacion: 5.5, pedigree: 55, localia: 80, confederacion: "UEFA", racha: 0.52, bajas: 2, clima: "frío", altitud: 0 },
-            // OFC (1)
-            "Nueva Zelanda": { pib: 0.25, poblacion: 5.1, pedigree: 60, localia: 60, confederacion: "OFC", racha: 0.58, bajas: 1, clima: "templado", altitud: 0 },
-            // CONCACAF adicional
-            "Curazao": { pib: 0.006, poblacion: 0.15, pedigree: 40, localia: 65, confederacion: "CONCACAF", racha: 0.48, bajas: 2, clima: "tropical", altitud: 0 },
-            // AFC adicional
-            "Jordania": { pib: 0.04, poblacion: 10.2, pedigree: 48, localia: 65, confederacion: "AFC", racha: 0.52, bajas: 2, clima: "desértico", altitud: 800 }
+            // OFC
+            "Nueva Zelanda": { pib: 0.25, poblacion: 5.1, pedigree: 60, localia: 60, confederacion: "OFC", racha: 0.58, bajas: 1, clima: "templado", altitud: 0 }
         };
 
         // ==================== MODELO DE CÁLCULO ECONOMÉTRICO ====================
@@ -453,45 +451,21 @@
             // Racha últimos 12 meses (5%)
             const rachaScore = data.racha * 100;
             
-            // Penalización por bajas (3%)
-            const bajasScore = Math.max(0, 100 - (data.bajas * 15));
-            
-            // Clima y altitud (2%)
-            const climaScore = getClimaFactorScore(data.clima, data.altitud);
-            
-            // Modelo Klement ponderado con nuevas variables
-            const fuerza = (pibScore * 0.30) +           // PIB
-                          (poblacionScore * 0.20) +      // Población
-                          (data.pedigree * 0.25) +       // Pedigrí
-                          (fifaScore * 0.15) +           // Ranking FIFA
-                          (confScore * 0.05) +           // Confederación
-                          (rachaScore * 0.05);           // Racha
+            // Modelo Klement ponderado
+            const fuerza = (pibScore * 0.30) + (poblacionScore * 0.20) + (data.pedigree * 0.25) + (fifaScore * 0.15) + (confScore * 0.05) + (rachaScore * 0.05);
             
             return Math.min(99, Math.max(1, fuerza));
         }
 
-        function getClimaFactorScore(clima, altitud) {
-            let score = 70;
-            // Factor de aclimatación
-            if (altitud > 2000) score -= 10; // Pérdida por altitud extrema
-            if (altitud < 500) score += 5;   // Ventaja de zona plana
-            return score;
-        }
-
-        function simulateMatch(team1, team2, isKnockout = false, matchDetails = {}) {
+        function simulateMatch(team1, team2, isKnockout = false) {
             const strength1 = calculateTeamStrength(team1);
             const strength2 = calculateTeamStrength(team2);
-            const totalStrength = strength1 + strength2;
-            const prob1 = strength1 / totalStrength;
-            
-            // Factor de localía si aplica
-            let localiaBonus = 0;
-            if (matchDetails.homeTeam === team1) localiaBonus = teamsData[team1]?.localia / 100 * 0.05 || 0;
+            const prob1 = strength1 / (strength1 + strength2);
             
             let goals1 = 0, goals2 = 0;
             for (let i = 0; i < 90; i += 10) {
-                if (Math.random() < (prob1 + localiaBonus) * 0.15) goals1++;
-                if (Math.random() < (1 - prob1 - localiaBonus) * 0.15) goals2++;
+                if (Math.random() < prob1 * 0.15) goals1++;
+                if (Math.random() < (1 - prob1) * 0.15) goals2++;
             }
             
             if (isKnockout && goals1 === goals2) {
@@ -500,7 +474,7 @@
                 else goals2++;
             }
             
-            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2, strength1, strength2 };
+            return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2 };
         }
 
         // ==================== FUNCIONES DE UI ====================
@@ -613,20 +587,20 @@
             document.getElementById('advancedOptionsContainer').classList.toggle('hidden');
         }
 
-        // ==================== GRUPOS DEL MUNDIAL 2026 ====================
+        // ==================== GRUPOS DEL MUNDIAL 2026 (ACTUALIZADOS) ====================
         const groups = {
-            "A": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
-            "B": ["Brasil", "Marruecos", "Haití", "Escocia"],
-            "C": ["Estados Unidos", "Paraguay", "Australia", "Turquía"],
-            "D": ["Alemania", "Ecuador", "Costa de Marfil", "Curazao"],
-            "E": ["Países Bajos", "Japón", "Túnez", "Suecia"],
-            "F": ["Bélgica", "Egipto", "Irán", "Nueva Zelanda"],
-            "G": ["España", "Cabo Verde", "Arabia Saudita", "Uruguay"],
-            "H": ["Francia", "Irak", "Senegal", "Noruega"],
-            "I": ["Argentina", "Argelia", "Austria", "Jordania"],
-            "J": ["Portugal", "R.D. Congo", "Uzbekistán", "Colombia"],
-            "K": ["Inglaterra", "Croacia", "Ghana", "Panamá"],
-            "L": ["México", "Sudáfrica", "Corea del Sur", "República Checa"]
+            "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
+            "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
+            "C": ["Brasil", "Marruecos", "Haití", "Escocia"],
+            "D": ["Estados Unidos", "Paraguay", "Australia", "Turquía"],
+            "E": ["Alemania", "Ecuador", "Costa de Marfil", "Curazao"],
+            "F": ["Países Bajos", "Japón", "Túnez", "Suecia"],
+            "G": ["Bélgica", "Egipto", "Irán", "Nueva Zelanda"],
+            "H": ["España", "Uruguay", "Cabo Verde", "Arabia Saudita"],
+            "I": ["Francia", "Senegal", "Noruega", "Irak"],
+            "J": ["Argentina", "Argelia", "Austria", "Jordania"],
+            "K": ["Portugal", "Uzbekistán", "Colombia", "R.D. Congo"],
+            "L": ["Inglaterra", "Croacia", "Ghana", "Panamá"]
         };
 
         // ==================== SIMULACIÓN PRINCIPAL ====================
@@ -762,7 +736,6 @@
             // Final
             const final = simulateMatch(semifinalWinners[0], semifinalWinners[1], true);
             const champion = final.winner;
-            const runnerUp = final.winner === semifinalWinners[0] ? semifinalWinners[1] : semifinalWinners[0];
             
             // Tercer puesto
             const thirdPlaceTeam1 = semifinalWinners[0] === champion ? semifinalWinners[1] : semifinalWinners[0];
@@ -786,6 +759,7 @@
                     <div class="p-4">
                         <div class="grid grid-cols-12 gap-2 text-xs font-bold text-slate-400 mb-2 px-2">
                             <div class="col-span-5">Equipo</div>
+                            <div class="col-span-1 text-center">Pts</div>
                             <div class="col-span-1 text-center">PJ</div>
                             <div class="col-span-1 text-center">G</div>
                             <div class="col-span-1 text-center">E</div>
@@ -793,11 +767,11 @@
                             <div class="col-span-1 text-center">GF</div>
                             <div class="col-span-1 text-center">GC</div>
                             <div class="col-span-1 text-center">DG</div>
-                            <div class="col-span-1 text-center">Pts</div>
                         </div>
                         ${standings.map((s, idx) => `
                             <div class="team-row grid grid-cols-12 gap-2 py-2 px-2 rounded-lg mb-1 bg-slate-800/30 items-center text-sm">
                                 <div class="col-span-5 font-semibold truncate">${s.team}</div>
+                                <div class="col-span-1 text-center font-bold ${idx < 2 ? 'text-green-400' : (idx === 2 ? 'text-yellow-400' : 'text-red-400')}">${s.pts}</div>
                                 <div class="col-span-1 text-center">3</div>
                                 <div class="col-span-1 text-center">${s.wins}</div>
                                 <div class="col-span-1 text-center">${s.draws}</div>
@@ -805,7 +779,6 @@
                                 <div class="col-span-1 text-center">${s.gf}</div>
                                 <div class="col-span-1 text-center">${s.gc}</div>
                                 <div class="col-span-1 text-center">${s.dg}</div>
-                                <div class="col-span-1 text-center font-bold ${idx < 2 ? 'text-green-400' : (idx === 2 ? 'text-yellow-400' : 'text-red-400')}">${s.pts}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -895,7 +868,7 @@
         
         // Inicialización
         window.onload = () => {
-            console.log("Simulador Econométrico Klement listo - Variables activas: PIB, Población, Pedigrí, Ranking FIFA, Confederación, Racha, Bajas, Clima, Altitud");
+            console.log("Simulador Econométrico Klement listo - Variables activas: PIB, Población, Pedigrí, Ranking FIFA, Confederación, Racha");
         };
     </script>
 </body>
