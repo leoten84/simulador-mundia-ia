@@ -1,0 +1,23 @@
+{
+  "name": "simulador-mundial-ia",
+  "version": "1.0.0",
+  "description": "Simulador predictivo IA para Mundial de Fútbol 2026",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000 || npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "world-cup",
+    "simulator",
+    "football",
+    "ai",
+    "prediction"
+  ],
+  "author": "Academia Estudiarte",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/simulador-mundial-ia"
+  }
+}
