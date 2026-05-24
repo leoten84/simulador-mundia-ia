@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Avanzado IA - Modelo Econométrico Klement</title>
+    <title>Simulador Avanzado IA - Modelo Econométrico Klement v2.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -46,32 +46,9 @@
             position: relative;
             z-index: 20;
         }
-        .match-pair-wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 3rem;
-            position: relative;
-        }
-        #bracket-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
-        }
         ::-webkit-scrollbar { width: 8px; height: 8px;}
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        .factor-badge {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            margin: 2px;
-            display: inline-block;
-        }
         .model-info {
             background: rgba(59, 130, 246, 0.1);
             border-left: 3px solid #3b82f6;
@@ -84,7 +61,7 @@
             @page { size: A4 landscape; margin: 5mm; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             body { background-color: #0b0f19 !important; color: #f1f5f9 !important; font-size: 10px; }
-            header, #simulateBtn, #printBtn, #manualSetupBtn, #toggleAdvancedBtn, #outsiderAlert, .no-print, #loginScreen, #manualClassificationPanel, #advancedOptionsContainer, #adminPanel, #paymentScreen {
+            header, #simulateBtn, #toggleAdvancedBtn, .no-print, #loginScreen, #adminPanel, #paymentScreen {
                 display: none !important;
             }
             #appContent { display: block !important; }
@@ -99,7 +76,7 @@
         <div class="text-center mb-6">
             <img src="logo estudiarte.jpeg" alt="Estudiarte" class="mx-auto h-24 w-24 object-contain rounded-full mb-3 border border-slate-700/60 shadow-lg" onerror="this.src='https://placehold.co/100x100?text=Estudiarte'">
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Acceso Autorizado</h2>
-            <p class="text-xs text-slate-400 mt-2">Modelo Econométrico Joachim Klement + Análisis FIFA</p>
+            <p class="text-xs text-slate-400 mt-2">Modelo Econométrico Joachim Klement + Valor de Mercado Transfermarkt</p>
             <div class="mt-4 bg-green-900/30 border border-green-500/50 rounded-lg p-2">
                 <p class="text-green-400 font-bold text-sm">
                     <i class="fas fa-dollar-sign mr-1"></i> Valor del sistema: <span class="text-white text-lg">$1,00 USD</span>
@@ -110,26 +87,21 @@
             <div>
                 <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Usuario</label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                        <i class="fas fa-user"></i>
-                    </span>
-                    <input type="text" id="usernameInput" placeholder="Nombre de usuario" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 transition duration-200">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fas fa-user"></i></span>
+                    <input type="text" id="usernameInput" placeholder="Nombre de usuario" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500">
                 </div>
             </div>
             <div>
                 <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Contraseña</label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                    <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 transition duration-200">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="passwordInput" placeholder="Contraseña" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500">
                 </div>
             </div>
             <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/40 border border-red-800/80 p-3 rounded-lg flex items-center space-x-2">
-                <i class="fas fa-exclamation-circle"></i>
-                <span>Usuario o contraseña incorrectos.</span>
+                <i class="fas fa-exclamation-circle"></i><span>Usuario o contraseña incorrectos.</span>
             </div>
-            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md transition duration-200 transform hover:scale-[1.02]">
+            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md transition duration-200">
                 Iniciar Sesión <i class="fas fa-sign-in-alt ml-1"></i>
             </button>
             <div class="text-center mt-4 pt-4 border-t border-slate-800">
@@ -143,21 +115,16 @@
     <!-- Payment Screen -->
     <div id="paymentScreen" class="hidden w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel border border-slate-700 shadow-2xl">
         <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-3xl mb-4">
-                <i class="fab fa-whatsapp"></i>
-            </div>
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-3xl mb-4"><i class="fab fa-whatsapp"></i></div>
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Acceso por $1 USD</h2>
             <p class="text-xs text-slate-400 mt-2">Contáctanos por WhatsApp para obtener tu código de acceso único</p>
         </div>
         <div class="space-y-4">
             <div>
                 <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Tu Número de WhatsApp</label>
-                <input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white focus:outline-none focus:border-green-500 transition duration-200">
+                <input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white focus:outline-none focus:border-green-500">
             </div>
-            <div id="paymentError" class="hidden text-xs text-red-400 bg-red-950/40 border border-red-800/80 p-3 rounded-lg">
-                <i class="fas fa-exclamation-circle"></i>
-                <span id="paymentErrorMsg">Complete el número de WhatsApp correctamente.</span>
-            </div>
+            <div id="paymentError" class="hidden text-xs text-red-400 bg-red-950/40 border border-red-800/80 p-3 rounded-lg"><span id="paymentErrorMsg"></span></div>
             <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-2.5 rounded-lg text-sm shadow-md transition duration-200">
                 <i class="fab fa-whatsapp mr-2"></i> Solicitar Acceso por WhatsApp
             </button>
@@ -177,32 +144,25 @@
         </div>
 
         <div id="adminPanel" class="hidden no-print glass-panel p-6 rounded-2xl border border-slate-700 mb-8">
-            <h2 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400 mb-6">
-                <i class="fas fa-users-cog mr-2"></i> Gestión de Usuarios
-            </h2>
+            <h2 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400 mb-6"><i class="fas fa-users-cog mr-2"></i> Gestión de Usuarios</h2>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="bg-slate-900/50 p-4 rounded-xl">
                     <h3 class="text-sm font-bold text-slate-300 mb-4">Crear Usuario</h3>
                     <div class="space-y-3">
-                        <input type="text" id="newUsername" placeholder="Usuario" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs focus:outline-none focus:border-blue-500">
-                        <input type="text" id="newPassword" placeholder="Contraseña" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs focus:outline-none focus:border-blue-500">
-                        <select id="newUserRole" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs focus:outline-none focus:border-blue-500">
-                            <option value="cliente">Cliente</option>
-                            <option value="admin">Administrador</option>
+                        <input type="text" id="newUsername" placeholder="Usuario" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs">
+                        <input type="text" id="newPassword" placeholder="Contraseña" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs">
+                        <select id="newUserRole" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs">
+                            <option value="cliente">Cliente</option><option value="admin">Administrador</option>
                         </select>
                         <div id="adminAddUserError" class="hidden text-xs text-red-400"></div>
-                        <button onclick="addUser()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded text-xs transition duration-200">
-                            Registrar
-                        </button>
+                        <button onclick="addUser()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded text-xs">Registrar</button>
                     </div>
                 </div>
                 <div class="lg:col-span-2 bg-slate-900/50 p-4 rounded-xl">
                     <h3 class="text-sm font-bold text-slate-300 mb-4">Usuarios Registrados</h3>
                     <div class="overflow-x-auto max-h-56">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-950 text-slate-400">
-                                <tr><th class="p-2">Usuario</th><th class="p-2">Contraseña</th><th class="p-2">Rol</th><th class="p-2">Acciones</th></tr>
-                            </thead>
+                            <thead class="bg-slate-950 text-slate-400"><tr><th class="p-2">Usuario</th><th class="p-2">Contraseña</th><th class="p-2">Rol</th><th class="p-2">Acciones</th></tr></thead>
                             <tbody id="usersTableBody"></tbody>
                         </table>
                     </div>
@@ -214,246 +174,127 @@
             <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-4">
                 <i class="fas fa-globe"></i> Simulador Predictivo IA Mundial
             </h1>
-            <p class="text-slate-400 mb-2"><strong>Modelo Econométrico Joachim Klement</strong> + Análisis Multivariable</p>
-            <p class="text-xs text-slate-500 mb-4">PIB • Población • Pedigrí • Ranking FIFA • Confederación • Racha Actual • Bajas • Clima • Altitud • Experiencia Web</p>
+            <p class="text-slate-400 mb-2"><strong>Modelo Econométrico Joachim Klement</strong> + Valor de Mercado Transfermarkt</p>
+            <p class="text-xs text-slate-500 mb-4">PIB • Población • Pedigrí • Ranking FIFA • Confederación • Valor Mercado • Racha • Bajas • Clima/Altitud</p>
             <div class="flex flex-wrap justify-center gap-4">
                 <button id="simulateBtn" onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-200 transform hover:scale-105">
                     <i class="fas fa-play mr-2"></i> Simular Torneo
-                </button>
-                <button id="toggleAdvancedBtn" onclick="toggleAdvancedOptions()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-6 rounded-full transition duration-200">
-                    <i class="fas fa-sliders-h mr-2"></i> Opciones Avanzadas
-                </button>
-            </div>
-            <div id="advancedOptionsContainer" class="hidden mt-4">
-                <button onclick="initManualBracketSetup()" class="bg-gradient-to-r from-amber-600 to-yellow-600 text-white font-bold py-2 px-6 rounded-full transition duration-200">
-                    <i class="fas fa-cogs mr-2"></i> Configurar Llaves
                 </button>
             </div>
         </header>
 
         <div id="modelInfo" class="model-info">
-            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-brain mr-2"></i>Variables del Modelo Klement:</div>
+            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-brain mr-2"></i>Variables del Modelo Klement + Transfermarkt:</div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-                <div>• <strong>PIB</strong>: Capacidad económica (30%)</div>
-                <div>• <strong>Población</strong>: Cantera de talento (20%)</div>
-                <div>• <strong>Pedigrí</strong>: Historial en mundiales (25%)</div>
-                <div>• <strong>Ranking FIFA</strong>: Posición actual (15%)</div>
-                <div>• <strong>Confederación</strong>: Fuerza relativa (5%)</div>
-                <div>• <strong>Racha</strong>: Últimos 12 meses (5%)</div>
-                <div>• <strong>Bajas</strong>: Jugadores lesionados (3%)</div>
-                <div>• <strong>Clima/Altitud</strong>: Condiciones locales (2%)</div>
+                <div>• <strong>PIB</strong>: Capacidad económica (25%)</div><div>• <strong>Población</strong>: Cantera de talento (15%)</div>
+                <div>• <strong>Pedigrí</strong>: Historial en mundiales (20%)</div><div>• <strong>Ranking FIFA</strong>: Posición actual (15%)</div>
+                <div>• <strong>Valor Mercado</strong>: Transfermarkt (10%)</div><div>• <strong>Confederación</strong>: Fuerza relativa (5%)</div>
+                <div>• <strong>Racha</strong>: Últimos 12 meses (5%)</div><div>• <strong>Bajas/Clima</strong>: Factores externos (5%)</div>
             </div>
         </div>
 
         <div id="loading" class="hidden text-center py-20">
             <i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i>
-            <h2 class="text-2xl text-slate-300">Analizando variables econométricas...</h2>
-        </div>
-
-        <div id="manualClassificationPanel" class="hidden glass-panel p-6 rounded-2xl mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-amber-400">Configurar Llaves</h2>
-                <button onclick="runBracketSimulationFromForm()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
-                    Simular Fase Final
-                </button>
-            </div>
-            <div id="bracketSetupGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+            <h2 class="text-2xl text-slate-300">Analizando variables econométricas y valor de mercado...</h2>
         </div>
 
         <div id="resultsContainer" class="hidden">
             <div id="groupsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"></div>
             <div id="thirdsContainer" class="glass-panel p-6 rounded-2xl mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-center text-amber-400">Mejores Terceros</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-800">
-                            <tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DG</th><th class="p-3">GF</th><th class="p-3">Fuerza</th></tr>
-                        </thead>
-                        <tbody id="thirdsTableBody"></tbody>
-                    </table>
-                </div>
+                <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DIF</th><th class="p-3">GF</th><th class="p-3">Fuerza</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
             </div>
             <div id="bracketsVisualPanel" class="glass-panel p-6 rounded-2xl mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final</h2>
                 <div class="bracket-container bg-slate-950/20 rounded-xl p-4">
-                    <svg id="bracket-svg"></svg>
                     <div class="bracket-column"><div class="text-center font-bold mb-4">Ronda 32</div><div id="colR32"></div></div>
                     <div class="bracket-column"><div class="text-center font-bold mb-4">Octavos</div><div id="colR16"></div></div>
                     <div class="bracket-column"><div class="text-center font-bold mb-4">Cuartos</div><div id="colR8"></div></div>
                     <div class="bracket-column"><div class="text-center font-bold mb-4">Semifinales</div><div id="colR4"></div></div>
-                    <div class="bracket-column">
-                        <div class="text-center font-bold mb-4">Finales</div>
-                        <div id="thirdPlaceMatch" class="bg-slate-900/90 rounded-xl p-4 mb-4"></div>
-                        <div id="finalMatch" class="bg-slate-900/90 border-2 border-yellow-500 rounded-xl p-4"></div>
-                    </div>
+                    <div class="bracket-column"><div class="text-center font-bold mb-4">Finales</div><div id="thirdPlaceMatch" class="bg-slate-900/90 rounded-xl p-4 mb-4"></div><div id="finalMatch" class="bg-slate-900/90 border-2 border-yellow-500 rounded-xl p-4"></div></div>
                 </div>
-                <div id="championSection" class="mt-12 text-center hidden">
-                    <div class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 p-8 rounded-3xl">
-                        <i class="fas fa-trophy text-6xl mb-4"></i>
-                        <h3 class="text-sm uppercase">Campeón del Mundo</h3>
-                        <h2 id="championName" class="text-4xl font-extrabold my-2">--</h2>
-                    </div>
-                </div>
+                <div id="championSection" class="mt-12 text-center hidden"><div class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 p-8 rounded-3xl"><i class="fas fa-trophy text-6xl mb-4"></i><h3 class="text-sm uppercase">Campeón del Mundo</h3><h2 id="championName" class="text-4xl font-extrabold my-2">--</h2></div></div>
             </div>
         </div>
     </div>
 
     <script>
-        // ==================== MODELO ECONOMÉTRICO JOACHIM KLEMENT ====================
-        
-        // Storage seguro
-        const safeStorage = {
-            _data: {},
-            getItem(key) {
-                try { return localStorage.getItem(key); } catch(e) { return this._data[key] || null; }
-            },
-            setItem(key, value) {
-                try { localStorage.setItem(key, value); } catch(e) { this._data[key] = String(value); }
-            }
-        };
-
-        // Inicializar usuarios
-        if (!safeStorage.getItem('sim_users')) {
-            safeStorage.setItem('sim_users', JSON.stringify([
-                { username: "Mundial", password: "2026", role: "admin" },
-                { username: "invitado", password: "123", role: "cliente" }
-            ]));
-        }
-
-        function getUsers() {
-            try {
-                const stored = safeStorage.getItem('sim_users');
-                if (stored && Array.isArray(JSON.parse(stored))) return JSON.parse(stored);
-            } catch(e) {}
-            return [{ username: "Mundial", password: "2026", role: "admin" }];
-        }
-
+        // ==================== STORAGE ====================
+        const safeStorage = { _data: {}, getItem(key) { try { return localStorage.getItem(key); } catch(e) { return this._data[key] || null; } }, setItem(key, value) { try { localStorage.setItem(key, value); } catch(e) { this._data[key] = String(value); } } };
+        if (!safeStorage.getItem('sim_users')) safeStorage.setItem('sim_users', JSON.stringify([{ username: "Mundial", password: "2026", role: "admin" }, { username: "invitado", password: "123", role: "cliente" }]));
+        function getUsers() { try { const stored = safeStorage.getItem('sim_users'); if (stored && Array.isArray(JSON.parse(stored))) return JSON.parse(stored); } catch(e) {} return [{ username: "Mundial", password: "2026", role: "admin" }]; }
         function saveUsers(users) { safeStorage.setItem('sim_users', JSON.stringify(users)); }
+        let loggedInUser = null, lastSimulatedQualifiedTeams = [];
 
-        let loggedInUser = null;
-        let lastSimulatedQualifiedTeams = [];
+        // ==================== RANKING FIFA ====================
+        const fifaRanking = { "Argentina":1,"Francia":2,"Inglaterra":3,"Bélgica":4,"Países Bajos":5,"Brasil":6,"Alemania":7,"España":8,"Italia":9,"Portugal":10,"Uruguay":11,"Suiza":12,"Dinamarca":13,"Croacia":14,"Senegal":15,"Japón":16,"Corea del Sur":17,"Marruecos":18,"Polonia":19,"Nigeria":20,"Colombia":21,"México":22,"Austria":23,"Camerún":24,"Túnez":25,"Irán":26,"Australia":27,"Irak":28,"Nueva Zelanda":29,"Costa Rica":31,"Panamá":32,"Jamaica":33,"Serbia":35,"República Checa":36,"Suecia":37,"Ucrania":38,"Arabia Saudita":41,"Costa de Marfil":42,"Ecuador":43,"Paraguay":44,"Ghana":45,"Perú":47,"Bolivia":48,"Sudáfrica":49,"Bosnia y Herzegovina":50,"Qatar":51,"Haití":52,"Escocia":53,"Turquía":54,"Argelia":55,"Uzbekistán":56,"Jordania":57,"Noruega":58,"Curazao":59,"Cabo Verde":60,"R.D. Congo":61,"Estados Unidos":13,"Canadá":43 };
+        
+        const confederationData = { "AFC":0.85,"CAF":0.75,"CONCACAF":0.80,"CONMEBOL":0.92,"UEFA":0.95,"OFC":0.50 };
 
-        // ==================== RANKING FIFA 2025 (Real) ====================
-        const fifaRanking = {
-            "Argentina": 1, "Francia": 2, "Inglaterra": 3, "Bélgica": 4,
-            "Países Bajos": 5, "Brasil": 6, "Alemania": 7, "España": 8,
-            "Italia": 9, "Portugal": 10, "Uruguay": 11, "Suiza": 12,
-            "Dinamarca": 13, "Croacia": 14, "Senegal": 15, "Japón": 16,
-            "Corea del Sur": 17, "Marruecos": 18, "Polonia": 19, "Nigeria": 20,
-            "Colombia": 21, "México": 22, "Austria": 23, "Camerún": 24,
-            "Túnez": 25, "Irán": 26, "Australia": 27, "Irak": 28,
-            "Nueva Zelanda": 29, "Emiratos Árabes": 30, "Costa Rica": 31,
-            "Panamá": 32, "Jamaica": 33, "Gales": 34, "Serbia": 35,
-            "República Checa": 36, "Suecia": 37, "Ucrania": 38,
-            "Eslovaquia": 39, "Rumania": 40, "Arabia Saudita": 41,
-            "Costa de Marfil": 42, "Ecuador": 43, "Paraguay": 44,
-            "Ghana": 45, "Mali": 46, "Perú": 47, "Bolivia": 48,
-            "Sudáfrica": 49, "Bosnia y Herzegovina": 50, "Qatar": 51,
-            "Haití": 52, "Escocia": 53, "Turquía": 54, "Argelia": 55,
-            "Uzbekistán": 56, "Jordania": 57, "Noruega": 58, "Curazao": 59,
-            "Cabo Verde": 60, "R.D. Congo": 61
-        };
-
-        // ==================== DATOS DE CONFEDERACIONES ====================
-        const confederationData = {
-            "AFC": { strength: 0.85, averageRanking: 32 },
-            "CAF": { strength: 0.75, averageRanking: 28 },
-            "CONCACAF": { strength: 0.80, averageRanking: 30 },
-            "CONMEBOL": { strength: 0.92, averageRanking: 18 },
-            "UEFA": { strength: 0.95, averageRanking: 22 },
-            "OFC": { strength: 0.50, averageRanking: 45 }
-        };
-
-        // ==================== DATOS AVANZADOS DE EQUIPOS ====================
+        // ==================== DATOS CON VALOR DE MERCADO (Transfermarkt en millones USD) ====================
         const teamsData = {
-            // AFC
-            "Japón": { pib: 4.23, poblacion: 125.7, pedigree: 85, localia: 70, confederacion: "AFC", racha: 0.78, bajas: 2, clima: "templado", altitud: 0 },
-            "Corea del Sur": { pib: 1.81, poblacion: 51.7, pedigree: 80, localia: 70, confederacion: "AFC", racha: 0.75, bajas: 1, clima: "templado", altitud: 0 },
-            "Australia": { pib: 1.55, poblacion: 25.7, pedigree: 75, localia: 65, confederacion: "AFC", racha: 0.72, bajas: 0, clima: "tropical", altitud: 0 },
-            "Irán": { pib: 0.41, poblacion: 85.0, pedigree: 70, localia: 60, confederacion: "AFC", racha: 0.68, bajas: 3, clima: "desértico", altitud: 1200 },
-            "Arabia Saudita": { pib: 0.83, poblacion: 35.0, pedigree: 65, localia: 85, confederacion: "AFC", racha: 0.65, bajas: 2, clima: "desértico", altitud: 600 },
-            "Qatar": { pib: 0.18, poblacion: 2.9, pedigree: 60, localia: 90, confederacion: "AFC", racha: 0.62, bajas: 4, clima: "desértico", altitud: 0 },
-            "Irak": { pib: 0.27, poblacion: 40.0, pedigree: 55, localia: 60, confederacion: "AFC", racha: 0.55, bajas: 2, clima: "desértico", altitud: 30 },
-            "Uzbekistán": { pib: 0.36, poblacion: 33.5, pedigree: 45, localia: 70, confederacion: "AFC", racha: 0.60, bajas: 2, clima: "desértico", altitud: 500 },
-            "Jordania": { pib: 0.04, poblacion: 10.2, pedigree: 48, localia: 65, confederacion: "AFC", racha: 0.52, bajas: 2, clima: "desértico", altitud: 800 },
-            // CAF
-            "Marruecos": { pib: 0.13, poblacion: 37.1, pedigree: 70, localia: 75, confederacion: "CAF", racha: 0.82, bajas: 1, clima: "desértico", altitud: 200 },
-            "Senegal": { pib: 0.03, poblacion: 17.4, pedigree: 68, localia: 80, confederacion: "CAF", racha: 0.80, bajas: 2, clima: "tropical", altitud: 0 },
-            "Túnez": { pib: 0.05, poblacion: 11.8, pedigree: 65, localia: 75, confederacion: "CAF", racha: 0.70, bajas: 1, clima: "desértico", altitud: 0 },
-            "Camerún": { pib: 0.04, poblacion: 26.5, pedigree: 72, localia: 70, confederacion: "CAF", racha: 0.72, bajas: 2, clima: "tropical", altitud: 600 },
-            "Nigeria": { pib: 0.44, poblacion: 211.4, pedigree: 75, localia: 70, confederacion: "CAF", racha: 0.75, bajas: 3, clima: "tropical", altitud: 0 },
-            "Egipto": { pib: 0.40, poblacion: 102.3, pedigree: 70, localia: 70, confederacion: "CAF", racha: 0.68, bajas: 2, clima: "desértico", altitud: 0 },
-            "Ghana": { pib: 0.07, poblacion: 31.1, pedigree: 68, localia: 70, confederacion: "CAF", racha: 0.65, bajas: 2, clima: "tropical", altitud: 0 },
-            "Costa de Marfil": { pib: 0.07, poblacion: 27.5, pedigree: 72, localia: 70, confederacion: "CAF", racha: 0.70, bajas: 1, clima: "tropical", altitud: 0 },
-            "R.D. Congo": { pib: 0.02, poblacion: 99.0, pedigree: 45, localia: 65, confederacion: "CAF", racha: 0.52, bajas: 3, clima: "tropical", altitud: 0 },
-            "Sudáfrica": { pib: 0.43, poblacion: 60.0, pedigree: 60, localia: 75, confederacion: "CAF", racha: 0.62, bajas: 2, clima: "templado", altitud: 1750 },
-            "Haití": { pib: 0.01, poblacion: 11.4, pedigree: 50, localia: 70, confederacion: "CAF", racha: 0.45, bajas: 2, clima: "tropical", altitud: 0 },
-            "Cabo Verde": { pib: 0.002, poblacion: 0.56, pedigree: 40, localia: 70, confederacion: "CAF", racha: 0.48, bajas: 1, clima: "tropical", altitud: 0 },
-            "Argelia": { pib: 0.19, poblacion: 44.9, pedigree: 55, localia: 70, confederacion: "CAF", racha: 0.58, bajas: 2, clima: "desértico", altitud: 300 },
-            // CONCACAF
-            "México": { pib: 1.27, poblacion: 128.9, pedigree: 85, localia: 95, confederacion: "CONCACAF", racha: 0.80, bajas: 1, clima: "templado", altitud: 2250 },
-            "Estados Unidos": { pib: 25.35, poblacion: 331.9, pedigree: 80, localia: 95, confederacion: "CONCACAF", racha: 0.85, bajas: 2, clima: "templado", altitud: 500 },
-            "Canadá": { pib: 2.14, poblacion: 38.0, pedigree: 65, localia: 85, confederacion: "CONCACAF", racha: 0.75, bajas: 1, clima: "frío", altitud: 200 },
-            "Costa Rica": { pib: 0.06, poblacion: 5.1, pedigree: 68, localia: 80, confederacion: "CONCACAF", racha: 0.68, bajas: 1, clima: "tropical", altitud: 1200 },
-            "Panamá": { pib: 0.07, poblacion: 4.3, pedigree: 55, localia: 75, confederacion: "CONCACAF", racha: 0.60, bajas: 2, clima: "tropical", altitud: 0 },
-            "Jamaica": { pib: 0.02, poblacion: 2.9, pedigree: 50, localia: 70, confederacion: "CONCACAF", racha: 0.55, bajas: 2, clima: "tropical", altitud: 0 },
-            "Curazao": { pib: 0.006, poblacion: 0.15, pedigree: 40, localia: 65, confederacion: "CONCACAF", racha: 0.48, bajas: 2, clima: "tropical", altitud: 0 },
-            // CONMEBOL
-            "Brasil": { pib: 1.89, poblacion: 213.0, pedigree: 100, localia: 70, confederacion: "CONMEBOL", racha: 0.88, bajas: 2, clima: "tropical", altitud: 0 },
-            "Argentina": { pib: 0.63, poblacion: 45.8, pedigree: 98, localia: 70, confederacion: "CONMEBOL", racha: 0.95, bajas: 0, clima: "templado", altitud: 0 },
-            "Uruguay": { pib: 0.06, poblacion: 3.5, pedigree: 95, localia: 70, confederacion: "CONMEBOL", racha: 0.72, bajas: 1, clima: "templado", altitud: 0 },
-            "Colombia": { pib: 0.34, poblacion: 50.9, pedigree: 85, localia: 75, confederacion: "CONMEBOL", racha: 0.78, bajas: 2, clima: "tropical", altitud: 2640 },
-            "Ecuador": { pib: 0.11, poblacion: 17.6, pedigree: 70, localia: 90, confederacion: "CONMEBOL", racha: 0.70, bajas: 2, clima: "tropical", altitud: 2800 },
-            "Paraguay": { pib: 0.04, poblacion: 7.1, pedigree: 75, localia: 75, confederacion: "CONMEBOL", racha: 0.65, bajas: 3, clima: "subtropical", altitud: 0 },
-            // UEFA
-            "Francia": { pib: 2.94, poblacion: 67.8, pedigree: 95, localia: 70, confederacion: "UEFA", racha: 0.82, bajas: 1, clima: "templado", altitud: 0 },
-            "España": { pib: 1.39, poblacion: 47.4, pedigree: 92, localia: 75, confederacion: "UEFA", racha: 0.80, bajas: 1, clima: "templado", altitud: 0 },
-            "Alemania": { pib: 4.26, poblacion: 83.2, pedigree: 96, localia: 75, confederacion: "UEFA", racha: 0.78, bajas: 2, clima: "templado", altitud: 0 },
-            "Inglaterra": { pib: 3.13, poblacion: 56.3, pedigree: 90, localia: 75, confederacion: "UEFA", racha: 0.85, bajas: 1, clima: "templado", altitud: 0 },
-            "Países Bajos": { pib: 1.01, poblacion: 17.5, pedigree: 88, localia: 75, confederacion: "UEFA", racha: 0.75, bajas: 2, clima: "templado", altitud: 0 },
-            "Portugal": { pib: 0.25, poblacion: 10.3, pedigree: 85, localia: 80, confederacion: "UEFA", racha: 0.82, bajas: 1, clima: "templado", altitud: 0 },
-            "Bélgica": { pib: 0.58, poblacion: 11.6, pedigree: 86, localia: 75, confederacion: "UEFA", racha: 0.70, bajas: 3, clima: "templado", altitud: 0 },
-            "Croacia": { pib: 0.07, poblacion: 4.0, pedigree: 84, localia: 75, confederacion: "UEFA", racha: 0.72, bajas: 1, clima: "templado", altitud: 0 },
-            "Italia": { pib: 2.06, poblacion: 59.2, pedigree: 94, localia: 75, confederacion: "UEFA", racha: 0.68, bajas: 2, clima: "templado", altitud: 0 },
-            "Suiza": { pib: 0.81, poblacion: 8.6, pedigree: 80, localia: 75, confederacion: "UEFA", racha: 0.75, bajas: 1, clima: "frío", altitud: 500 },
-            "Dinamarca": { pib: 0.40, poblacion: 5.8, pedigree: 78, localia: 75, confederacion: "UEFA", racha: 0.72, bajas: 2, clima: "frío", altitud: 0 },
-            "Polonia": { pib: 0.69, poblacion: 37.8, pedigree: 75, localia: 75, confederacion: "UEFA", racha: 0.68, bajas: 2, clima: "frío", altitud: 100 },
-            "Serbia": { pib: 0.06, poblacion: 6.9, pedigree: 70, localia: 75, confederacion: "UEFA", racha: 0.65, bajas: 2, clima: "templado", altitud: 100 },
-            "Suecia": { pib: 0.59, poblacion: 10.1, pedigree: 72, localia: 65, confederacion: "UEFA", racha: 0.62, bajas: 2, clima: "frío", altitud: 0 },
-            "Ucrania": { pib: 0.20, poblacion: 43.7, pedigree: 65, localia: 60, confederacion: "UEFA", racha: 0.50, bajas: 4, clima: "templado", altitud: 0 },
-            "República Checa": { pib: 0.28, poblacion: 10.7, pedigree: 68, localia: 70, confederacion: "UEFA", racha: 0.63, bajas: 2, clima: "templado", altitud: 200 },
-            "Austria": { pib: 0.52, poblacion: 9.0, pedigree: 65, localia: 75, confederacion: "UEFA", racha: 0.70, bajas: 2, clima: "templado", altitud: 300 },
-            "Bosnia y Herzegovina": { pib: 0.02, poblacion: 3.3, pedigree: 50, localia: 70, confederacion: "UEFA", racha: 0.55, bajas: 2, clima: "templado", altitud: 500 },
-            "Escocia": { pib: 0.30, poblacion: 5.5, pedigree: 60, localia: 80, confederacion: "UEFA", racha: 0.58, bajas: 2, clima: "frío", altitud: 0 },
-            "Turquía": { pib: 0.77, poblacion: 85.0, pedigree: 62, localia: 75, confederacion: "UEFA", racha: 0.68, bajas: 2, clima: "templado", altitud: 0 },
-            "Noruega": { pib: 0.51, poblacion: 5.5, pedigree: 55, localia: 80, confederacion: "UEFA", racha: 0.52, bajas: 2, clima: "frío", altitud: 0 },
-            // OFC
-            "Nueva Zelanda": { pib: 0.25, poblacion: 5.1, pedigree: 60, localia: 60, confederacion: "OFC", racha: 0.58, bajas: 1, clima: "templado", altitud: 0 }
+            "Argentina": { pib:0.63, poblacion:45.8, pedigree:98, valorMercado:750, confederacion:"CONMEBOL", racha:0.95, bajas:0, clima:"templado", altitud:0 },
+            "Francia": { pib:2.94, poblacion:67.8, pedigree:95, valorMercado:1200, confederacion:"UEFA", racha:0.82, bajas:1, clima:"templado", altitud:0 },
+            "Inglaterra": { pib:3.13, poblacion:56.3, pedigree:90, valorMercado:1400, confederacion:"UEFA", racha:0.85, bajas:1, clima:"templado", altitud:0 },
+            "Bélgica": { pib:0.58, poblacion:11.6, pedigree:86, valorMercado:450, confederacion:"UEFA", racha:0.70, bajas:3, clima:"templado", altitud:0 },
+            "Países Bajos": { pib:1.01, poblacion:17.5, pedigree:88, valorMercado:650, confederacion:"UEFA", racha:0.75, bajas:2, clima:"templado", altitud:0 },
+            "Brasil": { pib:1.89, poblacion:213.0, pedigree:100, valorMercado:1100, confederacion:"CONMEBOL", racha:0.88, bajas:2, clima:"tropical", altitud:0 },
+            "Alemania": { pib:4.26, poblacion:83.2, pedigree:96, valorMercado:800, confederacion:"UEFA", racha:0.78, bajas:2, clima:"templado", altitud:0 },
+            "España": { pib:1.39, poblacion:47.4, pedigree:92, valorMercado:900, confederacion:"UEFA", racha:0.80, bajas:1, clima:"templado", altitud:0 },
+            "Italia": { pib:2.06, poblacion:59.2, pedigree:94, valorMercado:700, confederacion:"UEFA", racha:0.68, bajas:2, clima:"templado", altitud:0 },
+            "Portugal": { pib:0.25, poblacion:10.3, pedigree:85, valorMercado:550, confederacion:"UEFA", racha:0.82, bajas:1, clima:"templado", altitud:0 },
+            "Uruguay": { pib:0.06, poblacion:3.5, pedigree:95, valorMercado:380, confederacion:"CONMEBOL", racha:0.72, bajas:1, clima:"templado", altitud:0 },
+            "Suiza": { pib:0.81, poblacion:8.6, pedigree:80, valorMercado:280, confederacion:"UEFA", racha:0.75, bajas:1, clima:"frío", altitud:500 },
+            "Croacia": { pib:0.07, poblacion:4.0, pedigree:84, valorMercado:350, confederacion:"UEFA", racha:0.72, bajas:1, clima:"templado", altitud:0 },
+            "Senegal": { pib:0.03, poblacion:17.4, pedigree:68, valorMercado:300, confederacion:"CAF", racha:0.80, bajas:2, clima:"tropical", altitud:0 },
+            "Japón": { pib:4.23, poblacion:125.7, pedigree:85, valorMercado:200, confederacion:"AFC", racha:0.78, bajas:2, clima:"templado", altitud:0 },
+            "Corea del Sur": { pib:1.81, poblacion:51.7, pedigree:80, valorMercado:150, confederacion:"AFC", racha:0.75, bajas:1, clima:"templado", altitud:0 },
+            "Marruecos": { pib:0.13, poblacion:37.1, pedigree:70, valorMercado:250, confederacion:"CAF", racha:0.82, bajas:1, clima:"desértico", altitud:200 },
+            "Colombia": { pib:0.34, poblacion:50.9, pedigree:85, valorMercado:280, confederacion:"CONMEBOL", racha:0.78, bajas:2, clima:"tropical", altitud:2640 },
+            "México": { pib:1.27, poblacion:128.9, pedigree:85, valorMercado:200, confederacion:"CONCACAF", racha:0.80, bajas:1, clima:"templado", altitud:2250 },
+            "Austria": { pib:0.52, poblacion:9.0, pedigree:65, valorMercado:150, confederacion:"UEFA", racha:0.70, bajas:2, clima:"templado", altitud:300 },
+            "Ecuador": { pib:0.11, poblacion:17.6, pedigree:70, valorMercado:100, confederacion:"CONMEBOL", racha:0.70, bajas:2, clima:"tropical", altitud:2800 },
+            "Paraguay": { pib:0.04, poblacion:7.1, pedigree:75, valorMercado:80, confederacion:"CONMEBOL", racha:0.65, bajas:3, clima:"subtropical", altitud:0 },
+            "Australia": { pib:1.55, poblacion:25.7, pedigree:75, valorMercado:70, confederacion:"AFC", racha:0.72, bajas:0, clima:"tropical", altitud:0 },
+            "Turquía": { pib:0.77, poblacion:85.0, pedigree:62, valorMercado:180, confederacion:"UEFA", racha:0.68, bajas:2, clima:"templado", altitud:0 },
+            "Canadá": { pib:2.14, poblacion:38.0, pedigree:65, valorMercado:120, confederacion:"CONCACAF", racha:0.75, bajas:1, clima:"frío", altitud:200 },
+            "Estados Unidos": { pib:25.35, poblacion:331.9, pedigree:80, valorMercado:300, confederacion:"CONCACAF", racha:0.85, bajas:2, clima:"templado", altitud:500 },
+            "Costa de Marfil": { pib:0.07, poblacion:27.5, pedigree:72, valorMercado:120, confederacion:"CAF", racha:0.70, bajas:1, clima:"tropical", altitud:0 },
+            "Irán": { pib:0.41, poblacion:85.0, pedigree:70, valorMercado:50, confederacion:"AFC", racha:0.68, bajas:3, clima:"desértico", altitud:1200 },
+            "Nueva Zelanda": { pib:0.25, poblacion:5.1, pedigree:60, valorMercado:30, confederacion:"OFC", racha:0.58, bajas:1, clima:"templado", altitud:0 },
+            "Egipto": { pib:0.40, poblacion:102.3, pedigree:70, valorMercado:100, confederacion:"CAF", racha:0.68, bajas:2, clima:"desértico", altitud:0 },
+            "Arabia Saudita": { pib:0.83, poblacion:35.0, pedigree:65, valorMercado:80, confederacion:"AFC", racha:0.65, bajas:2, clima:"desértico", altitud:600 },
+            "Qatar": { pib:0.18, poblacion:2.9, pedigree:60, valorMercado:40, confederacion:"AFC", racha:0.62, bajas:4, clima:"desértico", altitud:0 },
+            "Bosnia y Herzegovina": { pib:0.02, poblacion:3.3, pedigree:50, valorMercado:60, confederacion:"UEFA", racha:0.55, bajas:2, clima:"templado", altitud:500 },
+            "Escocia": { pib:0.30, poblacion:5.5, pedigree:60, valorMercado:90, confederacion:"UEFA", racha:0.58, bajas:2, clima:"frío", altitud:0 },
+            "Haití": { pib:0.01, poblacion:11.4, pedigree:50, valorMercado:10, confederacion:"CAF", racha:0.45, bajas:2, clima:"tropical", altitud:0 },
+            "Cabo Verde": { pib:0.002, poblacion:0.56, pedigree:40, valorMercado:5, confederacion:"CAF", racha:0.48, bajas:1, clima:"tropical", altitud:0 },
+            "Uzbekistán": { pib:0.36, poblacion:33.5, pedigree:45, valorMercado:25, confederacion:"AFC", racha:0.60, bajas:2, clima:"desértico", altitud:500 },
+            "Jordania": { pib:0.04, poblacion:10.2, pedigree:48, valorMercado:8, confederacion:"AFC", racha:0.52, bajas:2, clima:"desértico", altitud:800 },
+            "Curazao": { pib:0.006, poblacion:0.15, pedigree:40, valorMercado:3, confederacion:"CONCACAF", racha:0.48, bajas:2, clima:"tropical", altitud:0 },
+            "R.D. Congo": { pib:0.02, poblacion:99.0, pedigree:45, valorMercado:15, confederacion:"CAF", racha:0.52, bajas:3, clima:"tropical", altitud:0 },
+            "Sudáfrica": { pib:0.43, poblacion:60.0, pedigree:60, valorMercado:45, confederacion:"CAF", racha:0.62, bajas:2, clima:"templado", altitud:1750 },
+            "Ghana": { pib:0.07, poblacion:31.1, pedigree:68, valorMercado:100, confederacion:"CAF", racha:0.65, bajas:2, clima:"tropical", altitud:0 },
+            "Panamá": { pib:0.07, poblacion:4.3, pedigree:55, valorMercado:15, confederacion:"CONCACAF", racha:0.60, bajas:2, clima:"tropical", altitud:0 },
+            "República Checa": { pib:0.28, poblacion:10.7, pedigree:68, valorMercado:120, confederacion:"UEFA", racha:0.63, bajas:2, clima:"templado", altitud:200 },
+            "Suecia": { pib:0.59, poblacion:10.1, pedigree:72, valorMercado:150, confederacion:"UEFA", racha:0.62, bajas:2, clima:"frío", altitud:0 },
+            "Túnez": { pib:0.05, poblacion:11.8, pedigree:65, valorMercado:40, confederacion:"CAF", racha:0.70, bajas:1, clima:"desértico", altitud:0 },
+            "Noruega": { pib:0.51, poblacion:5.5, pedigree:55, valorMercado:180, confederacion:"UEFA", racha:0.52, bajas:2, clima:"frío", altitud:0 },
+            "Irak": { pib:0.27, poblacion:40.0, pedigree:55, valorMercado:15, confederacion:"AFC", racha:0.55, bajas:2, clima:"desértico", altitud:30 },
+            "Argelia": { pib:0.19, poblacion:44.9, pedigree:55, valorMercado:80, confederacion:"CAF", racha:0.58, bajas:2, clima:"desértico", altitud:300 }
         };
 
-        // ==================== MODELO DE CÁLCULO ECONOMÉTRICO ====================
         function calculateTeamStrength(team) {
             const data = teamsData[team];
             if (!data) return 50;
-
-            // Componentes del modelo Klement
             const pibScore = (Math.log(data.pib + 0.1) + 2) / 5 * 100;
             const poblacionScore = Math.min(100, Math.log(data.poblacion) / 5 * 100);
-            
-            // Ranking FIFA (15%)
             const fifaPos = fifaRanking[team] || 48;
-            const fifaScore = Math.max(0, 100 - (fifaPos * 2));
-            
-            // Confederación (5%)
-            const confData = confederationData[data.confederacion] || { strength: 0.70 };
-            const confScore = confData.strength * 100;
-            
-            // Racha últimos 12 meses (5%)
+            const fifaScore = Math.max(0, 100 - (fifaPos * 1.5));
+            const confScore = (confederationData[data.confederacion] || 0.70) * 100;
             const rachaScore = data.racha * 100;
-            
-            // Modelo Klement ponderado
-            const fuerza = (pibScore * 0.30) + (poblacionScore * 0.20) + (data.pedigree * 0.25) + (fifaScore * 0.15) + (confScore * 0.05) + (rachaScore * 0.05);
-            
+            const valorScore = Math.min(100, (data.valorMercado / 15) * 100);
+            const fuerza = (pibScore * 0.25) + (poblacionScore * 0.15) + (data.pedigree * 0.20) + (fifaScore * 0.15) + (valorScore * 0.10) + (confScore * 0.05) + (rachaScore * 0.10);
             return Math.min(99, Math.max(1, fuerza));
         }
 
@@ -461,133 +302,19 @@
             const strength1 = calculateTeamStrength(team1);
             const strength2 = calculateTeamStrength(team2);
             const prob1 = strength1 / (strength1 + strength2);
-            
             let goals1 = 0, goals2 = 0;
             for (let i = 0; i < 90; i += 10) {
-                if (Math.random() < prob1 * 0.15) goals1++;
-                if (Math.random() < (1 - prob1) * 0.15) goals2++;
+                if (Math.random() < prob1 * 0.18) goals1++;
+                if (Math.random() < (1 - prob1) * 0.18) goals2++;
             }
-            
             if (isKnockout && goals1 === goals2) {
                 const penalties = Math.random() < prob1;
-                if (penalties) goals1++;
-                else goals2++;
+                if (penalties) goals1++; else goals2++;
             }
-            
             return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2 };
         }
 
-        // ==================== FUNCIONES DE UI ====================
-        function showPaymentScreen() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('paymentScreen').classList.remove('hidden');
-        }
-
-        function showLoginScreen() {
-            document.getElementById('paymentScreen').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
-        }
-
-        function openWhatsAppPurchase() {
-            window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent('Quiero adquirir el acceso al simulador por $1 USD')}`, '_blank');
-        }
-
-        function requestPaymentWhatsAppOnly() {
-            const whatsapp = document.getElementById('paymentWhatsapp').value.trim();
-            if (!whatsapp) {
-                document.getElementById('paymentErrorMsg').innerText = 'Ingrese su número de WhatsApp';
-                document.getElementById('paymentError').classList.remove('hidden');
-                return;
-            }
-            window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent(`Compro acceso. Mi WhatsApp: ${whatsapp}`)}`, '_blank');
-            alert("Solicitud enviada. Serás redirigido a WhatsApp.");
-        }
-
-        function attemptLogin() {
-            const username = document.getElementById('usernameInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
-            const users = getUsers();
-            const found = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
-            if (found) {
-                loggedInUser = found;
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('appContent').classList.remove('hidden');
-                document.body.classList.remove('flex', 'flex-col', 'justify-center');
-                applyRoleUI();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-            }
-        }
-
-        function applyRoleUI() {
-            const adminPanel = document.getElementById('adminPanel');
-            const userLabel = document.getElementById('currentUserLabel');
-            userLabel.innerHTML = `<span class="mr-2 px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role === 'admin' ? 'bg-indigo-600/30 text-indigo-400' : 'bg-blue-600/30 text-blue-400'}"><i class="fas fa-user mr-1"></i>${loggedInUser.username} (${loggedInUser.role})</span>`;
-            if (loggedInUser.role === 'admin') {
-                adminPanel.classList.remove('hidden');
-                renderAdminUsers();
-            } else {
-                adminPanel.classList.add('hidden');
-            }
-        }
-
-        function logout() {
-            loggedInUser = null;
-            document.getElementById('appContent').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.body.classList.add('flex', 'flex-col', 'justify-center');
-        }
-
-        function renderAdminUsers() {
-            const users = getUsers();
-            const tbody = document.getElementById('usersTableBody');
-            tbody.innerHTML = '';
-            users.forEach((u, idx) => {
-                const isProtected = u.username.toLowerCase() === 'mundial';
-                tbody.innerHTML += `<tr class="border-b border-slate-800">
-                    <td class="p-3">${u.username}</td>
-                    <td class="p-3">${u.password}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-xs ${u.role === 'admin' ? 'bg-indigo-600/30 text-indigo-400' : 'bg-blue-600/30 text-blue-400'}">${u.role}</span></td>
-                    <td class="p-3 text-right">${!isProtected ? `<button onclick="deleteUser(${idx})" class="text-red-400 hover:text-red-300">Eliminar</button>` : '<span class="text-slate-500">Protegido</span>'}</td>
-                </tr>`;
-            });
-        }
-
-        function addUser() {
-            const name = document.getElementById('newUsername').value.trim();
-            const pass = document.getElementById('newPassword').value.trim();
-            const role = document.getElementById('newUserRole').value;
-            if (!name || !pass) {
-                document.getElementById('adminAddUserError').innerText = 'Complete todos los campos';
-                document.getElementById('adminAddUserError').classList.remove('hidden');
-                return;
-            }
-            let users = getUsers();
-            if (users.some(u => u.username.toLowerCase() === name.toLowerCase())) {
-                document.getElementById('adminAddUserError').innerText = 'Usuario ya existe';
-                document.getElementById('adminAddUserError').classList.remove('hidden');
-                return;
-            }
-            users.push({ username: name, password: pass, role: role });
-            saveUsers(users);
-            document.getElementById('newUsername').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('adminAddUserError').classList.add('hidden');
-            renderAdminUsers();
-        }
-
-        function deleteUser(index) {
-            let users = getUsers();
-            users.splice(index, 1);
-            saveUsers(users);
-            renderAdminUsers();
-        }
-
-        function toggleAdvancedOptions() {
-            document.getElementById('advancedOptionsContainer').classList.toggle('hidden');
-        }
-
-        // ==================== GRUPOS DEL MUNDIAL 2026 (ACTUALIZADOS) ====================
+        // ==================== GRUPOS ACTUALIZADOS ====================
         const groups = {
             "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
             "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
@@ -603,14 +330,23 @@
             "L": ["Inglaterra", "Croacia", "Ghana", "Panamá"]
         };
 
-        // ==================== SIMULACIÓN PRINCIPAL ====================
+        // ==================== UI FUNCTIONS ====================
+        function showPaymentScreen() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('paymentScreen').classList.remove('hidden'); }
+        function showLoginScreen() { document.getElementById('paymentScreen').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
+        function openWhatsAppPurchase() { window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent('Quiero adquirir el acceso al simulador por $1 USD')}`, '_blank'); }
+        function requestPaymentWhatsAppOnly() { const whatsapp = document.getElementById('paymentWhatsapp').value.trim(); if (!whatsapp) { document.getElementById('paymentErrorMsg').innerText = 'Ingrese su número'; document.getElementById('paymentError').classList.remove('hidden'); return; } window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent(`Compro acceso. Mi WhatsApp: ${whatsapp}`)}`, '_blank'); alert("Solicitud enviada."); }
+        function attemptLogin() { const username = document.getElementById('usernameInput').value.trim(); const password = document.getElementById('passwordInput').value.trim(); const users = getUsers(); const found = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password); if (found) { loggedInUser = found; document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('appContent').classList.remove('hidden'); document.body.classList.remove('flex', 'flex-col', 'justify-center'); applyRoleUI(); } else { document.getElementById('loginError').classList.remove('hidden'); } }
+        function applyRoleUI() { const adminPanel = document.getElementById('adminPanel'); const userLabel = document.getElementById('currentUserLabel'); userLabel.innerHTML = `<span class="mr-2 px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role === 'admin' ? 'bg-indigo-600/30 text-indigo-400' : 'bg-blue-600/30 text-blue-400'}"><i class="fas fa-user mr-1"></i>${loggedInUser.username} (${loggedInUser.role})</span>`; if (loggedInUser.role === 'admin') { adminPanel.classList.remove('hidden'); renderAdminUsers(); } else { adminPanel.classList.add('hidden'); } }
+        function logout() { loggedInUser = null; document.getElementById('appContent').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); document.body.classList.add('flex', 'flex-col', 'justify-center'); }
+        function renderAdminUsers() { const users = getUsers(); const tbody = document.getElementById('usersTableBody'); tbody.innerHTML = ''; users.forEach((u, idx) => { const isProtected = u.username.toLowerCase() === 'mundial'; tbody.innerHTML += `<tr class="border-b border-slate-800"><td class="p-3">${u.username}</td><td class="p-3">${u.password}</td><td class="p-3"><span class="px-2 py-0.5 rounded text-xs ${u.role === 'admin' ? 'bg-indigo-600/30 text-indigo-400' : 'bg-blue-600/30 text-blue-400'}">${u.role}</span></td><td class="p-3 text-right">${!isProtected ? `<button onclick="deleteUser(${idx})" class="text-red-400 hover:text-red-300">Eliminar</button>` : '<span class="text-slate-500">Protegido</span>'}</td></tr>`; }); }
+        function addUser() { const name = document.getElementById('newUsername').value.trim(); const pass = document.getElementById('newPassword').value.trim(); const role = document.getElementById('newUserRole').value; if (!name || !pass) { document.getElementById('adminAddUserError').innerText = 'Complete todos los campos'; document.getElementById('adminAddUserError').classList.remove('hidden'); return; } let users = getUsers(); if (users.some(u => u.username.toLowerCase() === name.toLowerCase())) { document.getElementById('adminAddUserError').innerText = 'Usuario ya existe'; document.getElementById('adminAddUserError').classList.remove('hidden'); return; } users.push({ username: name, password: pass, role: role }); saveUsers(users); document.getElementById('newUsername').value = ''; document.getElementById('newPassword').value = ''; document.getElementById('adminAddUserError').classList.add('hidden'); renderAdminUsers(); }
+        function deleteUser(index) { let users = getUsers(); users.splice(index, 1); saveUsers(users); renderAdminUsers(); }
+
         async function runSimulation() {
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('resultsContainer').classList.add('hidden');
-            
             await new Promise(r => setTimeout(r, 100));
             
-            // Simular fase de grupos
             const groupResults = {};
             const allThirdPlaces = [];
             
@@ -618,258 +354,99 @@
                 const matches = [];
                 for (let i = 0; i < teams.length; i++) {
                     for (let j = i + 1; j < teams.length; j++) {
-                        const result = simulateMatch(teams[i], teams[j]);
-                        matches.push(result);
+                        matches.push(simulateMatch(teams[i], teams[j]));
                     }
                 }
-                
-                const standings = teams.map(team => ({
-                    team,
-                    strength: calculateTeamStrength(team),
-                    pts: 0,
-                    gf: 0,
-                    gc: 0,
-                    dg: 0,
-                    wins: 0,
-                    draws: 0,
-                    losses: 0
-                }));
-                
+                const standings = teams.map(team => ({ team, strength: calculateTeamStrength(team), pts: 0, gf: 0, gc: 0, dg: 0, wins: 0, draws: 0, losses: 0 }));
                 matches.forEach(match => {
                     const t1 = standings.find(s => s.team === match.team1);
                     const t2 = standings.find(s => s.team === match.team2);
-                    t1.gf += match.goals1;
-                    t1.gc += match.goals2;
-                    t2.gf += match.goals2;
-                    t2.gc += match.goals1;
-                    if (match.goals1 > match.goals2) {
-                        t1.pts += 3;
-                        t1.wins++;
-                        t2.losses++;
-                    } else if (match.goals2 > match.goals1) {
-                        t2.pts += 3;
-                        t2.wins++;
-                        t1.losses++;
-                    } else {
-                        t1.pts += 1;
-                        t1.draws++;
-                        t2.pts += 1;
-                        t2.draws++;
-                    }
+                    t1.gf += match.goals1; t1.gc += match.goals2;
+                    t2.gf += match.goals2; t2.gc += match.goals1;
+                    if (match.goals1 > match.goals2) { t1.pts += 3; t1.wins++; t2.losses++; }
+                    else if (match.goals2 > match.goals1) { t2.pts += 3; t2.wins++; t1.losses++; }
+                    else { t1.pts += 1; t1.draws++; t2.pts += 1; t2.draws++; }
                 });
-                
                 standings.forEach(s => { s.dg = s.gf - s.gc; });
-                standings.sort((a, b) => {
-                    if (a.pts !== b.pts) return b.pts - a.pts;
-                    if (a.dg !== b.dg) return b.dg - a.dg;
-                    return b.gf - a.gf;
-                });
-                
+                standings.sort((a, b) => { if (a.pts !== b.pts) return b.pts - a.pts; if (a.dg !== b.dg) return b.dg - a.dg; return b.gf - a.gf; });
                 groupResults[groupName] = standings;
-                if (standings[2]) {
-                    allThirdPlaces.push({ group: groupName, ...standings[2] });
-                }
+                if (standings[2]) allThirdPlaces.push({ group: groupName, ...standings[2] });
             }
             
-            // Mejores terceros
-            allThirdPlaces.sort((a, b) => {
-                if (a.pts !== b.pts) return b.pts - a.pts;
-                if (a.dg !== b.dg) return b.dg - a.dg;
-                return b.gf - a.gf;
-            });
+            allThirdPlaces.sort((a, b) => { if (a.pts !== b.pts) return b.pts - a.pts; if (a.dg !== b.dg) return b.dg - a.dg; return b.gf - a.gf; });
             const bestThirds = allThirdPlaces.slice(0, 8);
-            
-            // Clasificados a rondas finales (32 equipos)
             const qualifiedTeams = [];
-            for (const [groupName, standings] of Object.entries(groupResults)) {
-                qualifiedTeams.push(standings[0].team, standings[1].team);
-            }
+            for (const standings of Object.values(groupResults)) { qualifiedTeams.push(standings[0].team, standings[1].team); }
             bestThirds.forEach(t => qualifiedTeams.push(t.team));
-            
             lastSimulatedQualifiedTeams = qualifiedTeams;
             
             renderGroups(groupResults);
             renderThirdsTable(bestThirds);
-            
-            // Simular eliminatorias
             await simulateKnockoutStages(qualifiedTeams);
-            
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('resultsContainer').classList.remove('hidden');
         }
         
         async function simulateKnockoutStages(teams) {
-            // Generar llaves de R32 (16 partidos)
             const shuffled = [...teams];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            
+            for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; }
             let r32Winners = [];
-            for (let i = 0; i < shuffled.length; i += 2) {
-                const match = simulateMatch(shuffled[i], shuffled[i+1], true);
-                r32Winners.push(match.winner);
-            }
-            
-            // R16
+            for (let i = 0; i < shuffled.length; i += 2) { r32Winners.push(simulateMatch(shuffled[i], shuffled[i+1], true).winner); }
             let r16Winners = [];
-            for (let i = 0; i < r32Winners.length; i += 2) {
-                const match = simulateMatch(r32Winners[i], r32Winners[i+1], true);
-                r16Winners.push(match.winner);
-            }
-            
-            // R8
+            for (let i = 0; i < r32Winners.length; i += 2) { r16Winners.push(simulateMatch(r32Winners[i], r32Winners[i+1], true).winner); }
             let r8Winners = [];
-            for (let i = 0; i < r16Winners.length; i += 2) {
-                const match = simulateMatch(r16Winners[i], r16Winners[i+1], true);
-                r8Winners.push(match.winner);
-            }
-            
-            // Semifinales
+            for (let i = 0; i < r16Winners.length; i += 2) { r8Winners.push(simulateMatch(r16Winners[i], r16Winners[i+1], true).winner); }
             let semifinalWinners = [];
-            for (let i = 0; i < r8Winners.length; i += 2) {
-                const match = simulateMatch(r8Winners[i], r8Winners[i+1], true);
-                semifinalWinners.push(match.winner);
-            }
-            
-            // Final
+            for (let i = 0; i < r8Winners.length; i += 2) { semifinalWinners.push(simulateMatch(r8Winners[i], r8Winners[i+1], true).winner); }
             const final = simulateMatch(semifinalWinners[0], semifinalWinners[1], true);
             const champion = final.winner;
-            
-            // Tercer puesto
             const thirdPlaceTeam1 = semifinalWinners[0] === champion ? semifinalWinners[1] : semifinalWinners[0];
             const thirdPlaceTeam2 = semifinalWinners[1] === champion ? semifinalWinners[0] : semifinalWinners[1];
             const thirdPlace = simulateMatch(thirdPlaceTeam1, thirdPlaceTeam2, true);
-            
             renderBrackets(shuffled, r32Winners, r16Winners, r8Winners, semifinalWinners, final, thirdPlace, champion);
         }
         
         function renderGroups(groupResults) {
             const container = document.getElementById('groupsGrid');
             container.innerHTML = '';
-            
             for (const [groupName, standings] of Object.entries(groupResults)) {
                 const groupCard = document.createElement('div');
                 groupCard.className = 'group-card rounded-xl overflow-hidden shadow-lg';
-                groupCard.innerHTML = `
-                    <div class="bg-slate-800 p-4 border-b border-slate-700">
-                        <h3 class="text-2xl font-bold text-center text-amber-400">Grupo ${groupName}</h3>
-                    </div>
-                    <div class="p-4">
-                        <div class="grid grid-cols-12 gap-2 text-xs font-bold text-slate-400 mb-2 px-2">
-                            <div class="col-span-5">Equipo</div>
-                            <div class="col-span-1 text-center">Pts</div>
-                            <div class="col-span-1 text-center">PJ</div>
-                            <div class="col-span-1 text-center">G</div>
-                            <div class="col-span-1 text-center">E</div>
-                            <div class="col-span-1 text-center">P</div>
-                            <div class="col-span-1 text-center">GF</div>
-                            <div class="col-span-1 text-center">GC</div>
-                            <div class="col-span-1 text-center">DG</div>
-                        </div>
-                        ${standings.map((s, idx) => `
-                            <div class="team-row grid grid-cols-12 gap-2 py-2 px-2 rounded-lg mb-1 bg-slate-800/30 items-center text-sm">
-                                <div class="col-span-5 font-semibold truncate">${s.team}</div>
-                                <div class="col-span-1 text-center font-bold ${idx < 2 ? 'text-green-400' : (idx === 2 ? 'text-yellow-400' : 'text-red-400')}">${s.pts}</div>
-                                <div class="col-span-1 text-center">3</div>
-                                <div class="col-span-1 text-center">${s.wins}</div>
-                                <div class="col-span-1 text-center">${s.draws}</div>
-                                <div class="col-span-1 text-center">${s.losses}</div>
-                                <div class="col-span-1 text-center">${s.gf}</div>
-                                <div class="col-span-1 text-center">${s.gc}</div>
-                                <div class="col-span-1 text-center">${s.dg}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                groupCard.innerHTML = `<div class="bg-slate-800 p-4 border-b border-slate-700"><h3 class="text-2xl font-bold text-center text-amber-400">Grupo ${groupName}</h3></div>
+                    <div class="p-4"><div class="grid grid-cols-9 gap-2 text-xs font-bold text-slate-400 mb-2 px-2">
+                        <div class="col-span-3">EQUIPO</div><div class="col-span-1 text-center">POS</div><div class="col-span-1 text-center">PTS</div><div class="col-span-1 text-center">PG</div>
+                        <div class="col-span-1 text-center">PE</div><div class="col-span-1 text-center">PP</div><div class="col-span-1 text-center">GF</div><div class="col-span-1 text-center">GC</div><div class="col-span-1 text-center">DIF</div>
+                    </div>${standings.map((s, idx) => `<div class="team-row grid grid-cols-9 gap-2 py-2 px-2 rounded-lg mb-1 bg-slate-800/30 items-center text-sm">
+                        <div class="col-span-3 font-semibold truncate">${s.team}</div>
+                        <div class="col-span-1 text-center font-bold ${idx === 0 ? 'text-green-400' : idx === 1 ? 'text-blue-400' : idx === 2 ? 'text-yellow-400' : 'text-red-400'}">${idx+1}</div>
+                        <div class="col-span-1 text-center font-bold">${s.pts}</div>
+                        <div class="col-span-1 text-center">${s.wins}</div><div class="col-span-1 text-center">${s.draws}</div><div class="col-span-1 text-center">${s.losses}</div>
+                        <div class="col-span-1 text-center">${s.gf}</div><div class="col-span-1 text-center">${s.gc}</div><div class="col-span-1 text-center">${s.dg}</div>
+                    </div>`).join('')}</div>`;
                 container.appendChild(groupCard);
             }
         }
         
         function renderThirdsTable(thirds) {
             const tbody = document.getElementById('thirdsTableBody');
-            tbody.innerHTML = thirds.map((t, i) => `
-                <tr class="border-b border-slate-700">
-                    <td class="p-3 font-bold">${i+1}</td>
-                    <td class="p-3">${t.group}</td>
-                    <td class="p-3 font-semibold">${t.team}</td>
-                    <td class="p-3 text-center">${t.pts}</td>
-                    <td class="p-3 text-center">${t.dg}</td>
-                    <td class="p-3 text-center">${t.gf}</td>
-                    <td class="p-3 text-center text-blue-400 font-semibold">${t.strength?.toFixed(1)}</td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = thirds.map((t, i) => `<tr class="border-b border-slate-700"><td class="p-3 font-bold">${i+1}</td><td class="p-3">${t.group}</td><td class="p-3 font-semibold">${t.team}</td><td class="p-3 text-center">${t.pts}</td><td class="p-3 text-center">${t.dg}</td><td class="p-3 text-center">${t.gf}</td><td class="p-3 text-center text-blue-400 font-semibold">${t.strength?.toFixed(1)}</td></tr>`).join('');
         }
         
         function renderBrackets(r32, r32w, r16w, r8w, r4w, final, third, champion) {
-            // R32
-            const colR32 = document.getElementById('colR32');
-            colR32.innerHTML = '';
-            for (let i = 0; i < r32.length; i += 2) {
-                colR32.innerHTML += `
-                    <div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700">
-                        <div class="text-xs text-slate-400 mb-1">Llave ${Math.floor(i/2)+1}</div>
-                        <div class="font-semibold ${r32w[Math.floor(i/2)] === r32[i] ? 'text-green-400' : ''}">${r32[i]}</div>
-                        <div class="font-semibold ${r32w[Math.floor(i/2)] === r32[i+1] ? 'text-green-400' : ''}">${r32[i+1]}</div>
-                    </div>
-                `;
-            }
-            
-            // R16
-            const colR16 = document.getElementById('colR16');
-            colR16.innerHTML = '';
-            for (let i = 0; i < r16w.length; i += 2) {
-                colR16.innerHTML += `<div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700">
-                    <div class="text-xs text-slate-400 mb-1">Octavo ${Math.floor(i/2)+1}</div>
-                    <div class="font-semibold">${r16w[i]}</div>
-                    <div class="font-semibold">${r16w[i+1]}</div>
-                </div>`;
-            }
-            
-            // R8
-            const colR8 = document.getElementById('colR8');
-            colR8.innerHTML = '';
-            for (let i = 0; i < r8w.length; i += 2) {
-                colR8.innerHTML += `<div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700">
-                    <div class="text-xs text-slate-400 mb-1">Cuarto ${Math.floor(i/2)+1}</div>
-                    <div class="font-semibold">${r8w[i]}</div>
-                    <div class="font-semibold">${r8w[i+1]}</div>
-                </div>`;
-            }
-            
-            // Semifinales
-            const colR4 = document.getElementById('colR4');
-            colR4.innerHTML = r4w.map((t, i) => `<div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700">
-                <div class="text-xs text-slate-400 mb-1">Semifinal ${i+1}</div>
-                <div class="font-semibold text-pink-400">${t}</div>
-            </div>`).join('');
-            
-            // Final y tercer puesto
+            const colR32 = document.getElementById('colR32'); colR32.innerHTML = '';
+            for (let i = 0; i < r32.length; i += 2) { colR32.innerHTML += `<div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700"><div class="text-xs text-slate-400 mb-1">Llave ${Math.floor(i/2)+1}</div><div class="font-semibold ${r32w[Math.floor(i/2)] === r32[i] ? 'text-green-400' : ''}">${r32[i]}</div><div class="font-semibold ${r32w[Math.floor(i/2)] === r32[i+1] ? 'text-green-400' : ''}">${r32[i+1]}</div></div>`; }
+            const colR16 = document.getElementById('colR16'); colR16.innerHTML = '';
+            for (let i = 0; i < r16w.length; i += 2) { colR16.innerHTML += `<div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700"><div class="text-xs text-slate-400 mb-1">Octavo ${Math.floor(i/2)+1}</div><div class="font-semibold">${r16w[i]}</div><div class="font-semibold">${r16w[i+1]}</div></div>`; }
+            const colR8 = document.getElementById('colR8'); colR8.innerHTML = '';
+            for (let i = 0; i < r8w.length; i += 2) { colR8.innerHTML += `<div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700"><div class="text-xs text-slate-400 mb-1">Cuarto ${Math.floor(i/2)+1}</div><div class="font-semibold">${r8w[i]}</div><div class="font-semibold">${r8w[i+1]}</div></div>`; }
+            const colR4 = document.getElementById('colR4'); colR4.innerHTML = r4w.map((t, i) => `<div class="bg-slate-900/90 rounded-lg p-3 border border-slate-700"><div class="text-xs text-slate-400 mb-1">Semifinal ${i+1}</div><div class="font-semibold text-pink-400">${t}</div></div>`).join('');
             document.getElementById('finalMatch').innerHTML = `<div class="font-bold text-xl mb-2">${final.team1} vs ${final.team2}</div><div class="text-green-400 font-bold">✓ Campeón: ${final.winner}</div>`;
             document.getElementById('thirdPlaceMatch').innerHTML = `<div class="font-bold mb-2">${third.team1} vs ${third.team2}</div><div class="text-yellow-400">🥉 Tercero: ${third.winner}</div>`;
-            
             document.getElementById('championName').innerText = champion;
             document.getElementById('championSection').classList.remove('hidden');
         }
         
-        function initManualBracketSetup() {
-            alert("Función de configuración manual disponible en versión completa");
-        }
-        
-        function runBracketSimulationFromForm() {
-            if (lastSimulatedQualifiedTeams.length === 32) {
-                simulateKnockoutStages(lastSimulatedQualifiedTeams);
-                document.getElementById('manualClassificationPanel').classList.add('hidden');
-            } else {
-                alert("Primero ejecute la simulación completa del torneo");
-            }
-        }
-        
-        // Inicialización
-        window.onload = () => {
-            console.log("Simulador Econométrico Klement listo - Variables activas: PIB, Población, Pedigrí, Ranking FIFA, Confederación, Racha");
-        };
+        window.onload = () => console.log("Simulador Klement v2.0 - con Valor de Mercado Transfermarkt");
     </script>
 </body>
 </html>
