@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Simulador Mundial IA Pro - Llaves Conectadas + Penalties Reales</title>
+    <title>Mundial IA Pro - Resultados Realistas | Llaves Conectadas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -25,7 +25,6 @@
         ::-webkit-scrollbar { height: 6px; width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 8px; }
-        .bracket-connection { position: relative; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8 flex flex-col justify-center">
@@ -35,7 +34,7 @@
         <div class="text-center mb-6">
             <div class="mx-auto h-24 w-24 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-4xl mb-3 shadow-lg"><i class="fas fa-futbol text-white"></i></div>
             <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">Simulador Mundial IA Pro</h2>
-            <p class="text-xs text-slate-400 mt-2">Modelo v5.0 · Resultados realistas · Llaves conectadas · Penales detallados</p>
+            <p class="text-xs text-slate-400 mt-2">Resultados realistas · Máximo 5 goles · Llaves conectadas</p>
             <div class="mt-4 bg-emerald-900/40 border border-emerald-500/40 rounded-lg p-2"><p class="text-green-300 font-bold text-sm"><i class="fas fa-dollar-sign mr-1"></i> Acceso: <span class="text-white">$1,00 USD</span></p></div>
         </div>
         <div class="space-y-4">
@@ -71,11 +70,11 @@
 
         <header class="text-center mb-10 glass-panel p-8 rounded-2xl">
             <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent"><i class="fas fa-globe-americas"></i> IA Mundial Predictivo</h1>
-            <p class="text-slate-400 mt-2"><strong>12 Factores Clave</strong> + Control de resultados exagerados · Llaves conectadas · Penales reales</p>
+            <p class="text-slate-400 mt-2"><strong>Modelo v6.0</strong> · Control de goleadas (máx. 5 goles) · Penales reales · Árbol de llaves conectado</p>
             <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-105 transition px-8 py-3 rounded-full font-bold shadow-xl"><i class="fas fa-play mr-2"></i> SIMULAR MUNDIAL</button></div>
         </header>
 
-        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500"></i><h2 class="text-2xl mt-4">Procesando 48 equipos + fase final con árbol de llaves...</h2></div>
+        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500"></i><h2 class="text-2xl mt-4">Calculando fase de grupos y eliminatorias...</h2></div>
         <div id="resultsContainer" class="hidden">
             <div id="groupsGrid" class="grid lg:grid-cols-2 gap-8 mb-12"></div>
             <div class="glass-panel p-6 rounded-2xl mb-12"><h2 class="text-3xl font-bold text-amber-400 text-center mb-4">🏆 MEJORES TERCEROS (8 clasificados)</h2><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th>Rank</th><th>Grupo</th><th>Selección</th><th>Pts</th><th>DG</th><th>GF</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div></div>
@@ -86,7 +85,7 @@
     </div>
 
     <script>
-        // ==================== DATOS (Ranking, valor, of/def, experiencia, forma, etc) ====================
+        // ==================== DATOS REALES (Ranking FIFA, valor, etc) ====================
         const fifaRanking = { "Argentina":1,"Francia":2,"Inglaterra":3,"Bélgica":4,"Países Bajos":5,"Brasil":6,"Alemania":7,"España":8,"Italia":9,"Portugal":10,"Uruguay":11,"Suiza":12,"Croacia":13,"Senegal":14,"Japón":15,"Corea del Sur":16,"Marruecos":17,"Colombia":18,"México":19,"Austria":20,"Ecuador":21,"Paraguay":22,"Australia":23,"Turquía":24,"Canadá":25,"Estados Unidos":26,"Costa de Marfil":27,"Irán":28,"Nueva Zelanda":29,"Egipto":30,"Arabia Saudita":31,"Qatar":32,"Bosnia y Herzegovina":33,"Escocia":34,"Haití":35,"Cabo Verde":36,"Uzbekistán":37,"Jordania":38,"Curazao":39,"R.D. Congo":40,"Sudáfrica":41,"Ghana":42,"Panamá":43,"República Checa":44,"Suecia":45,"Túnez":46,"Noruega":47,"Irak":48,"Argelia":49 };
         const marketValue = { "Inglaterra":1400,"Francia":1200,"Brasil":1100,"España":900,"Alemania":800,"Argentina":750,"Italia":700,"Países Bajos":650,"Portugal":550,"Bélgica":450,"Uruguay":380,"Croacia":350,"Estados Unidos":300,"Senegal":300,"Colombia":280,"Suiza":280,"Marruecos":250,"México":200,"Japón":200,"Noruega":180,"Turquía":180,"Suecia":150,"Austria":150,"Corea del Sur":150,"República Checa":120,"Canadá":120,"Costa de Marfil":120,"Ghana":100,"Ecuador":100,"Egipto":100,"Escocia":90,"Argelia":80,"Arabia Saudita":80,"Paraguay":80,"Australia":70,"Bosnia y Herzegovina":60,"Irán":50,"Sudáfrica":45,"Qatar":40,"Túnez":40,"Nueva Zelanda":30,"Uzbekistán":25,"Panamá":15,"R.D. Congo":15,"Irak":15,"Haití":10,"Jordania":8,"Cabo Verde":5,"Curazao":3 };
         const offensivePower = { "Argentina":94,"Brasil":94,"Francia":92,"Inglaterra":90,"España":89,"Alemania":88,"Países Bajos":87,"Portugal":86,"Bélgica":84,"Italia":82,"Uruguay":82,"Croacia":80,"Colombia":79,"Marruecos":78,"Japón":77,"México":76,"Corea del Sur":75,"Senegal":74,"Estados Unidos":74,"Suiza":73,"Turquía":72,"Canadá":71,"Ecuador":70,"Australia":69,"Austria":69,"Noruega":68,"Suecia":67,"Ghana":66,"Costa de Marfil":66,"Paraguay":65,"Egipto":64,"República Checa":63,"Escocia":62,"Arabia Saudita":61,"Túnez":60,"Irán":59,"Sudáfrica":58,"Argelia":57,"Uzbekistán":55,"Panamá":54,"Bosnia":53,"Nueva Zelanda":52,"Qatar":51,"R.D. Congo":50,"Irak":48,"Cabo Verde":46,"Haití":44,"Jordania":42,"Curazao":40 };
@@ -96,44 +95,56 @@
         const fifaParticipation = { "Argentina":98,"Brasil":99,"Alemania":97,"España":94,"Francia":95,"Inglaterra":92,"Países Bajos":88,"Italia":93,"Uruguay":91,"Croacia":85,"México":90,"Corea del Sur":80,"Japón":82,"Estados Unidos":81,"Senegal":76,"Marruecos":78,"Australia":77,"Colombia":84,"Ecuador":73,"Suiza":79,"Canadá":68,"Turquía":72,"Costa de Marfil":75,"Ghana":74,"Egipto":70,"Arabia Saudita":64,"Irán":62,"Sudáfrica":66,"Argelia":65,"Túnez":63,"Nueva Zelanda":58,"Panamá":56,"Paraguay":69,"Austria":67,"Suecia":71,"Noruega":60,"República Checa":61,"Escocia":59,"Bosnia":55,"Qatar":50,"Uzbekistán":45,"R.D. Congo":48,"Irak":46,"Cabo Verde":42,"Haití":40,"Jordania":38,"Curazao":35 };
         const playingStyle = { "Argentina":"posesion","Brasil":"posesion","Francia":"contraataque","Inglaterra":"directo","Alemania":"posesion","España":"posesion","Países Bajos":"posesion","Portugal":"contraataque","Bélgica":"contraataque","Uruguay":"defensivo","Croacia":"posesion","Marruecos":"contraataque","Colombia":"contraataque","Japón":"posesion","Corea del Sur":"directo","México":"contraataque","Senegal":"directo","Suiza":"defensivo","Ecuador":"contraataque","Estados Unidos":"directo","Canadá":"directo","Australia":"directo","Turquía":"contraataque","Costa de Marfil":"directo","Ghana":"directo","Egipto":"posesion","Noruega":"directo","Suecia":"defensivo","Austria":"posesion","Paraguay":"defensivo","Arabia Saudita":"contraataque","Túnez":"defensivo","Irán":"defensivo","Sudáfrica":"directo","Argelia":"posesion","Panamá":"defensivo","Nueva Zelanda":"directo","Qatar":"posesion","Escocia":"directo","República Checa":"posesion","Bosnia":"directo","Uzbekistán":"directo","R.D. Congo":"directo","Irak":"defensivo","Cabo Verde":"contraataque","Haití":"directo","Jordania":"defensivo","Curazao":"defensivo" };
         
-        function getStyleAdvantage(a,b){ if(a==="contraataque" && b==="posesion") return 1.06; if(a==="posesion" && b==="defensivo") return 1.05; if(a==="directo" && b==="contraataque") return 1.04; return 1.0; }
-        function getH2H(t1,t2){ let key=t1+"-"+t2; const adv={"Argentina-Brasil":1.04,"Brasil-Argentina":1.02,"Alemania-Argentina":1.05,"Francia-Inglaterra":1.03}; return adv[key] || (adv[t2+"-"+t1]?1/adv[t2+"-"+t1]:1.0); }
+        function getStyleAdvantage(a,b){ if(a==="contraataque" && b==="posesion") return 1.05; if(a==="posesion" && b==="defensivo") return 1.04; if(a==="directo" && b==="contraataque") return 1.03; return 1.0; }
+        function getH2H(t1,t2){ let key=t1+"-"+t2; const adv={"Argentina-Brasil":1.03,"Brasil-Argentina":1.01,"Alemania-Argentina":1.04,"Francia-Inglaterra":1.02}; return adv[key] || (adv[t2+"-"+t1]?1/adv[t2+"-"+t1]:1.0); }
 
-        // Cálculo de fuerza base (sin exagerar diferencias)
+        // Cálculo de fuerza equilibrado (sin diferencias abismales)
         function calculateStrength(team) {
             let rank = fifaRanking[team] || 40;
             let rankScore = Math.max(0, (101 - rank) * 0.22);
             let value = (marketValue[team] || 50) / 16 * 0.12;
-            let off = (offensivePower[team] || 70) * 0.13;
-            let def = (defensivePower[team] || 70) * 0.13;
+            let off = (offensivePower[team] || 70) * 0.12;
+            let def = (defensivePower[team] || 70) * 0.12;
             let exp = (experience[team] || 60) * 0.08;
             let recent = (recentForm12m[team] || 65) * 0.12;
             let part = (fifaParticipation[team] || 60) * 0.07;
-            let total = rankScore + value + off + def + exp + recent + part + 4; // + factor localía base
-            return Math.min(94, Math.max(12, total));
+            let total = rankScore + value + off + def + exp + recent + part + 4;
+            return Math.min(92, Math.max(15, total));
         }
 
-        // Simular penales realistas
+        // Simulación de penales realista
         function simulatePenalties(teamA, teamB, strA, strB) {
             let probA = strA / (strA + strB);
             let penA = 0, penB = 0;
             for (let i = 0; i < 5; i++) {
-                if (Math.random() < 0.75) penA++;  // 75% conversión base
-                if (Math.random() < 0.73) penB++;
+                if (Math.random() < 0.72 + (probA-0.5)*0.1) penA++;
+                if (Math.random() < 0.70 - (probA-0.5)*0.05) penB++;
             }
             if (penA === penB) {
-                let sudden = true;
-                while (sudden) {
+                while (penA === penB) {
                     let a = Math.random() < 0.8 ? 1 : 0;
                     let b = Math.random() < 0.8 ? 1 : 0;
                     penA += a; penB += b;
-                    if (a !== b) sudden = false;
                 }
             }
             return { penA, penB, winner: penA > penB ? teamA : teamB };
         }
 
-        // Simulación de partido con límite de goles (máximo 6) y resultados realistas
+        // NUEVA FUNCIÓN DE GOLES LIMITADA A 5 (máximo realista)
+        function getRealisticGoals(lambda, maxGoals = 5) {
+            // Poisson truncada a máximo 5 goles
+            let L = Math.exp(-lambda);
+            let p = 1.0;
+            let k = 0;
+            let r = Math.random();
+            do {
+                p *= lambda / (k + 1);
+                if (r < p * L) return Math.min(k, maxGoals);
+                k++;
+            } while (k <= maxGoals);
+            return maxGoals;
+        }
+
         function simulateMatch(team1, team2, isKnockout = false) {
             let s1 = calculateStrength(team1);
             let s2 = calculateStrength(team2);
@@ -147,36 +158,25 @@
             let final2 = s2 * styleMod2 * h2h2;
             let total = final1 + final2;
             let prob1 = final1 / total;
-            prob1 = Math.min(0.68, Math.max(0.32, prob1));
-            // Ajuste para evitar goleadas exageradas: distribución más conservadora con lambda reducido y tope 6
-            let lambda1 = prob1 * 1.2;
-            let lambda2 = (1 - prob1) * 1.1;
-            function getGoals(lambda) {
-                let L = Math.exp(-lambda);
-                let p = 1.0;
-                let k = 0;
-                let r = Math.random();
-                do {
-                    p *= lambda / (k + 1);
-                    if (r < p * L) return Math.min(k, 6);
-                    k++;
-                } while (k < 10);
-                return Math.min(k, 6);
-            }
-            let g1 = getGoals(lambda1);
-            let g2 = getGoals(lambda2);
+            prob1 = Math.min(0.66, Math.max(0.34, prob1)); // Rango estrecho para evitar goleadas
+            
+            // LAMBDA reducido para partidos más cerrados (máximo esperado ~2.5 goles)
+            let lambda1 = prob1 * 1.15;
+            let lambda2 = (1 - prob1) * 1.05;
+            let g1 = getRealisticGoals(lambda1, 5);
+            let g2 = getRealisticGoals(lambda2, 5);
+            
             let penalties = false;
             let penResult = null;
             if (isKnockout && g1 === g2) {
                 penalties = true;
-                let penSim = simulatePenalties(team1, team2, final1, final2);
-                penResult = penSim;
-                if (penSim.winner === team1) g1++; else g2++;
+                penResult = simulatePenalties(team1, team2, final1, final2);
+                if (penResult.winner === team1) g1++; else g2++;
             }
             return { team1, team2, goals1: g1, goals2: g2, winner: g1 > g2 ? team1 : team2, penalties, penScore: penResult };
         }
 
-        // GRUPOS (mismo formato)
+        // GRUPOS (48 equipos)
         const groups = { "A":["México","Sudáfrica","Corea del Sur","República Checa"],"B":["Canadá","Bosnia y Herzegovina","Qatar","Suiza"],"C":["Brasil","Marruecos","Haití","Escocia"],"D":["Estados Unidos","Paraguay","Australia","Turquía"],"E":["Alemania","Ecuador","Costa de Marfil","Curazao"],"F":["Países Bajos","Japón","Túnez","Suecia"],"G":["Bélgica","Egipto","Irán","Nueva Zelanda"],"H":["España","Uruguay","Cabo Verde","Arabia Saudita"],"I":["Francia","Senegal","Noruega","Irak"],"J":["Argentina","Argelia","Austria","Jordania"],"K":["Portugal","Uzbekistán","Colombia","R.D. Congo"],"L":["Inglaterra","Croacia","Ghana","Panamá"] };
 
         async function runSimulation() {
@@ -214,39 +214,31 @@
             bestThirds.forEach(t => qualified.push(t.team));
             renderGroups(groupResults, groupMatches);
             renderThirds(bestThirds);
-            await simulateKnockoutTree(qualified);
+            simulateKnockoutTree(qualified);
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('resultsContainer').classList.remove('hidden');
         }
 
-        // ========== SIMULACIÓN DE ELIMINATORIA CON ÁRBOL Y CONEXIONES ==========
+        // ========== ÁRBOL DE ELIMINATORIAS CON CONEXIONES ==========
         function simulateKnockoutTree(teams) {
-            // Ordenar por fuerza y luego sembrar para un bracket equilibrado
             let sorted = [...teams].sort((a,b) => calculateStrength(b) - calculateStrength(a));
             let seeded = [];
             for (let i = 0; i < sorted.length / 2; i++) { seeded.push(sorted[i]); seeded.push(sorted[sorted.length - 1 - i]); }
-            // Ronda de 32 (16 partidos)
             let r32 = [];
             for (let i = 0; i < seeded.length; i += 2) r32.push(simulateMatch(seeded[i], seeded[i+1], true));
             let r32Winners = r32.map(m => ({ team: m.winner, match: m }));
-            
-            // Ronda 16 (8 partidos) - agrupar de a 2 ganadores
             let r16 = [];
             for (let i = 0; i < r32Winners.length; i += 2) {
                 let m = simulateMatch(r32Winners[i].team, r32Winners[i+1].team, true);
                 r16.push({ match: m, leftSource: r32Winners[i].match, rightSource: r32Winners[i+1].match });
             }
             let r16Winners = r16.map(item => ({ team: item.match.winner, match: item.match, left: item.leftSource, right: item.rightSource }));
-            
-            // Cuartos (4 partidos)
             let r8 = [];
             for (let i = 0; i < r16Winners.length; i += 2) {
                 let m = simulateMatch(r16Winners[i].team, r16Winners[i+1].team, true);
                 r8.push({ match: m, leftSource: r16Winners[i].match, rightSource: r16Winners[i+1].match });
             }
             let r8Winners = r8.map(item => ({ team: item.match.winner, match: item.match, left: item.leftSource, right: item.rightSource }));
-            
-            // Semifinales (2 partidos)
             let r4 = [];
             for (let i = 0; i < r8Winners.length; i += 2) {
                 let m = simulateMatch(r8Winners[i].team, r8Winners[i+1].team, true);
@@ -263,49 +255,7 @@
             const runnerUp = finalMatch.winner === finalMatch.team1 ? finalMatch.team2 : finalMatch.team1;
             const thirdPlace = thirdMatch.winner;
             const fourthPlace = thirdMatch.winner === thirdMatch.team1 ? thirdMatch.team2 : thirdMatch.team1;
-            
             renderBracketConnections(r32, r16, r8, r4, finalMatch, thirdMatch, champion, runnerUp, thirdPlace, fourthPlace);
-        }
-
-        function renderBracketConnections(r32, r16, r8, r4, finalMatch, thirdMatch, champ, runner, third, fourth) {
-            const container = document.getElementById('bracketContainer');
-            container.innerHTML = '';
-            // Columna R32
-            let colR32 = document.createElement('div'); colR32.className = 'bracket-column';
-            colR32.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">RONDA 32</div>`;
-            r32.forEach((m, idx) => { colR32.appendChild(createMatchCard(m, `Llave ${idx+1}`)); });
-            container.appendChild(colR32);
-            // Columna R16
-            let colR16 = document.createElement('div'); colR16.className = 'bracket-column';
-            colR16.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">OCTAVOS</div>`;
-            r16.forEach((item, idx) => { let card = createMatchCard(item.match, `Octavo ${idx+1}`); card.innerHTML += `<div class="source-info text-xs"><i class="fas fa-link"></i> Procede: Ganadores de llaves ${idx*2+1} y ${idx*2+2}</div>`; colR16.appendChild(card); });
-            container.appendChild(colR16);
-            // Cuartos
-            let colR8 = document.createElement('div'); colR8.className = 'bracket-column';
-            colR8.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">CUARTOS</div>`;
-            r8.forEach((item, idx) => { let card = createMatchCard(item.match, `Cuarto ${idx+1}`); card.innerHTML += `<div class="source-info"><i class="fas fa-link"></i> Desde Octavos ${idx*2+1} y ${idx*2+2}</div>`; colR8.appendChild(card); });
-            container.appendChild(colR8);
-            // Semifinales
-            let colR4 = document.createElement('div'); colR4.className = 'bracket-column';
-            colR4.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">SEMIFINALES</div>`;
-            r4.forEach((item, idx) => { let card = createMatchCard(item.match, `Semifinal ${idx+1}`); card.innerHTML += `<div class="source-info"><i class="fas fa-link"></i> Desde Cuartos ${idx*2+1} vs ${idx*2+2}</div>`; colR4.appendChild(card); });
-            container.appendChild(colR4);
-            // Finales
-            let colFinal = document.createElement('div'); colFinal.className = 'bracket-column';
-            colFinal.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">FINALES</div>`;
-            let thirdCard = createMatchCard(thirdMatch, "TERCER PUESTO (Perdedores Semifinales)");
-            thirdCard.innerHTML += `<div class="source-info"><i class="fas fa-exchange-alt"></i> Perdedor SF1 vs Perdedor SF2</div>`;
-            let finalCard = createMatchCard(finalMatch, "🏆 FINAL DEL MUNDIAL");
-            finalCard.classList.add('border-2', 'border-yellow-500');
-            finalCard.innerHTML += `<div class="source-info"><i class="fas fa-trophy"></i> Ganador SF1 vs Ganador SF2</div>`;
-            colFinal.appendChild(thirdCard);
-            colFinal.appendChild(finalCard);
-            container.appendChild(colFinal);
-            
-            document.getElementById('championNameTable').innerText = champ;
-            document.getElementById('runnerUpNameTable').innerText = runner;
-            document.getElementById('thirdPlaceNameTable').innerText = third;
-            document.getElementById('fourthPlaceNameTable').innerText = fourth;
         }
 
         function createMatchCard(match, title) {
@@ -321,12 +271,47 @@
                 <div class="text-xs text-slate-400 mb-1">${title}</div>
                 <div class="flex justify-between items-center">
                     <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span>
-                    <span class="font-mono text-sm font-bold ${match.goals1 === match.goals2 ? 'text-yellow-400' : ''}">${match.goals1} - ${match.goals2}</span>
+                    <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
                     <span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span>
                 </div>
                 ${penText}
             `;
             return div;
+        }
+
+        function renderBracketConnections(r32, r16, r8, r4, finalMatch, thirdMatch, champ, runner, third, fourth) {
+            const container = document.getElementById('bracketContainer');
+            container.innerHTML = '';
+            let colR32 = document.createElement('div'); colR32.className = 'bracket-column';
+            colR32.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">RONDA 32</div>`;
+            r32.forEach((m, idx) => { colR32.appendChild(createMatchCard(m, `Llave ${idx+1}`)); });
+            container.appendChild(colR32);
+            let colR16 = document.createElement('div'); colR16.className = 'bracket-column';
+            colR16.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">OCTAVOS</div>`;
+            r16.forEach((item, idx) => { let card = createMatchCard(item.match, `Octavo ${idx+1}`); card.innerHTML += `<div class="source-info"><i class="fas fa-link"></i> Desde llaves ${idx*2+1} y ${idx*2+2}</div>`; colR16.appendChild(card); });
+            container.appendChild(colR16);
+            let colR8 = document.createElement('div'); colR8.className = 'bracket-column';
+            colR8.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">CUARTOS</div>`;
+            r8.forEach((item, idx) => { let card = createMatchCard(item.match, `Cuarto ${idx+1}`); card.innerHTML += `<div class="source-info"><i class="fas fa-link"></i> Desde octavos ${idx*2+1} y ${idx*2+2}</div>`; colR8.appendChild(card); });
+            container.appendChild(colR8);
+            let colR4 = document.createElement('div'); colR4.className = 'bracket-column';
+            colR4.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">SEMIFINALES</div>`;
+            r4.forEach((item, idx) => { let card = createMatchCard(item.match, `Semifinal ${idx+1}`); card.innerHTML += `<div class="source-info"><i class="fas fa-link"></i> Desde cuartos ${idx*2+1} y ${idx*2+2}</div>`; colR4.appendChild(card); });
+            container.appendChild(colR4);
+            let colFinal = document.createElement('div'); colFinal.className = 'bracket-column';
+            colFinal.innerHTML = `<div class="text-center font-bold bg-slate-800 py-1 rounded mb-2">FINALES</div>`;
+            let thirdCard = createMatchCard(thirdMatch, "TERCER PUESTO (Perdedores Semifinales)");
+            thirdCard.innerHTML += `<div class="source-info"><i class="fas fa-exchange-alt"></i> Perdedor SF1 vs Perdedor SF2</div>`;
+            let finalCard = createMatchCard(finalMatch, "🏆 FINAL DEL MUNDIAL");
+            finalCard.classList.add('border-2', 'border-yellow-500');
+            finalCard.innerHTML += `<div class="source-info"><i class="fas fa-trophy"></i> Ganador SF1 vs Ganador SF2</div>`;
+            colFinal.appendChild(thirdCard);
+            colFinal.appendChild(finalCard);
+            container.appendChild(colFinal);
+            document.getElementById('championNameTable').innerText = champ;
+            document.getElementById('runnerUpNameTable').innerText = runner;
+            document.getElementById('thirdPlaceNameTable').innerText = third;
+            document.getElementById('fourthPlaceNameTable').innerText = fourth;
         }
 
         function renderGroups(results, matchesMap) {
@@ -335,12 +320,12 @@
                 let matches = matchesMap[grp];
                 let html = `<div class="group-card rounded-xl"><div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${grp}</h3></div><div class="p-4"><table class="w-full text-sm"><thead class="bg-slate-800/50"><tr><th>Equipo</th><th>Pts</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>DG</th></tr></thead><tbody>`;
                 standings.forEach((s,idx)=>{ let cls= idx<2?'text-green-400 font-bold':'text-yellow-400'; html+=`<tr class="team-row border-b"><td class="py-2 font-semibold">${s.team}</td><td class="font-bold">${s.pts}</td><td>${s.wins}</td><td>${s.draws}</td><td>${s.losses}</td><td>${s.gf}</td><td>${s.gc}</td><td class="${s.dg>=0?'text-green-400':'text-red-400'}">${s.dg}</td></tr>`; });
-                html+=`</tbody></table><div class="mt-4"><div class="text-xs font-bold text-slate-400 mb-2">📋 Resultados</div><div class="space-y-1">`;
+                html+=`</tbody><table><div class="mt-4"><div class="text-xs font-bold text-slate-400 mb-2">📋 Resultados</div><div class="space-y-1">`;
                 matches.forEach(m=>{ html+=`<div class="grid grid-cols-3 gap-2 text-sm py-1"><div class="text-right">${m.team1}</div><div class="text-center font-mono">${m.goals1}-${m.goals2}</div><div class="text-left">${m.team2}</div></div>`; });
                 html+=`</div></div></div></div>`; container.innerHTML+=html;
             }
         }
-        function renderThirds(thirds) { document.getElementById('thirdsTableBody').innerHTML = thirds.map((t,i)=>`<tr class="border-b border-slate-700"><td class="p-2 font-bold">${i+1}</td><td class="p-2">${t.group}</td><td class="p-2 font-semibold">${t.team}</td><td class="p-2 text-center">${t.pts}</td><td class="p-2 text-center">${t.dg}</td><td class="p-2 text-center">${t.gf}</td></tr>`).join(''); }
+        function renderThirds(thirds) { document.getElementById('thirdsTableBody').innerHTML = thirds.map((t,i)=>`<tr class="border-b border-slate-700"><td class="p-2 font-bold">${i+1}</td><td class="p-2">${t.group}</td><td class="p-2 font-semibold">${t.team}</td><td class="p-2 text-center">${t.pts}</td><td class="p-2 text-center">${t.dg}</td><td class="p-2 text-center">${t.gf}</tr>`).join(''); }
 
         // LOGIN Y ADMIN
         const safeStorage={ _data:{}, getItem(k){ try{ return localStorage.getItem(k); }catch(e){ return this._data[k]; } }, setItem(k,v){ try{ localStorage.setItem(k,v); }catch(e){ this._data[k]=v; } } };
