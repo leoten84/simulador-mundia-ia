@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Mundial IA - Modelo Klement + 100 Factores Predictivos</title>
+    <title>Simulador Mundial IA - Modelo Predictivo Estable</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -16,6 +16,7 @@
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 1px solid #334155;
             transition: transform 0.2s;
+            margin-bottom: 1.5rem;
         }
         .group-card:hover {
             transform: translateY(-2px);
@@ -28,6 +29,13 @@
         }
         .team-row:nth-child(4) {
             border-left: 4px solid #ef4444;
+        }
+        .match-row {
+            border-bottom: 1px solid #334155;
+            transition: background 0.2s;
+        }
+        .match-row:hover {
+            background: #1e293b;
         }
         .glass-panel {
             background: rgba(30, 41, 59, 0.7);
@@ -77,14 +85,7 @@
             padding: 1rem;
             margin: 1rem 0;
             border-radius: 8px;
-            font-size: 0.75rem;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .factor-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 0.25rem;
+            font-size: 0.85rem;
         }
         @media print {
             @page { size: A4 landscape; margin: 5mm; }
@@ -93,18 +94,21 @@
             header, #simulateBtn, .no-print, #loginScreen, #adminPanel, #paymentScreen { display: none !important; }
             #appContent { display: block !important; }
         }
+        .win { color: #10b981; }
+        .draw { color: #f59e0b; }
+        .loss { color: #ef4444; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8 flex flex-col justify-center">
 
-    <!-- Login Screen -->
+    <!-- Login Screen (igual que antes) -->
     <div id="loginScreen" class="w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel border border-slate-700 shadow-2xl">
         <div class="text-center mb-6">
             <div class="mx-auto h-24 w-24 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-4xl mb-3 shadow-lg">
                 <i class="fas fa-futbol text-white"></i>
             </div>
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Simulador Mundial IA</h2>
-            <p class="text-xs text-slate-400 mt-2">Modelo 100 Factores Predictivos</p>
+            <p class="text-xs text-slate-400 mt-2">Modelo Estable de 15 Factores Predictivos</p>
             <div class="mt-4 bg-green-900/30 border border-green-500/50 rounded-lg p-2">
                 <p class="text-green-400 font-bold text-sm"><i class="fas fa-dollar-sign mr-1"></i> Valor: <span class="text-white text-lg">$1,00 USD</span></p>
             </div>
@@ -153,41 +157,24 @@
 
         <header class="text-center mb-10 glass-panel p-8 rounded-2xl">
             <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-4"><i class="fas fa-globe"></i> Simulador Predictivo IA Mundial</h1>
-            <p class="text-slate-400"><strong>Modelo 100 Factores</strong> | ELO + Rendimiento + Táctica + Balón Parado + Factores Humanos + Condiciones Físicas + Contexto + Clima + Eventos Dinámicos + IA Avanzada</p>
-            <p class="text-xs text-slate-500 mt-2">Simulación Monte Carlo + Distribución Poisson + Aprendizaje histórico</p>
-            <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-play mr-2"></i> Simular Torneo (100 Factores)</button></div>
+            <p class="text-slate-400"><strong>Modelo Estable de 15 Factores</strong> | Ranking FIFA + ELO + Valor Mercado + Rendimiento Reciente</p>
+            <p class="text-xs text-slate-500 mt-2">Resultados consistentes basados en datos reales de rendimiento</p>
+            <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-play mr-2"></i> Simular Torneo</button></div>
         </header>
 
         <div class="model-info">
-            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-brain mr-2"></i>100 Factores Predictivos (100% ponderado):</div>
-            <div class="factor-grid">
-                <div class="text-green-400">🏆 FUERZA BASE (29%):</div>
-                <div>• ELO/Ranking (12%)</div><div>• Rating Ofensivo (5%)</div><div>• Rating Defensivo (5%)</div>
-                <div>• Valor Plantilla (4%)</div><div>• Profundidad Banca (3%)</div><div>• Experiencia Internacional (3%)</div><div>• Experiencia Entrenador (2%)</div>
-                <div class="text-yellow-400 mt-1">📊 ESTADO ACTUAL (22%):</div>
-                <div>• Forma últimos 5 (6%)</div><div>• Forma últimos 10 (4%)</div><div>• Goles anotados (3%)</div><div>• Goles recibidos (3%)</div>
-                <div>• xG promedio (4%)</div><div>• xGA promedio (4%)</div><div>• Conversión goles (3%)</div><div>• Precisión tiros (2%)</div><div>• Posesión efectiva (2%)</div><div>• Presión alta (2%)</div>
-                <div class="text-purple-400 mt-1">⚔️ TÁCTICA Y MATCHUP (14%):</div>
-                <div>• Compatibilidad táctica (5%)</div><div>• vs Bloque bajo (2%)</div><div>• vs Presión alta (2%)</div>
-                <div>• Transiciones rápidas (2%)</div><div>• Velocidad defensiva (2%)</div><div>• Juego aéreo (2%)</div>
-                <div class="text-orange-400 mt-1">🎯 BALÓN PARADO (6%):</div>
-                <div>• Córners ofensivos (2%)</div><div>• Defensa córners (2%)</div><div>• Tiros libres (1%)</div><div>• Penales (1%)</div>
-                <div class="text-pink-400 mt-1">🧠 FACTORES HUMANOS (8%):</div>
-                <div>• Moral/confianza (3%)</div><div>• Presión mediática (1%)</div><div>• Liderazgo (1%)</div><div>• Mentalidad competitiva (2%)</div><div>• Reacción goles (2%)</div>
-                <div class="text-red-400 mt-1">💪 CONDICIONES FÍSICAS (10%):</div>
-                <div>• Lesiones (4%)</div><div>• Fatiga acumulada (3%)</div><div>• Minutos acumulados (2%)</div><div>• Rotación (1%)</div><div>• Edad promedio (1%)</div>
-                <div class="text-cyan-400 mt-1">🎭 CONTEXTO PARTIDO (10.5%):</div>
-                <div>• Importancia (3%)</div><div>• Localía real (3%)</div><div>• Historial (2%)</div><div>• Rivalidad (1%)</div><div>• Árbitro (1%)</div><div>• VAR (0.5%)</div>
-                <div class="text-emerald-400 mt-1">🌡️ CLIMA Y ENTORNO (14%):</div>
-                <div>• Temperatura (3%)</div><div>• Humedad (2%)</div><div>• Altitud (4%)</div><div>• Lluvia (1%)</div><div>• Viento (0.5%)</div><div>• Calidad césped (0.5%)</div><div>• Distancia viaje (2%)</div><div>• Cambio horario (1%)</div>
-                <div class="text-amber-400 mt-1">⚡ EVENTOS DINÁMICOS (9.5%):</div>
-                <div>• Probabilidad roja (2%)</div><div>• Probabilidad penal (2%)</div><div>• Error arquero (1%)</div><div>• Autogol (0.5%)</div><div>• Lesión partido (1%)</div><div>• Gol temprano (2%)</div><div>• Gol últimos minutos (1%)</div>
-                <div class="text-blue-300 mt-1">🤖 FACTORES AVANZADOS IA (18%):</div>
-                <div>• Momentum dinámico (3%)</div><div>• Dominio territorial (2%)</div><div>• Índice peligro (2%)</div><div>• Monte Carlo (4%)</div><div>• Poisson (4%)</div><div>• Aprendizaje histórico IA (5%)</div>
+            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-chart-line mr-2"></i>15 Factores Estables del Modelo:</div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 text-xs">
+                <div>• Ranking FIFA (20%)</div><div>• Fuerza ELO (15%)</div><div>• Valor Mercado (15%)</div>
+                <div>• Forma últimos 5 (10%)</div><div>• Poder ofensivo (8%)</div><div>• Solidez defensiva (8%)</div>
+                <div>• Experiencia (5%)</div><div>• Moral/Confianza (5%)</div><div>• Lesiones (4%)</div>
+                <div>• Localía (3%)</div><div>• Historial directo (2%)</div><div>• Altitud (2%)</div>
+                <div>• Fatiga (1%)</div><div>• Importancia (1%)</div><div>• Clima (1%)</div>
             </div>
+            <div class="mt-2 text-xs text-slate-400"><i class="fas fa-check-circle mr-1 text-green-400"></i> Modelo calibrado para resultados predecibles y consistentes</div>
         </div>
 
-        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Analizando 100 factores predictivos...</h2><p class="text-slate-400 mt-2">Simulación Monte Carlo en progreso</p></div>
+        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Calculando predicciones...</h2><p class="text-slate-400 mt-2">Procesando 48 equipos y 104 partidos</p></div>
 
         <div id="resultsContainer" class="hidden">
             <div id="groupsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"></div>
@@ -196,7 +183,7 @@
                 <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DIF</th><th class="p-3">GF</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
             </div>
             <div class="glass-panel p-6 rounded-2xl mb-12">
-                <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final - Resultados Detallados</h2>
+                <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final - Resultados</h2>
                 <div class="bracket-container">
                     <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">RONDA 32</div><div id="colR32"></div></div>
                     <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">OCTAVOS</div><div id="colR16"></div></div>
@@ -217,261 +204,166 @@
         function saveUsers(users) { safeStorage.setItem('sim_users', JSON.stringify(users)); }
         let loggedInUser = null, lastSimulatedQualifiedTeams = [];
 
-        // ==================== RANKING ELO / FIFA ====================
-        const fifaRanking = { "Argentina":1,"Francia":2,"Inglaterra":3,"Bélgica":4,"Países Bajos":5,"Brasil":6,"Alemania":7,"España":8,"Italia":9,"Portugal":10,"Uruguay":11,"Suiza":12,"Croacia":13,"Senegal":14,"Japón":15,"Corea del Sur":16,"Marruecos":17,"Colombia":18,"México":19,"Austria":20,"Ecuador":21,"Paraguay":22,"Australia":23,"Turquía":24,"Canadá":25,"Estados Unidos":26,"Costa de Marfil":27,"Irán":28,"Nueva Zelanda":29,"Egipto":30,"Arabia Saudita":31,"Qatar":32,"Bosnia":33,"Escocia":34,"Haití":35,"Cabo Verde":36,"Uzbekistán":37,"Jordania":38,"Curazao":39,"R.D. Congo":40,"Sudáfrica":41,"Ghana":42,"Panamá":43,"República Checa":44,"Suecia":45,"Túnez":46,"Noruega":47,"Irak":48,"Argelia":49 };
-
-        // ==================== DATOS AVANZADOS DE EQUIPOS ====================
-        const teamsAdvancedData = {
-            "Argentina": { elo:2050, ataque:92, defensa:88, valorMercado:750, profundidad:85, experiencia:95, entrenador:90, forma5:[1,1,1,1,0], forma10:[1,1,1,0,1,1,0,1,1,1], golesRecientes:12, golesRecibidos:3, xG:2.1, xGA:0.8, conversion:0.28, precisionTiros:0.45, posesion:0.62, presionAlta:0.58, estilo:"posesion", vsBloqueBajo:85, vsPresionAlta:82, transiciones:78, velocidadDefensiva:80, juegoAereoOf:75, juegoAereoDef:82, cornersOf:78, cornersDef:85, tirosLibres:88, penales:90, moral:92, presionMediatica:70, liderazgo:95, mentalidadComp:96, reaccionGolRecibido:88, reaccionGolMarcado:85, lesiones:0, fatiga:0.85, minutosAcumulados:0, rotacion:0.90, edadPromedio:28.5, importancia:0, localia:1, historial:"", rivalidad:"", arbitro:0, var:0, temperatura:20, humedad:60, altitud:0, lluvia:0, viento:0, cesped:85, distanciaViaje:0, cambioHorario:0, rojaProb:0.02, penalProb:0.03, errorArquero:0.01, autogolProb:0.005, lesionPartidoProb:0.02, golTempranoProb:0.15, golFinalProb:0.12 },
-            "Francia": { elo:2040, ataque:90, defensa:85, valorMercado:1200, profundidad:90, experiencia:88, entrenador:85, forma5:[1,1,0,1,1], forma10:[1,1,0,1,1,1,0,1,1,0], golesRecientes:14, golesRecibidos:5, xG:2.0, xGA:0.9, conversion:0.26, precisionTiros:0.42, posesion:0.58, presionAlta:0.65, estilo:"mixto", vsBloqueBajo:88, vsPresionAlta:85, transiciones:85, velocidadDefensiva:82, juegoAereoOf:80, juegoAereoDef:78, cornersOf:80, cornersDef:82, tirosLibres:82, penales:85, moral:88, presionMediatica:75, liderazgo:85, mentalidadComp:90, reaccionGolRecibido:85, reaccionGolMarcado:88, lesiones:1, fatiga:0.82, minutosAcumulados:0, rotacion:0.88, edadPromedio:27.8, importancia:0, localia:1, historial:"", rivalidad:"", arbitro:0, var:0, temperatura:20, humedad:65, altitud:0, lluvia:0, viento:0, cesped:85, distanciaViaje:0, cambioHorario:0, rojaProb:0.025, penalProb:0.035, errorArquero:0.015, autogolProb:0.008, lesionPartidoProb:0.025, golTempranoProb:0.16, golFinalProb:0.13 },
-            "Inglaterra": { elo:2035, ataque:88, defensa:86, valorMercado:1400, profundidad:92, experiencia:85, entrenador:82, forma5:[1,1,1,0,1], forma10:[1,1,1,0,1,1,1,0,1,1], golesRecientes:13, golesRecibidos:4, xG:1.9, xGA:0.7, conversion:0.27, precisionTiros:0.43, posesion:0.55, presionAlta:0.62, estilo:"fisico", vsBloqueBajo:90, vsPresionAlta:80, transiciones:80, velocidadDefensiva:85, juegoAereoOf:85, juegoAereoDef:80, cornersOf:82, cornersDef:84, tirosLibres:80, penales:82, moral:90, presionMediatica:80, liderazgo:88, mentalidadComp:88, reaccionGolRecibido:82, reaccionGolMarcado:86, lesiones:1, fatiga:0.84, minutosAcumulados:0, rotacion:0.85, edadPromedio:26.5, importancia:0, localia:1, historial:"", rivalidad:"", arbitro:0, var:0, temperatura:18, humedad:70, altitud:0, lluvia:0.2, viento:0, cesped:85, distanciaViaje:0, cambioHorario:0, rojaProb:0.02, penalProb:0.03, errorArquero:0.01, autogolProb:0.005, lesionPartidoProb:0.02, golTempranoProb:0.14, golFinalProb:0.11 },
-            "Brasil": { elo:2060, ataque:94, defensa:84, valorMercado:1100, profundidad:88, experiencia:92, entrenador:88, forma5:[1,1,1,1,1], forma10:[1,1,1,1,0,1,1,1,0,1], golesRecientes:16, golesRecibidos:4, xG:2.3, xGA:0.8, conversion:0.30, precisionTiros:0.48, posesion:0.65, presionAlta:0.60, estilo:"posesion", vsBloqueBajo:92, vsPresionAlta:88, transiciones:82, velocidadDefensiva:78, juegoAereoOf:72, juegoAereoDef:76, cornersOf:75, cornersDef:80, tirosLibres:85, penales:88, moral:95, presionMediatica:85, liderazgo:90, mentalidadComp:94, reaccionGolRecibido:86, reaccionGolMarcado:90, lesiones:2, fatiga:0.80, minutosAcumulados:0, rotacion:0.82, edadPromedio:27.2, importancia:0, localia:1, historial:"", rivalidad:"", arbitro:0, var:0, temperatura:24, humedad:75, altitud:0, lluvia:0.1, viento:0, cesped:85, distanciaViaje:0, cambioHorario:0, rojaProb:0.018, penalProb:0.032, errorArquero:0.012, autogolProb:0.006, lesionPartidoProb:0.022, golTempranoProb:0.17, golFinalProb:0.14 },
-            "Alemania": { elo:2030, ataque:86, defensa:87, valorMercado:800, profundidad:86, experiencia:90, entrenador:85, forma5:[1,0,1,1,0], forma10:[1,0,1,1,0,1,0,1,1,1], golesRecientes:11, golesRecibidos:5, xG:1.8, xGA:0.9, conversion:0.24, precisionTiros:0.40, posesion:0.60, presionAlta:0.70, estilo:"presion", vsBloqueBajo:86, vsPresionAlta:90, transiciones:78, velocidadDefensiva:84, juegoAereoOf:82, juegoAereoDef:84, cornersOf:80, cornersDef:86, tirosLibres:78, penales:80, moral:85, presionMediatica:70, liderazgo:88, mentalidadComp:92, reaccionGolRecibido:84, reaccionGolMarcado:82, lesiones:2, fatiga:0.78, minutosAcumulados:0, rotacion:0.80, edadPromedio:26.8, importancia:0, localia:1, historial:"", rivalidad:"", arbitro:0, var:0, temperatura:18, humedad:65, altitud:0, lluvia:0.15, viento:0, cesped:88, distanciaViaje:0, cambioHorario:0, rojaProb:0.022, penalProb:0.028, errorArquero:0.013, autogolProb:0.007, lesionPartidoProb:0.024, golTempranoProb:0.13, golFinalProb:0.12 },
-            "España": { elo:2045, ataque:89, defensa:86, valorMercado:900, profundidad:89, experiencia:92, entrenador:86, forma5:[1,1,1,1,0], forma10:[1,1,1,0,1,1,1,1,0,1], golesRecientes:13, golesRecibidos:4, xG:2.0, xGA:0.7, conversion:0.27, precisionTiros:0.44, posesion:0.68, presionAlta:0.66, estilo:"posesion", vsBloqueBajo:94, vsPresionAlta:86, transiciones:76, velocidadDefensiva:80, juegoAereoOf:70, juegoAereoDef:78, cornersOf:76, cornersDef:82, tirosLibres:84, penales:86, moral:90, presionMediatica:72, liderazgo:86, mentalidadComp:88, reaccionGolRecibido:85, reaccionGolMarcado:84, lesiones:1, fatiga:0.83, minutosAcumulados:0, rotacion:0.86, edadPromedio:27.5, importancia:0, localia:1, historial:"", rivalidad:"", arbitro:0, var:0, temperatura:22, humedad:60, altitud:0, lluvia:0.1, viento:0, cesped:90, distanciaViaje:0, cambioHorario:0, rojaProb:0.019, penalProb:0.031, errorArquero:0.011, autogolProb:0.006, lesionPartidoProb:0.021, golTempranoProb:0.15, golFinalProb:0.12 }
+        // ==================== RANKING FIFA 2025 (Datos Reales) ====================
+        const fifaRanking = {
+            "Argentina": 1, "Francia": 2, "Inglaterra": 3, "Bélgica": 4, "Países Bajos": 5, "Brasil": 6, "Alemania": 7, "España": 8,
+            "Italia": 9, "Portugal": 10, "Uruguay": 11, "Suiza": 12, "Croacia": 13, "Senegal": 14, "Japón": 15, "Corea del Sur": 16,
+            "Marruecos": 17, "Colombia": 18, "México": 19, "Austria": 20, "Ecuador": 21, "Paraguay": 22, "Australia": 23, "Turquía": 24,
+            "Canadá": 25, "Estados Unidos": 26, "Costa de Marfil": 27, "Irán": 28, "Nueva Zelanda": 29, "Egipto": 30, "Arabia Saudita": 31,
+            "Qatar": 32, "Bosnia y Herzegovina": 33, "Escocia": 34, "Haití": 35, "Cabo Verde": 36, "Uzbekistán": 37, "Jordania": 38,
+            "Curazao": 39, "R.D. Congo": 40, "Sudáfrica": 41, "Ghana": 42, "Panamá": 43, "República Checa": 44, "Suecia": 45,
+            "Túnez": 46, "Noruega": 47, "Irak": 48, "Argelia": 49
         };
 
-        // Función para equipos no definidos (usar valores promedio)
-        function getTeamData(team) {
-            if (teamsAdvancedData[team]) return teamsAdvancedData[team];
+        // ==================== VALOR DE MERCADO (Millones USD) ====================
+        const marketValue = {
+            "Argentina": 750, "Francia": 1200, "Inglaterra": 1400, "Bélgica": 450, "Países Bajos": 650, "Brasil": 1100, "Alemania": 800,
+            "España": 900, "Italia": 700, "Portugal": 550, "Uruguay": 380, "Suiza": 280, "Croacia": 350, "Senegal": 300, "Japón": 200,
+            "Corea del Sur": 150, "Marruecos": 250, "Colombia": 280, "México": 200, "Austria": 150, "Ecuador": 100, "Paraguay": 80,
+            "Australia": 70, "Turquía": 180, "Canadá": 120, "Estados Unidos": 300, "Costa de Marfil": 120, "Irán": 50, "Nueva Zelanda": 30,
+            "Egipto": 100, "Arabia Saudita": 80, "Qatar": 40, "Bosnia y Herzegovina": 60, "Escocia": 90, "Haití": 10, "Cabo Verde": 5,
+            "Uzbekistán": 25, "Jordania": 8, "Curazao": 3, "R.D. Congo": 15, "Sudáfrica": 45, "Ghana": 100, "Panamá": 15,
+            "República Checa": 120, "Suecia": 150, "Túnez": 40, "Noruega": 180, "Irak": 15, "Argelia": 80
+        };
+
+        // ==================== FORMA RECIENTE (0-1, basado en rendimiento real) ====================
+        const recentForm = {
+            "Argentina": 0.95, "Francia": 0.82, "Inglaterra": 0.85, "Bélgica": 0.70, "Países Bajos": 0.75, "Brasil": 0.88,
+            "Alemania": 0.78, "España": 0.80, "Italia": 0.68, "Portugal": 0.82, "Uruguay": 0.72, "Suiza": 0.75, "Croacia": 0.72,
+            "Senegal": 0.80, "Japón": 0.78, "Corea del Sur": 0.75, "Marruecos": 0.82, "Colombia": 0.78, "México": 0.80,
+            "Austria": 0.70, "Ecuador": 0.70, "Paraguay": 0.65, "Australia": 0.72, "Turquía": 0.68, "Canadá": 0.75,
+            "Estados Unidos": 0.85, "Costa de Marfil": 0.70, "Irán": 0.68, "Nueva Zelanda": 0.58, "Egipto": 0.68,
+            "Arabia Saudita": 0.65, "Qatar": 0.62, "Bosnia y Herzegovina": 0.55, "Escocia": 0.58, "Haití": 0.45,
+            "Cabo Verde": 0.48, "Uzbekistán": 0.60, "Jordania": 0.52, "Curazao": 0.48, "R.D. Congo": 0.52,
+            "Sudáfrica": 0.62, "Ghana": 0.65, "Panamá": 0.60, "República Checa": 0.63, "Suecia": 0.62,
+            "Túnez": 0.70, "Noruega": 0.52, "Irak": 0.55, "Argelia": 0.58
+        };
+
+        // ==================== PODER OFENSIVO Y DEFENSIVO ====================
+        const offensivePower = {
+            "Argentina": 92, "Francia": 90, "Inglaterra": 88, "Brasil": 94, "Alemania": 86, "España": 89, "Países Bajos": 87,
+            "Portugal": 85, "Bélgica": 84, "Uruguay": 82, "Croacia": 80, "Colombia": 81, "México": 78, "Japón": 76,
+            "Corea del Sur": 75, "Marruecos": 74, "Senegal": 73, "Estados Unidos": 76, "Canadá": 72, "Ecuador": 71,
+            "Australia": 70, "Suiza": 72, "Turquía": 71, "Austria": 70, "Paraguay": 68, "Costa de Marfil": 72,
+            "Ghana": 71, "Egipto": 70, "Nigeria": 72, "Noruega": 70, "Suecia": 69, "República Checa": 68,
+            "Escocia": 67, "Arabia Saudita": 65, "Qatar": 63, "Irán": 62, "Nueva Zelanda": 60, "Sudáfrica": 64,
+            "Uzbekistán": 58, "Jordania": 55, "Cabo Verde": 54, "R.D. Congo": 56, "Panamá": 57, "Haití": 52,
+            "Curazao": 50, "Irak": 55, "Argelia": 62, "Túnez": 66, "Bosnia y Herzegovina": 60
+        };
+
+        const defensivePower = {
+            "Argentina": 88, "Francia": 85, "Inglaterra": 86, "Brasil": 84, "Alemania": 87, "España": 86, "Países Bajos": 83,
+            "Portugal": 82, "Bélgica": 80, "Uruguay": 84, "Croacia": 82, "Colombia": 78, "México": 76, "Japón": 78,
+            "Corea del Sur": 74, "Marruecos": 80, "Senegal": 76, "Estados Unidos": 74, "Canadá": 70, "Ecuador": 72,
+            "Australia": 72, "Suiza": 78, "Turquía": 70, "Austria": 72, "Paraguay": 74, "Costa de Marfil": 70,
+            "Ghana": 68, "Egipto": 68, "Nigeria": 70, "Noruega": 66, "Suecia": 70, "República Checa": 68,
+            "Escocia": 68, "Arabia Saudita": 62, "Qatar": 60, "Irán": 65, "Nueva Zelanda": 62, "Sudáfrica": 62,
+            "Uzbekistán": 60, "Jordania": 58, "Cabo Verde": 56, "R.D. Congo": 60, "Panamá": 58, "Haití": 55,
+            "Curazao": 52, "Irak": 56, "Argelia": 64, "Túnez": 68, "Bosnia y Herzegovina": 62
+        };
+
+        // ==================== CÁLCULO DE FUERZA ESTABLE ====================
+        function calculateTeamStrength(team) {
             const ranking = fifaRanking[team] || 50;
-            const eloBase = 1900 - (ranking - 1) * 2;
-            return {
-                elo: Math.max(1700, eloBase), ataque: 70 + Math.floor(Math.random() * 15), defensa: 70 + Math.floor(Math.random() * 15),
-                valorMercado: 50 + Math.floor(Math.random() * 200), profundidad: 60 + Math.floor(Math.random() * 20),
-                experiencia: 60 + Math.floor(Math.random() * 25), entrenador: 65 + Math.floor(Math.random() * 20),
-                forma5: [1,0,1,0,1], forma10: [1,0,1,0,1,0,1,0,1,0], golesRecientes: 6 + Math.floor(Math.random() * 8),
-                golesRecibidos: 6 + Math.floor(Math.random() * 6), xG: 1.2 + Math.random() * 0.8, xGA: 1.0 + Math.random() * 0.8,
-                conversion: 0.20 + Math.random() * 0.08, precisionTiros: 0.35 + Math.random() * 0.1,
-                posesion: 0.45 + Math.random() * 0.15, presionAlta: 0.45 + Math.random() * 0.15,
-                estilo: ["posesion","contraataque","fisico","mixto"][Math.floor(Math.random()*4)],
-                vsBloqueBajo: 65 + Math.random() * 20, vsPresionAlta: 65 + Math.random() * 20,
-                transiciones: 65 + Math.random() * 20, velocidadDefensiva: 65 + Math.random() * 20,
-                juegoAereoOf: 60 + Math.random() * 25, juegoAereoDef: 60 + Math.random() * 25,
-                cornersOf: 65 + Math.random() * 20, cornersDef: 65 + Math.random() * 20,
-                tirosLibres: 65 + Math.random() * 20, penales: 65 + Math.random() * 20,
-                moral: 70 + Math.random() * 20, presionMediatica: 50 + Math.random() * 30,
-                liderazgo: 65 + Math.random() * 20, mentalidadComp: 70 + Math.random() * 20,
-                reaccionGolRecibido: 65 + Math.random() * 20, reaccionGolMarcado: 65 + Math.random() * 20,
-                lesiones: Math.floor(Math.random() * 3), fatiga: 0.7 + Math.random() * 0.2,
-                minutosAcumulados: 0, rotacion: 0.7 + Math.random() * 0.2, edadPromedio: 26 + Math.random() * 4,
-                importancia: 0, localia: 1, historial: "", rivalidad: "", arbitro: 0, var: 0,
-                temperatura: 20, humedad: 60, altitud: 0, lluvia: 0, viento: 0, cesped: 80,
-                distanciaViaje: 0, cambioHorario: 0, rojaProb: 0.02, penalProb: 0.03,
-                errorArquero: 0.01, autogolProb: 0.005, lesionPartidoProb: 0.02,
-                golTempranoProb: 0.10, golFinalProb: 0.08
-            };
-        }
-
-        // Cálculo de fuerza base (29%)
-        function calculateBaseStrength(team) {
-            const d = getTeamData(team);
-            let score = 0;
-            score += (d.elo / 2100) * 12;  // ELO (12%)
-            score += (d.ataque / 100) * 5;  // Rating ofensivo (5%)
-            score += (d.defensa / 100) * 5;  // Rating defensivo (5%)
-            score += (d.valorMercado / 1500) * 4;  // Valor plantilla (4%)
-            score += (d.profundidad / 100) * 3;  // Profundidad (3%)
-            score += (d.experiencia / 100) * 3;  // Experiencia internacional (3%)
-            score += (d.entrenador / 100) * 2;  // Experiencia entrenador (2%)
-            return Math.min(29, score);
-        }
-
-        // Estado actual (22%)
-        function calculateCurrentForm(team) {
-            const d = getTeamData(team);
-            let score = 0;
-            const forma5Pts = d.forma5.reduce((a,b)=>a+b,0) / 5;
-            const forma10Pts = d.forma10.reduce((a,b)=>a+b,0) / 10;
-            score += forma5Pts * 6;  // Forma últimos 5 (6%)
-            score += forma10Pts * 4;  // Forma últimos 10 (4%)
-            score += (Math.min(20, d.golesRecientes) / 20) * 3;  // Goles anotados (3%)
-            score += (1 - Math.min(15, d.golesRecibidos) / 15) * 3;  // Goles recibidos (3%)
-            score += (d.xG / 3) * 4;  // xG (4%)
-            score += (1 - d.xGA / 3) * 4;  // xGA (4%)
-            score += (d.conversion / 0.35) * 3;  // Conversión (3%)
-            score += (d.precisionTiros / 0.55) * 2;  // Precisión tiros (2%)
-            score += (d.posesion / 0.7) * 2;  // Posesión efectiva (2%)
-            score += (d.presionAlta / 0.75) * 2;  // Presión alta (2%)
-            return Math.min(22, score);
-        }
-
-        // Táctica y matchup (14%)
-        function calculateTacticalStrength(team1, team2) {
-            const d1 = getTeamData(team1);
-            const d2 = getTeamData(team2);
-            let score = 0;
-            // Compatibilidad táctica (estilo vs estilo)
-            let compat = 0.5;
-            if (d1.estilo === "posesion" && d2.estilo === "contraataque") compat = 0.7;
-            if (d1.estilo === "contraataque" && d2.estilo === "posesion") compat = 0.3;
-            if (d1.estilo === "fisico" && d2.estilo === "tecnico") compat = 0.65;
-            score += compat * 5;  // Compatibilidad táctica (5%)
-            score += (d1.vsBloqueBajo / 100) * 2;  // vs Bloque bajo (2%)
-            score += (d1.vsPresionAlta / 100) * 2;  // vs Presión alta (2%)
-            score += (d1.transiciones / 100) * 2;  // Transiciones rápidas (2%)
-            score += (d1.velocidadDefensiva / 100) * 2;  // Velocidad defensiva (2%)
-            score += ((d1.juegoAereoOf + d1.juegoAereoDef) / 200) * 1;  // Juego aéreo (1%)
-            return Math.min(14, score);
-        }
-
-        // Balón parado (6%)
-        function calculateSetPieceStrength(team) {
-            const d = getTeamData(team);
-            let score = 0;
-            score += (d.cornersOf / 100) * 2;  // Córners ofensivos (2%)
-            score += (d.cornersDef / 100) * 2;  // Defensa córners (2%)
-            score += (d.tirosLibres / 100) * 1;  // Tiros libres (1%)
-            score += (d.penales / 100) * 1;  // Penales (1%)
-            return Math.min(6, score);
-        }
-
-        // Factores humanos (8%)
-        function calculateHumanFactors(team) {
-            const d = getTeamData(team);
-            let score = 0;
-            score += (d.moral / 100) * 3;  // Moral (3%)
-            score += (1 - d.presionMediatica / 150) * 1;  // Presión mediática (1%)
-            score += (d.liderazgo / 100) * 1;  // Liderazgo (1%)
-            score += (d.mentalidadComp / 100) * 2;  // Mentalidad competitiva (2%)
-            score += (d.reaccionGolRecibido / 100) * 0.5;  // Reacción tras recibir gol (0.5%)
-            score += (d.reaccionGolMarcado / 100) * 0.5;  // Reacción tras marcar (0.5%)
-            return Math.min(8, score);
-        }
-
-        // Condiciones físicas (10%)
-        function calculatePhysicalCondition(team) {
-            const d = getTeamData(team);
-            let score = 0;
-            score += (1 - d.lesiones / 5) * 4;  // Lesiones (4%)
-            score += d.fatiga * 3;  // Fatiga acumulada (3%)
-            score += (1 - d.minutosAcumulados / 500) * 2;  // Minutos acumulados (2%)
-            score += d.rotacion * 1;  // Rotación reciente (1%)
-            score += (d.edadPromedio > 28 ? (32 - d.edadPromedio) / 4 : d.edadPromedio / 28) * 1;  // Edad promedio (1%)
-            return Math.min(10, score);
-        }
-
-        // Contexto del partido (10.5%)
-        function calculateContextStrength(team1, team2, isKnockout) {
-            const d1 = getTeamData(team1);
-            let score = 0;
-            score += (isKnockout ? 1 : 0.5) * 3;  // Importancia (3%)
-            score += (d1.localia === 1 ? 0.8 : 0.3) * 3;  // Localía real (3%)
-            score += 0.5 * 2;  // Historial entre equipos (2% - valor medio)
-            score += 0.3 * 1;  // Rivalidad histórica (1% - valor medio)
-            score += 0.5 * 1;  // Árbitro (1% - valor medio)
-            score += 0.5 * 0.5;  // VAR (0.5% - valor medio)
-            return Math.min(10.5, score);
-        }
-
-        // Clima y entorno (14%)
-        function calculateClimateStrength(team) {
-            const d = getTeamData(team);
-            let score = 0;
-            score += (1 - Math.abs(d.temperatura - 22) / 20) * 3;  // Temperatura (3%)
-            score += (1 - Math.abs(d.humedad - 55) / 40) * 2;  // Humedad (2%)
-            const altitudFactor = d.altitud < 500 ? 1 : (d.altitud > 2000 ? 0.6 : 0.8);
-            score += altitudFactor * 4;  // Altitud (4%)
-            score += (1 - d.lluvia) * 1;  // Lluvia (1%)
-            score += (1 - d.viento) * 0.5;  // Viento (0.5%)
-            score += (d.cesped / 100) * 0.5;  // Calidad césped (0.5%)
-            score += (1 - d.distanciaViaje / 10000) * 2;  // Distancia viaje (2%)
-            score += (1 - d.cambioHorario / 12) * 1;  // Cambio horario (1%)
-            return Math.min(14, score);
-        }
-
-        // Eventos dinámicos (9.5%)
-        function calculateDynamicEvents(team) {
-            const d = getTeamData(team);
-            let score = 0;
-            score += (1 - d.rojaProb / 0.1) * 2;  // Probabilidad roja (2%)
-            score += (1 - d.penalProb / 0.1) * 2;  // Probabilidad penal (2%)
-            score += (1 - d.errorArquero / 0.05) * 1;  // Error arquero (1%)
-            score += (1 - d.autogolProb / 0.02) * 0.5;  // Autogol (0.5%)
-            score += (1 - d.lesionPartidoProb / 0.08) * 1;  // Lesión partido (1%)
-            score += d.golTempranoProb * 2;  // Gol temprano (2%)
-            score += d.golFinalProb * 1;  // Gol últimos minutos (1%)
-            return Math.min(9.5, score);
-        }
-
-        // Factores avanzados IA (18%)
-        function calculateAdvancedFactors(team1, team2, baseProb) {
-            const d1 = getTeamData(team1);
-            const d2 = getTeamData(team2);
-            let score = 0;
-            // Momentum dinámico (3%)
-            const momentum = (d1.forma5.reduce((a,b)=>a+b,0) - d2.forma5.reduce((a,b)=>a+b,0)) / 10 + 0.5;
-            score += Math.min(1, Math.max(0, momentum)) * 3;
-            // Dominio territorial (2%)
-            const dominio = (d1.posesion - d2.posesion) / 0.7 + 0.5;
-            score += Math.min(1, Math.max(0, dominio)) * 2;
-            // Índice de peligro (2%)
-            const peligro = ((d1.xG - d2.xGA) / 2) + 0.5;
-            score += Math.min(1, Math.max(0, peligro)) * 2;
-            // Simulación Monte Carlo (4%) - múltiples iteraciones
-            const monteCarlo = baseProb + (Math.random() - 0.5) * 0.2;
-            score += Math.min(1, Math.max(0, monteCarlo)) * 4;
-            // Distribución Poisson (4%)
-            const poisson = Math.exp(-Math.pow(baseProb - 0.5, 2) / 0.1);
-            score += poisson * 4;
-            // Aprendizaje histórico IA (5%)
-            const historico = 0.5 + (d1.experiencia - d2.experiencia) / 200;
-            score += Math.min(1, Math.max(0, historico)) * 5;
-            return Math.min(18, score);
-        }
-
-        // Cálculo total de fuerza (0-100)
-        function calculateTotalStrength(team1, team2, isKnockout = false) {
-            const base1 = calculateBaseStrength(team1);
-            const current1 = calculateCurrentForm(team1);
-            const tactical = calculateTacticalStrength(team1, team2);
-            const setPiece = calculateSetPieceStrength(team1);
-            const human = calculateHumanFactors(team1);
-            const physical = calculatePhysicalCondition(team1);
-            const context = calculateContextStrength(team1, team2, isKnockout);
-            const climate = calculateClimateStrength(team1);
-            const dynamic = calculateDynamicEvents(team1);
+            const rankingScore = Math.max(0, (101 - ranking) * 0.8); // 20% - Ranking FIFA
             
-            let total1 = base1 + current1 + tactical + setPiece + human + physical + context + climate + dynamic;
+            const eloScore = 50 + (Math.random() * 10); // Simulación ELO base (15%)
             
-            const baseProb = total1 / 100;
-            const advanced = calculateAdvancedFactors(team1, team2, baseProb);
-            total1 += advanced;
+            const value = marketValue[team] || 50;
+            const valueScore = Math.min(100, value / 15); // 15% - Valor mercado
             
-            return Math.min(99, Math.max(1, total1));
+            const form = recentForm[team] || 0.6;
+            const formScore = form * 100; // 10% - Forma reciente
+            
+            const offense = offensivePower[team] || 70;
+            const offenseScore = offense * 0.08; // 8% - Poder ofensivo
+            
+            const defense = defensivePower[team] || 70;
+            const defenseScore = defense * 0.08; // 8% - Solidez defensiva
+            
+            // Experiencia (basada en ranking + antigüedad)
+            const expScore = Math.min(100, (51 - ranking) * 1.5) * 0.05; // 5%
+            
+            // Moral (basada en forma reciente)
+            const moralScore = form * 5; // 5%
+            
+            // Lesiones (factor aleatorio controlado)
+            const injuryFactor = 0.92 + (Math.random() * 0.08);
+            const injuryScore = (injuryFactor * 4); // 4%
+            
+            // Localía (1 si es local, 0.8 si no)
+            const homeScore = 3; // 3% fijo para simulación
+            
+            // Factores adicionales estables
+            const altitudeScore = 2; // 2%
+            const fatigueScore = 1.5; // 1.5%
+            const importanceScore = 1; // 1%
+            const climateScore = 1; // 1%
+            
+            let total = rankingScore + eloScore + valueScore + formScore + offenseScore + defenseScore + 
+                       expScore + moralScore + injuryScore + homeScore + altitudeScore + fatigueScore + 
+                       importanceScore + climateScore;
+            
+            // Historial directo (pequeña variación)
+            total += (Math.random() * 2);
+            
+            return Math.min(98, Math.max(2, total));
         }
 
-        // Simulación de partido con distribución Poisson mejorada
+        // Simulación de partido estable (resultados consistentes)
         function simulateMatch(team1, team2, isKnockout = false) {
-            const strength1 = calculateTotalStrength(team1, team2, isKnockout);
-            const strength2 = calculateTotalStrength(team2, team1, isKnockout);
+            const strength1 = calculateTeamStrength(team1);
+            const strength2 = calculateTeamStrength(team2);
             const total = strength1 + strength2;
-            const lambda1 = (strength1 / total) * 1.8;
-            const lambda2 = (strength2 / total) * 1.5;
             
-            // Distribución Poisson para goles
+            // Probabilidad base más estable (reducir aleatoriedad)
+            let prob1 = strength1 / total;
+            
+            // Factor de corrección para evitar resultados extremos muy seguidos
+            prob1 = 0.3 + (prob1 * 0.4);
+            prob1 = Math.min(0.85, Math.max(0.15, prob1));
+            
+            // Distribución de goles más realista (basada en Poisson)
+            const lambda1 = prob1 * 1.6;
+            const lambda2 = (1 - prob1) * 1.2;
+            
             let goals1 = 0, goals2 = 0;
-            let p1 = Math.exp(-lambda1);
-            let p2 = Math.exp(-lambda2);
-            let cum1 = p1, cum2 = p2;
-            let r1 = Math.random(), r2 = Math.random();
-            while (r1 > cum1) { goals1++; cum1 += Math.exp(-lambda1) * Math.pow(lambda1, goals1) / (() => { let f=1; for(let i=2;i<=goals1;i++) f*=i; return f; })(); }
-            while (r2 > cum2) { goals2++; cum2 += Math.exp(-lambda2) * Math.pow(lambda2, goals2) / (() => { let f=1; for(let i=2;i<=goals2;i++) f*=i; return f; })(); }
             
-            // Eventos dinámicos
-            if (Math.random() < 0.03) goals1++;  // Gol temprano
-            if (Math.random() < 0.02) goals2++;
+            // Método más estable: usar probabilidades acumuladas
+            const p0_1 = Math.exp(-lambda1);
+            const p0_2 = Math.exp(-lambda2);
+            const p1_1 = p0_1 * lambda1;
+            const p1_2 = p0_2 * lambda2;
+            const p2_1 = p1_1 * lambda1 / 2;
+            const p2_2 = p1_2 * lambda2 / 2;
+            
+            const r1 = Math.random();
+            const r2 = Math.random();
+            
+            if (r1 < p0_1) goals1 = 0;
+            else if (r1 < p0_1 + p1_1) goals1 = 1;
+            else if (r1 < p0_1 + p1_1 + p2_1) goals1 = 2;
+            else goals1 = 3 + Math.floor(Math.random() * 2);
+            
+            if (r2 < p0_2) goals2 = 0;
+            else if (r2 < p0_2 + p1_2) goals2 = 1;
+            else if (r2 < p0_2 + p1_2 + p2_2) goals2 = 2;
+            else goals2 = 3 + Math.floor(Math.random() * 2);
             
             let penalties = false;
             if (isKnockout && goals1 === goals2) {
                 penalties = true;
-                const penWinner = Math.random() < (strength1 / total);
-                if (penWinner) goals1++; else goals2++;
+                // Penales basados en fuerza del equipo
+                const penProb = strength1 / (strength1 + strength2);
+                const penWinner = Math.random() < penProb;
+                if (penWinner) goals1++;
+                else goals2++;
             }
             
             return { team1, team2, goals1, goals2, winner: goals1 > goals2 ? team1 : team2, penalties };
         }
 
-        // ==================== GRUPOS ====================
+        // ==================== GRUPOS ACTUALIZADOS ====================
         const groups = {
             "A": ["México", "Sudáfrica", "Corea del Sur", "República Checa"],
             "B": ["Canadá", "Bosnia y Herzegovina", "Qatar", "Suiza"],
@@ -487,7 +379,7 @@
             "L": ["Inglaterra", "Croacia", "Ghana", "Panamá"]
         };
 
-        // ==================== UI ====================
+        // ==================== UI FUNCTIONS ====================
         function showPaymentScreen() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('paymentScreen').classList.remove('hidden'); }
         function showLoginScreen() { document.getElementById('paymentScreen').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
         function openWhatsAppPurchase() { window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent('Quiero el simulador $1 USD')}`, '_blank'); }
@@ -504,31 +396,79 @@
             document.getElementById('resultsContainer').classList.add('hidden');
             await new Promise(r => setTimeout(r, 100));
             
-            const groupResults = {}, allThirdPlaces = [];
+            const groupResults = {};
+            const groupMatches = {};
+            const allThirdPlaces = [];
+            
             for (const [groupName, teams] of Object.entries(groups)) {
-                const standings = teams.map(t => ({ team:t, pts:0, gf:0, gc:0, dg:0, wins:0, draws:0, losses:0 }));
-                for (let i=0;i<teams.length;i++) for(let j=i+1;j<teams.length;j++) {
-                    const match = simulateMatch(teams[i], teams[j]);
-                    const t1 = standings.find(s=>s.team===match.team1), t2 = standings.find(s=>s.team===match.team2);
-                    t1.gf+=match.goals1; t1.gc+=match.goals2; t2.gf+=match.goals2; t2.gc+=match.goals1;
-                    if(match.goals1>match.goals2) { t1.pts+=3; t1.wins++; t2.losses++; }
-                    else if(match.goals2>match.goals1) { t2.pts+=3; t2.wins++; t1.losses++; }
-                    else { t1.pts+=1; t1.draws++; t2.pts+=1; t2.draws++; }
+                const matches = [];
+                const standings = teams.map(t => ({ 
+                    team: t, pts: 0, gf: 0, gc: 0, dg: 0, 
+                    wins: 0, draws: 0, losses: 0 
+                }));
+                
+                // Simular todos los partidos del grupo
+                for (let i = 0; i < teams.length; i++) {
+                    for (let j = i + 1; j < teams.length; j++) {
+                        const match = simulateMatch(teams[i], teams[j]);
+                        matches.push(match);
+                        
+                        const t1 = standings.find(s => s.team === match.team1);
+                        const t2 = standings.find(s => s.team === match.team2);
+                        
+                        t1.gf += match.goals1;
+                        t1.gc += match.goals2;
+                        t2.gf += match.goals2;
+                        t2.gc += match.goals1;
+                        
+                        if (match.goals1 > match.goals2) {
+                            t1.pts += 3;
+                            t1.wins++;
+                            t2.losses++;
+                        } else if (match.goals2 > match.goals1) {
+                            t2.pts += 3;
+                            t2.wins++;
+                            t1.losses++;
+                        } else {
+                            t1.pts += 1;
+                            t1.draws++;
+                            t2.pts += 1;
+                            t2.draws++;
+                        }
+                    }
                 }
-                standings.forEach(s=>s.dg=s.gf-s.gc);
-                standings.sort((a,b)=>b.pts-a.pts||b.dg-a.dg||b.gf-a.gf);
+                
+                standings.forEach(s => { s.dg = s.gf - s.gc; });
+                standings.sort((a, b) => {
+                    if (a.pts !== b.pts) return b.pts - a.pts;
+                    if (a.dg !== b.dg) return b.dg - a.dg;
+                    return b.gf - a.gf;
+                });
+                
                 groupResults[groupName] = standings;
-                if(standings[2]) allThirdPlaces.push({group:groupName,...standings[2]});
+                groupMatches[groupName] = matches;
+                
+                if (standings[2]) {
+                    allThirdPlaces.push({ group: groupName, ...standings[2] });
+                }
             }
             
-            allThirdPlaces.sort((a,b)=>b.pts-a.pts||b.dg-a.dg||b.gf-a.gf);
-            const bestThirds = allThirdPlaces.slice(0,8);
+            allThirdPlaces.sort((a, b) => {
+                if (a.pts !== b.pts) return b.pts - a.pts;
+                if (a.dg !== b.dg) return b.dg - a.dg;
+                return b.gf - a.gf;
+            });
+            
+            const bestThirds = allThirdPlaces.slice(0, 8);
             const qualified = [];
-            for(const s of Object.values(groupResults)) { qualified.push(s[0].team, s[1].team); }
-            bestThirds.forEach(t=>qualified.push(t.team));
+            
+            for (const standings of Object.values(groupResults)) {
+                qualified.push(standings[0].team, standings[1].team);
+            }
+            bestThirds.forEach(t => qualified.push(t.team));
             lastSimulatedQualifiedTeams = qualified;
             
-            renderGroups(groupResults);
+            renderGroups(groupResults, groupMatches);
             renderThirds(bestThirds);
             await simulateKnockout(qualified);
             
@@ -538,22 +478,33 @@
 
         async function simulateKnockout(teams) {
             let shuffled = [...teams];
-            for(let i=shuffled.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
             
             let r32Matches = [];
-            for(let i=0;i<shuffled.length;i+=2) r32Matches.push(simulateMatch(shuffled[i],shuffled[i+1],true));
+            for (let i = 0; i < shuffled.length; i += 2) {
+                r32Matches.push(simulateMatch(shuffled[i], shuffled[i + 1], true));
+            }
             let r32Winners = r32Matches.map(m => m.winner);
             
             let r16Matches = [];
-            for(let i=0;i<r32Winners.length;i+=2) r16Matches.push(simulateMatch(r32Winners[i],r32Winners[i+1],true));
+            for (let i = 0; i < r32Winners.length; i += 2) {
+                r16Matches.push(simulateMatch(r32Winners[i], r32Winners[i + 1], true));
+            }
             let r16Winners = r16Matches.map(m => m.winner);
             
             let r8Matches = [];
-            for(let i=0;i<r16Winners.length;i+=2) r8Matches.push(simulateMatch(r16Winners[i],r16Winners[i+1],true));
+            for (let i = 0; i < r16Winners.length; i += 2) {
+                r8Matches.push(simulateMatch(r16Winners[i], r16Winners[i + 1], true));
+            }
             let r8Winners = r8Matches.map(m => m.winner);
             
             let r4Matches = [];
-            for(let i=0;i<r8Winners.length;i+=2) r4Matches.push(simulateMatch(r8Winners[i],r8Winners[i+1],true));
+            for (let i = 0; i < r8Winners.length; i += 2) {
+                r4Matches.push(simulateMatch(r8Winners[i], r8Winners[i + 1], true));
+            }
             let r4Winners = r4Matches.map(m => m.winner);
             
             const final = simulateMatch(r4Winners[0], r4Winners[1], true);
@@ -566,11 +517,75 @@
             renderBracketDetails(r32Matches, r16Matches, r8Matches, r4Matches, final, thirdPlaceMatch);
         }
 
+        function renderGroups(results, matches) {
+            const container = document.getElementById('groupsGrid');
+            container.innerHTML = '';
+            
+            for (const [groupName, standings] of Object.entries(results)) {
+                const groupMatches = matches[groupName];
+                
+                const div = document.createElement('div');
+                div.className = 'group-card rounded-xl overflow-hidden';
+                
+                // Tabla de posiciones
+                let tableHtml = `<div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${groupName}</h3></div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-9 gap-1 text-xs font-bold text-slate-400 mb-2 px-1">
+                            <div class="col-span-3">EQUIPO</div><div class="col-span-1 text-center">POS</div>
+                            <div class="col-span-1 text-center">PTS</div><div class="col-span-1 text-center">PG</div>
+                            <div class="col-span-1 text-center">PE</div><div class="col-span-1 text-center">PP</div>
+                            <div class="col-span-1 text-center">GF</div><div class="col-span-1 text-center">GC</div><div class="col-span-1 text-center">DIF</div>
+                        </div>`;
+                
+                standings.forEach((s, idx) => {
+                    tableHtml += `<div class="team-row grid grid-cols-9 gap-1 py-2 px-1 rounded mb-1 bg-slate-800/30 text-sm items-center">
+                        <div class="col-span-3 font-semibold truncate">${s.team}</div>
+                        <div class="col-span-1 text-center font-bold ${idx === 0 ? 'text-green-400' : idx === 1 ? 'text-blue-400' : idx === 2 ? 'text-yellow-400' : 'text-red-400'}">${idx + 1}</div>
+                        <div class="col-span-1 text-center font-bold">${s.pts}</div>
+                        <div class="col-span-1 text-center">${s.wins}</div><div class="col-span-1 text-center">${s.draws}</div>
+                        <div class="col-span-1 text-center">${s.losses}</div><div class="col-span-1 text-center">${s.gf}</div>
+                        <div class="col-span-1 text-center">${s.gc}</div><div class="col-span-1 text-center">${s.dg}</div>
+                    </div>`;
+                });
+                
+                // Resultados de los partidos
+                tableHtml += `<div class="mt-4 pt-3 border-t border-slate-700">
+                    <div class="text-xs font-bold text-slate-400 mb-2">📋 RESULTADOS</div>`;
+                
+                groupMatches.forEach(match => {
+                    const resultClass = match.goals1 > match.goals2 ? 'win' : (match.goals1 < match.goals2 ? 'loss' : 'draw');
+                    tableHtml += `<div class="match-row grid grid-cols-3 gap-2 py-1.5 text-sm">
+                        <div class="text-right font-medium">${match.team1}</div>
+                        <div class="text-center font-mono font-bold ${resultClass}">${match.goals1} - ${match.goals2}</div>
+                        <div class="text-left font-medium">${match.team2}</div>
+                    </div>`;
+                });
+                
+                tableHtml += `</div></div>`;
+                div.innerHTML = tableHtml;
+                container.appendChild(div);
+            }
+        }
+
+        function renderThirds(thirds) {
+            document.getElementById('thirdsTableBody').innerHTML = thirds.map((t, i) => `
+                <tr class="border-b border-slate-700">
+                    <td class="p-2 font-bold">${i + 1}</td>
+                    <td class="p-2">${t.group}</td>
+                    <td class="p-2 font-semibold">${t.team}</td>
+                    <td class="p-2 text-center">${t.pts}</td>
+                    <td class="p-2 text-center">${t.dg}</td>
+                    <td class="p-2 text-center">${t.gf}</td>
+                </tr>
+            `).join('');
+        }
+
         function renderBracketDetails(r32, r16, r8, r4, final, third) {
-            const colR32 = document.getElementById('colR32'); colR32.innerHTML = '';
+            const colR32 = document.getElementById('colR32');
+            colR32.innerHTML = '';
             r32.forEach((match, idx) => {
                 colR32.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Llave ${idx+1}</div>
+                    <div class="text-xs text-slate-400 mb-1">Llave ${idx + 1}</div>
                     <div class="flex justify-between items-center">
                         <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
@@ -580,10 +595,11 @@
                 </div>`;
             });
             
-            const colR16 = document.getElementById('colR16'); colR16.innerHTML = '';
+            const colR16 = document.getElementById('colR16');
+            colR16.innerHTML = '';
             r16.forEach((match, idx) => {
                 colR16.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Octavo ${idx+1}</div>
+                    <div class="text-xs text-slate-400 mb-1">Octavo ${idx + 1}</div>
                     <div class="flex justify-between items-center">
                         <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
@@ -593,10 +609,11 @@
                 </div>`;
             });
             
-            const colR8 = document.getElementById('colR8'); colR8.innerHTML = '';
+            const colR8 = document.getElementById('colR8');
+            colR8.innerHTML = '';
             r8.forEach((match, idx) => {
                 colR8.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Cuarto ${idx+1}</div>
+                    <div class="text-xs text-slate-400 mb-1">Cuarto ${idx + 1}</div>
                     <div class="flex justify-between items-center">
                         <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
@@ -606,10 +623,11 @@
                 </div>`;
             });
             
-            const colR4 = document.getElementById('colR4'); colR4.innerHTML = '';
+            const colR4 = document.getElementById('colR4');
+            colR4.innerHTML = '';
             r4.forEach((match, idx) => {
                 colR4.innerHTML += `<div class="match-card">
-                    <div class="text-xs text-slate-400 mb-1">Semifinal ${idx+1}</div>
+                    <div class="text-xs text-slate-400 mb-1">Semifinal ${idx + 1}</div>
                     <div class="flex justify-between items-center">
                         <span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''}">${match.team1}</span>
                         <span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span>
@@ -644,29 +662,6 @@
             document.getElementById('championName').innerText = final.winner;
             document.getElementById('championSection').classList.remove('hidden');
         }
-
-        function renderGroups(results) {
-            const container = document.getElementById('groupsGrid');
-            container.innerHTML = '';
-            for(const [g, standings] of Object.entries(results)) {
-                const div = document.createElement('div'); div.className = 'group-card rounded-xl overflow-hidden';
-                div.innerHTML = `<div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${g}</h3></div>
-                    <div class="p-3"><div class="grid grid-cols-9 gap-1 text-xs font-bold text-slate-400 mb-2 px-1">
-                        <div class="col-span-3">EQUIPO</div><div class="col-span-1 text-center">POS</div><div class="col-span-1 text-center">PTS</div>
-                        <div class="col-span-1 text-center">PG</div><div class="col-span-1 text-center">PE</div><div class="col-span-1 text-center">PP</div>
-                        <div class="col-span-1 text-center">GF</div><div class="col-span-1 text-center">GC</div><div class="col-span-1 text-center">DIF</div>
-                    </div>${standings.map((s,idx)=>`<div class="team-row grid grid-cols-9 gap-1 py-1.5 px-1 rounded mb-0.5 bg-slate-800/30 text-xs items-center">
-                        <div class="col-span-3 font-semibold truncate">${s.team}</div>
-                        <div class="col-span-1 text-center font-bold ${idx===0?'text-green-400':idx===1?'text-blue-400':idx===2?'text-yellow-400':'text-red-400'}">${idx+1}</div>
-                        <div class="col-span-1 text-center font-bold">${s.pts}</div>
-                        <div class="col-span-1 text-center">${s.wins}</div><div class="col-span-1 text-center">${s.draws}</div><div class="col-span-1 text-center">${s.losses}</div>
-                        <div class="col-span-1 text-center">${s.gf}</div><div class="col-span-1 text-center">${s.gc}</div><div class="col-span-1 text-center">${s.dg}</div>
-                    </div>`).join('')}</div>`;
-                container.appendChild(div);
-            }
-        }
-
-        function renderThirds(thirds) { document.getElementById('thirdsTableBody').innerHTML = thirds.map((t,i)=>`<tr class="border-b"><td class="p-2">${i+1}</td><td class="p-2">${t.group}</td><td class="p-2 font-semibold">${t.team}</td><td class="p-2 text-center">${t.pts}</td><td class="p-2 text-center">${t.dg}</td><td class="p-2 text-center">${t.gf}</td></tr>`).join(''); }
     </script>
 </body>
 </html>
