@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Mundial IA - Modelo Estable v3.0</title>
+    <title>Simulador Mundial IA - Modelo Estable v3.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -119,7 +119,7 @@
                 <i class="fas fa-futbol text-white"></i>
             </div>
             <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Simulador Mundial IA</h2>
-            <p class="text-xs text-slate-400 mt-2">Modelo Estable v3.0 - 8 Factores Clave</p>
+            <p class="text-xs text-slate-400 mt-2">Modelo Estable v3.1 - 8 Factores Clave</p>
             <div class="mt-4 bg-green-900/30 border border-green-500/50 rounded-lg p-2">
                 <p class="text-green-400 font-bold text-sm"><i class="fas fa-dollar-sign mr-1"></i> Valor: <span class="text-white text-lg">$1,00 USD</span></p>
             </div>
@@ -168,7 +168,7 @@
 
         <header class="text-center mb-10 glass-panel p-8 rounded-2xl">
             <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-4"><i class="fas fa-globe"></i> Simulador Predictivo IA Mundial</h1>
-            <p class="text-slate-400"><strong>Modelo Estable v3.0</strong> | 8 Factores Clave con Datos Reales</p>
+            <p class="text-slate-400"><strong>Modelo Estable v3.1</strong> | 8 Factores Clave con Datos Reales</p>
             <p class="text-xs text-slate-500 mt-2">Resultados consistentes - Basado en ranking FIFA, valor de mercado y rendimiento histórico</p>
             <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-play mr-2"></i> Simular Torneo</button></div>
         </header>
@@ -243,7 +243,6 @@
         let loggedInUser = null, lastSimulatedQualifiedTeams = [];
 
         // ==================== DATOS REALES ====================
-        // Ranking FIFA 2025 (1-49, menor número = mejor)
         const fifaRanking = {
             "Argentina": 1, "Francia": 2, "Inglaterra": 3, "Bélgica": 4, "Países Bajos": 5, "Brasil": 6, "Alemania": 7, "España": 8,
             "Italia": 9, "Portugal": 10, "Uruguay": 11, "Suiza": 12, "Croacia": 13, "Senegal": 14, "Japón": 15, "Corea del Sur": 16,
@@ -254,7 +253,6 @@
             "Túnez": 46, "Noruega": 47, "Irak": 48, "Argelia": 49
         };
 
-        // Valor de mercado en millones USD (datos reales Transfermarkt)
         const marketValue = {
             "Inglaterra": 1400, "Francia": 1200, "Brasil": 1100, "España": 900, "Alemania": 800, "Argentina": 750, "Italia": 700,
             "Países Bajos": 650, "Portugal": 550, "Bélgica": 450, "Uruguay": 380, "Croacia": 350, "Estados Unidos": 300, "Senegal": 300,
@@ -265,7 +263,6 @@
             "Irak": 15, "Haití": 10, "Jordania": 8, "Cabo Verde": 5, "Curazao": 3
         };
 
-        // Poder ofensivo (0-100)
         const offensivePower = {
             "Argentina": 94, "Brasil": 94, "Francia": 92, "Inglaterra": 90, "España": 89, "Alemania": 88, "Países Bajos": 87,
             "Portugal": 86, "Bélgica": 84, "Italia": 82, "Uruguay": 82, "Croacia": 80, "Colombia": 79, "Marruecos": 78,
@@ -276,7 +273,6 @@
             "Nueva Zelanda": 52, "Qatar": 51, "R.D. Congo": 50, "Irak": 48, "Cabo Verde": 46, "Haití": 44, "Jordania": 42, "Curazao": 40
         };
 
-        // Solidez defensiva (0-100)
         const defensivePower = {
             "Argentina": 90, "Inglaterra": 88, "Francia": 87, "Alemania": 86, "España": 86, "Brasil": 85, "Países Bajos": 84,
             "Italia": 83, "Portugal": 82, "Uruguay": 84, "Croacia": 82, "Bélgica": 81, "Suiza": 80, "Senegal": 78, "Marruecos": 79,
@@ -287,7 +283,6 @@
             "Uzbekistán": 56, "Panamá": 55, "Irak": 54, "Cabo Verde": 52, "Haití": 50, "Jordania": 48, "Curazao": 45
         };
 
-        // Experiencia internacional (basada en participaciones en mundiales)
         const experience = {
             "Argentina": 95, "Brasil": 98, "Alemania": 96, "Italia": 94, "España": 92, "Francia": 90, "Inglaterra": 88,
             "Uruguay": 92, "Países Bajos": 85, "Portugal": 84, "Bélgica": 82, "Croacia": 80, "México": 88, "Corea del Sur": 78,
@@ -298,64 +293,45 @@
             "Argelia": 56, "Túnez": 60, "Panamá": 55, "Irak": 50, "Cabo Verde": 42, "Haití": 40, "Jordania": 38, "Curazao": 35
         };
 
-        // ==================== CÁLCULO DE FUERZA (SIN ALEATORIEDAD) ====================
+        // ==================== CÁLCULO DE FUERZA ====================
         function calculateTeamStrength(team) {
             const ranking = fifaRanking[team] || 50;
-            // Ranking FIFA: 30% - mejor ranking = más puntos
             const rankingScore = Math.max(0, (101 - ranking) * 0.3);
             
-            // Valor mercado: 20% - normalizado a 100
             const value = marketValue[team] || 50;
             const valueScore = Math.min(100, value / 14) * 0.2;
             
-            // Poder ofensivo: 15%
             const offense = offensivePower[team] || 70;
             const offenseScore = offense * 0.15;
             
-            // Solidez defensiva: 15%
             const defense = defensivePower[team] || 70;
             const defenseScore = defense * 0.15;
             
-            // Experiencia: 10%
             const exp = experience[team] || 60;
             const expScore = exp * 0.1;
             
-            // Factor localía (simulado, 5%)
             const homeScore = 5;
-            
-            // Estado de forma (basado en ranking reciente, 3%)
             const formScore = Math.max(0, (40 - Math.min(39, ranking)) * 0.075);
-            
-            // Factor sorpresa mínimo (2%)
             const surpriseScore = 2;
             
             let total = rankingScore + valueScore + offenseScore + defenseScore + expScore + homeScore + formScore + surpriseScore;
-            
-            // Normalizar entre 1 y 99
             return Math.min(99, Math.max(1, total));
         }
 
-        // Simulación de partido con distribución Poisson más estable
         function simulateMatch(team1, team2, isKnockout = false) {
             const strength1 = calculateTeamStrength(team1);
             const strength2 = calculateTeamStrength(team2);
             const total = strength1 + strength2;
             
-            // Probabilidad base más determinista
             let prob1 = strength1 / total;
-            // Ajuste para eliminatorias (mayor intensidad)
             if (isKnockout) {
                 prob1 = 0.45 + (prob1 - 0.5) * 0.8;
             }
             prob1 = Math.min(0.75, Math.max(0.25, prob1));
             
-            // Parámetros de Poisson más estables
             const lambda1 = prob1 * 1.4;
             const lambda2 = (1 - prob1) * 1.1;
             
-            let goals1 = 0, goals2 = 0;
-            
-            // Método de Poisson más robusto
             const getPoissonGoals = (lambda) => {
                 const L = Math.exp(-lambda);
                 let p = 1.0;
@@ -369,8 +345,8 @@
                 return k;
             };
             
-            goals1 = getPoissonGoals(lambda1);
-            goals2 = getPoissonGoals(lambda2);
+            let goals1 = getPoissonGoals(lambda1);
+            let goals2 = getPoissonGoals(lambda2);
             
             let penalties = false;
             if (isKnockout && goals1 === goals2) {
@@ -504,7 +480,7 @@
             teamsWithStrength.sort((a, b) => b.strength - a.strength);
             const sortedTeams = teamsWithStrength.map(t => t.team);
             
-            // Bracket equilibrado: 1° vs 32°, 2° vs 31°, etc.
+            // Bracket equilibrado
             let shuffled = [];
             for (let i = 0; i < sortedTeams.length / 2; i++) {
                 shuffled.push(sortedTeams[i]);
@@ -533,13 +509,24 @@
             for (let i = 0; i < r8Winners.length; i += 2) {
                 r4Matches.push(simulateMatch(r8Winners[i], r8Winners[i + 1], true));
             }
-            let r4Winners = r4Matches.map(m => m.winner);
             
-            const final = simulateMatch(r4Winners[0], r4Winners[1], true);
+            // r4Matches tiene 2 partidos de semifinales: [Semifinal1, Semifinal2]
+            const semifinal1 = r4Matches[0];
+            const semifinal2 = r4Matches[1];
             
-            const semifinalLoser1 = r4Winners[0] === final.winner ? r4Winners[1] : r4Winners[0];
-            const semifinalLoser2 = r4Winners[1] === final.winner ? r4Winners[0] : r4Winners[1];
-            const thirdPlaceMatch = simulateMatch(semifinalLoser1, semifinalLoser2, true);
+            // Finalistas
+            const finalista1 = semifinal1.winner;
+            const finalista2 = semifinal2.winner;
+            
+            // Perdedores de semifinales (para el tercer puesto)
+            const perdedorSemifinal1 = semifinal1.winner === semifinal1.team1 ? semifinal1.team2 : semifinal1.team1;
+            const perdedorSemifinal2 = semifinal2.winner === semifinal2.team1 ? semifinal2.team2 : semifinal2.team1;
+            
+            // Final
+            const final = simulateMatch(finalista1, finalista2, true);
+            
+            // Tercer puesto (entre los dos perdedores de semifinales)
+            const thirdPlaceMatch = simulateMatch(perdedorSemifinal1, perdedorSemifinal2, true);
             
             const champion = final.winner;
             const runnerUp = final.winner === final.team1 ? final.team2 : final.team1;
@@ -577,7 +564,7 @@
                                         <th class="text-center py-2 px-1 w-10">GF</th>
                                         <th class="text-center py-2 px-1 w-10">GC</th>
                                         <th class="text-center py-2 px-1 w-12">DIF</th>
-                                    </td>
+                                    </tr>
                                 </thead>
                                 <tbody>
                 `;
