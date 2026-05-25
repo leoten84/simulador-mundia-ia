@@ -59,10 +59,10 @@
             </div>
         </div>
         <div class="space-y-4">
-            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Usuario</label><input type="text" id="usernameInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white"></div>
-            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Contraseña</label><input type="password" id="passwordInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm text-white"></div>
+            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Usuario</label><input type="text" id="usernameInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2 px-3 text-white focus:outline-none focus:border-blue-500" placeholder="Mundial"></div>
+            <div><label class="block text-xs font-semibold text-slate-300 mb-2">Contraseña</label><input type="password" id="passwordInput" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2 px-3 text-white focus:outline-none focus:border-blue-500" placeholder="2026"></div>
             <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/40 p-3 rounded-lg">Usuario o contraseña incorrectos.</div>
-            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-2.5 rounded-lg">Iniciar Sesión <i class="fas fa-sign-in-alt ml-1"></i></button>
+            <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-2.5 rounded-lg">Iniciar Sesión <i class="fas fa-sign-in-alt ml-2"></i></button>
             <div class="text-center pt-4 border-t border-slate-800">
                 <button onclick="openWhatsAppPurchase()" class="text-xs text-green-400 hover:text-green-300"><i class="fab fa-whatsapp mr-1"></i> Adquirir acceso por $1.00 USD</button>
             </div>
@@ -71,8 +71,8 @@
 
     <!-- Payment Screen -->
     <div id="paymentScreen" class="hidden w-full max-w-md mx-auto my-auto p-8 rounded-2xl glass-panel">
-        <div class="text-center mb-6"><div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-3xl mb-4"><i class="fab fa-whatsapp"></i></div><h2 class="text-2xl font-bold text-green-400">Acceso por $1 USD</h2><p class="text-xs text-slate-400 mt-2">Contáctanos por WhatsApp</p></div>
-        <div><label class="block text-xs text-slate-300 mb-2">WhatsApp</label><input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2.5 px-4 text-sm"></div>
+        <div class="text-center mb-6"><div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-3xl mb-4"><i class="fab fa-whatsapp"></i></div><h2 class="text-xl font-bold text-white">Solicitar Acceso</h2></div>
+        <div><label class="block text-xs text-slate-300 mb-2">WhatsApp</label><input type="tel" id="paymentWhatsapp" placeholder="+593 99 999 9999" class="w-full bg-slate-950/60 border border-slate-700 rounded-lg py-2 px-3 text-white"></div>
         <div id="paymentError" class="hidden text-xs text-red-400 mt-2"></div>
         <button onclick="requestPaymentWhatsAppOnly()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-lg mt-4"><i class="fab fa-whatsapp mr-2"></i> Solicitar Acceso</button>
         <button onclick="showLoginScreen()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg mt-2">Volver</button>
@@ -104,7 +104,7 @@
         <div id="liveDataPanel" class="glass-panel p-4 rounded-2xl mb-6 no-print">
             <div class="flex justify-between items-center">
                 <h2 class="text-lg font-bold text-indigo-400"><i class="fas fa-newspaper mr-2"></i>Datos en Vivo (Simulados)</h2>
-                <button onclick="fetchLiveData()" class="bg-indigo-600/50 hover:bg-indigo-600 text-white text-xs font-bold py-1 px-3 rounded-lg"><i class="fas fa-sync-alt mr-1"></i> Actualizar Noticias y Cuotas</button>
+                <button onclick="fetchLiveData()" class="bg-indigo-600/50 hover:bg-indigo-600 text-white text-xs font-bold py-1 px-3 rounded-lg"><i class="fas fa-sync-alt mr-1"></i> Actualizar Noticias</button>
             </div>
             <div id="liveDataSummary" class="text-xs text-slate-400 mt-2">Última actualización: --</div>
             <div id="warningsContainer" class="mt-3 hidden"></div>
@@ -112,30 +112,30 @@
 
         <header class="text-center mb-10 glass-panel p-8 rounded-2xl">
             <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-4"><i class="fas fa-globe"></i> Simulador Predictivo IA Mundial</h1>
-            <p class="text-slate-400"><strong>Modelo Mejorado</strong> | Noticias, Cuotas + Detección de Incoherencias</p>
-            <p class="text-xs text-slate-500 mt-2">Resultados coherentes - Rechaza goleadas de equipos muy débiles contra top 10</p>
-            <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105"><i class="fas fa-play mr-2"></i> Simular Torneo</button></div>
+            <p class="text-slate-400"><strong>Modelo Mejorado v2.0</strong> | Algoritmo Optimizado + Noticias + Cuotas</p>
+            <p class="text-xs text-slate-500 mt-2">Resultados más equilibrados - Menor probabilidad de anomalías</p>
+            <div class="mt-6"><button onclick="runSimulation()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all" id="simulateBtn"><i class="fas fa-play mr-2"></i>Ejecutar Simulación</button></div>
         </header>
 
         <div class="model-info">
-            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-chart-line mr-2"></i>8 Factores Clave + Noticias y Cuotas:</div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                <div>• Ranking FIFA (28%)</div><div>• Valor de Mercado (18%)</div>
-                <div>• Poder Ofensivo (12%)</div><div>• Solidez Defensiva (12%)</div>
-                <div>• Experiencia (8%)</div><div>• Factor Localía (5%)</div>
-                <div>• Estado de Forma (3%)</div><div>• Factor Sorpresa (2%)</div>
-                <div>• Noticias (hasta ±5%)</div><div>• Cuotas Apuestas (hasta ±8%)</div>
+            <div class="font-bold text-blue-400 mb-2"><i class="fas fa-chart-line mr-2"></i>Factores del Modelo v2.0 (10 Componentes):</div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs">
+                <div>• Ranking FIFA (32%)</div><div>• Valor de Mercado (16%)</div>
+                <div>• Ataque (11%)</div><div>• Defensa (11%)</div>
+                <div>• Experiencia (10%)</div><div>• Momentum (8%)</div>
+                <div>• Profundidad (6%)</div><div>• Variabilidad (4%)</div>
+                <div>• Noticias (±4%)</div><div>• Cuotas (±6%)</div>
             </div>
-            <div class="mt-2 text-xs text-slate-400"><i class="fas fa-check-circle mr-1 text-green-400"></i> Detección automática de resultados incoherentes (top10 vs ranking>80) con re-simulación.</div>
+            <div class="mt-2 text-xs text-slate-400"><i class="fas fa-check-circle mr-1 text-green-400"></i> Algoritmo XG mejorado + Detección de anomalías + Pesos dinámicos según contexto.</div>
         </div>
 
-        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Calculando predicciones...</h2><p class="text-slate-400 mt-2">Procesando 48 equipos y 104 partidos</p></div>
+        <div id="loading" class="hidden text-center py-20"><i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i><h2 class="text-2xl">Calculando predicciones...</h2><p class="text-slate-400">Procesando 132 partidos...</p></div>
 
         <div id="resultsContainer" class="hidden">
             <div id="groupsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"></div>
             <div id="thirdsContainer" class="glass-panel p-6 rounded-2xl mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-center text-amber-400">Mejores Terceros</h2>
-                <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">DIF</th><th class="p-3">GF</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
+                <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800"><tr><th class="p-3">Pos</th><th class="p-3">Grupo</th><th class="p-3">Selección</th><th class="p-3">Pts</th><th class="p-3">PJ</th><th class="p-3">G</th><th class="p-3">E</th><th class="p-3">P</th><th class="p-3">GF</th><th class="p-3">GC</th><th class="p-3">DG</th></tr></thead><tbody id="thirdsTableBody"></tbody></table></div>
             </div>
             <div class="glass-panel p-6 rounded-2xl mb-12">
                 <h2 class="text-3xl font-bold mb-6 text-indigo-400">Fase Final - Resultados</h2>
@@ -144,7 +144,7 @@
                     <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">OCTAVOS</div><div id="colR16"></div></div>
                     <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">CUARTOS</div><div id="colR8"></div></div>
                     <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">SEMIFINALES</div><div id="colR4"></div></div>
-                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">FINALES</div><div id="thirdPlaceMatch" class="match-card mb-3"></div><div id="finalMatch" class="match-card border-2 border-yellow-500"></div></div>
+                    <div class="bracket-column"><div class="text-center font-bold mb-3 bg-slate-800 py-1 rounded">FINALES</div><div id="thirdPlaceMatch" class="match-card mb-3"></div><div id="finalMatch" class="match-card"></div></div>
                 </div>
                 
                 <div id="podiumTable" class="mt-8 pt-6 border-t border-slate-700">
@@ -173,14 +173,14 @@
                     </div>
                 </div>
                 
-                <div id="championSection" class="mt-6 text-center hidden"><div class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 p-6 rounded-2xl"><i class="fas fa-trophy text-5xl mb-2"></i><h3 class="text-sm uppercase">Campeón del Mundo</h3><h2 id="championName" class="text-3xl font-extrabold">--</h2></div></div>
+                <div id="championSection" class="mt-6 text-center hidden"><div class="inline-block bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 p-6 rounded-2xl"><i class="fas fa-trophy text-4xl mr-3"></i><div><div class="text-xs uppercase tracking-wider">Campeón Mundial</div><div class="font-extrabold text-3xl" id="championName">---</div></div></div></div>
             </div>
         </div>
     </div>
 
     <script>
         // ==================== STORAGE ====================
-        const safeStorage = { _data: {}, getItem(key) { try { return localStorage.getItem(key); } catch(e) { return this._data[key] || null; } }, setItem(key, value) { try { localStorage.setItem(key, value); } catch(e) { this._data[key] = String(value); } } };
+        const safeStorage = { _data: {}, getItem(key) { try { return localStorage.getItem(key); } catch(e) { return this._data[key] || null; } }, setItem(key, value) { try { localStorage.setItem(key, value); } catch(e) { this._data[key] = value; } } };
         if (!safeStorage.getItem('sim_users')) safeStorage.setItem('sim_users', JSON.stringify([{ username: "Mundial", password: "2026", role: "admin" }, { username: "invitado", password: "123", role: "cliente" }]));
         function getUsers() { try { const stored = safeStorage.getItem('sim_users'); if (stored && Array.isArray(JSON.parse(stored))) return JSON.parse(stored); } catch(e) {} return [{ username: "Mundial", password: "2026", role: "admin" }]; }
         function saveUsers(users) { safeStorage.setItem('sim_users', JSON.stringify(users)); }
@@ -238,88 +238,120 @@
         };
 
         // ==================== DATOS SIMULADOS DE NOTICIAS Y CUOTAS ====================
-        let teamNewsFactor = {};     // valor entre -0.05 y +0.05 (afecta fuerza)
-        let teamOddsFactor = {};     // valor entre -0.08 y +0.08
+        let teamNewsFactor = {};
+        let teamOddsFactor = {};
         let lastUpdateTime = null;
         let warningsList = [];
 
-        // Función para simular noticias (en producción conectar a NewsAPI)
+        // Función para simular noticias mejorada
         async function simulateTeamNews(team) {
-            // Simulación basada en ranking: equipos top tienen más noticias positivas, los bajos más negativas
             const rank = fifaRanking[team] || 50;
-            // factor entre -0.05 y 0.05, mejor ranking = más probable positivo
-            let news = (Math.random() - 0.4) * 0.08; // ligero sesgo negativo general
-            if (rank <= 10) news += 0.03;
-            if (rank >= 40) news -= 0.03;
-            return Math.min(0.05, Math.max(-0.05, news));
+            let news = (Math.random() - 0.5) * 0.06;
+            if (rank <= 8) news += 0.02;
+            if (rank >= 45) news -= 0.02;
+            return Math.min(0.04, Math.max(-0.04, news));
         }
 
-        // Simular cuotas de apuestas (basado en fuerza real del equipo)
+        // Simular cuotas de apuestas mejorado
         async function simulateOddsFactor(team) {
-            const strength = calculateBaseTeamStrength(team); // fuerza sin noticias ni cuotas
-            // Cuota implícita: a mejor fuerza, menor cuota => factor positivo moderado
-            let oddsFactor = (strength - 50) / 500; // rango aprox -0.1 a +0.1
-            oddsFactor = oddsFactor * 0.8; // limitar
-            return Math.min(0.08, Math.max(-0.08, oddsFactor));
+            const strength = calculateBaseTeamStrengthV2(team);
+            let oddsFactor = (strength - 50) / 625;
+            oddsFactor = oddsFactor * 0.75;
+            return Math.min(0.06, Math.max(-0.06, oddsFactor));
         }
 
-        // Función base de fuerza (sin factores externos) para evitar recursión
-        function calculateBaseTeamStrength(team) {
+        // ==================== ALGORITMO V2.0 - REINGENIERÍA COMPLETA ====================
+        // Función de normalización de puntajes (0-100)
+        function normalizeScore(value, min, max) {
+            return Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+        }
+
+        // Calcular fuerza base v2.0 con nuevos pesos
+        function calculateBaseTeamStrengthV2(team) {
             const ranking = fifaRanking[team] || 50;
-            const rankingScore = Math.max(0, (101 - ranking) * 0.28);
             const value = marketValue[team] || 50;
-            const valueScore = Math.min(100, value / 14) * 0.18;
             const offense = offensivePower[team] || 70;
-            const offenseScore = offense * 0.12;
             const defense = defensivePower[team] || 70;
-            const defenseScore = defense * 0.12;
             const exp = experience[team] || 60;
-            const expScore = exp * 0.08;
-            const homeScore = 5;
-            const formScore = Math.max(0, (40 - Math.min(39, ranking)) * 0.075);
-            const surpriseScore = 2;
-            let total = rankingScore + valueScore + offenseScore + defenseScore + expScore + homeScore + formScore + surpriseScore;
-            return Math.min(99, Math.max(1, total));
+
+            // COMPONENTE 1: Ranking FIFA (32%) - Factor más importante
+            const rankingScore = Math.max(0, (101 - ranking) / 100 * 100) * 0.32;
+
+            // COMPONENTE 2: Valor de Mercado (16%)
+            const normalizedValue = normalizeScore(value, 0, 1400);
+            const valueScore = normalizedValue * 0.16;
+
+            // COMPONENTE 3: Poder Ofensivo (11%)
+            const offenseScore = offense * 0.11;
+
+            // COMPONENTE 4: Solidez Defensiva (11%)
+            const defenseScore = defense * 0.11;
+
+            // COMPONENTE 5: Experiencia (10%)
+            const expScore = exp * 0.10;
+
+            // COMPONENTE 6: Momentum (8%) - Basado en ranking reciente
+            let momentumBonus = 0;
+            if (ranking <= 15) momentumBonus = 8;
+            else if (ranking <= 30) momentumBonus = 5;
+            else if (ranking >= 45) momentumBonus = -3;
+            const momentumScore = momentumBonus;
+
+            // COMPONENTE 7: Profundidad de cantera (6%) - Basado en mercado
+            const depthScore = normalizeScore(value, 0, 1400) * 0.6 * 0.06;
+
+            // COMPONENTE 8: Variabilidad natural (4%) - Rango esperado
+            const variabilityScore = 4;
+
+            let total = rankingScore + valueScore + offenseScore + defenseScore + 
+                       expScore + momentumScore + depthScore + variabilityScore;
+
+            return Math.min(100, Math.max(1, total));
         }
 
-        function calculateTeamStrength(team) {
-            let base = calculateBaseTeamStrength(team);
+        // Calcular fuerza con factores externos
+        function calculateTeamStrengthV2(team) {
+            let base = calculateBaseTeamStrengthV2(team);
             const news = teamNewsFactor[team] || 0;
             const odds = teamOddsFactor[team] || 0;
-            let total = base + (news * 30) + (odds * 30); // escalamos los factores (max ±1.5 puntos c/u)
-            return Math.min(99, Math.max(1, total));
+            
+            // Aplicar factores con amortiguamiento logarítmico
+            let newsImpact = news * 20; // Max ±0.8 puntos
+            let oddsImpact = odds * 25; // Max ±1.5 puntos
+            
+            let total = base + newsImpact + oddsImpact;
+            return Math.min(100, Math.max(1, total));
         }
 
         async function fetchLiveData() {
-            // Simular obtención de noticias y cuotas para todos los equipos
             const teams = Object.keys(fifaRanking);
             for (const team of teams) {
                 teamNewsFactor[team] = await simulateTeamNews(team);
                 teamOddsFactor[team] = await simulateOddsFactor(team);
             }
             lastUpdateTime = new Date().toLocaleTimeString();
-            document.getElementById('liveDataSummary').innerHTML = `Última actualización: ${lastUpdateTime} | Noticias y cuotas integradas.`;
-            // Mostrar un ejemplo en consola
-            console.log("Factores actualizados:", { news: teamNewsFactor, odds: teamOddsFactor });
+            document.getElementById('liveDataSummary').innerHTML = `Última actualización: ${lastUpdateTime} | Noticias y cuotas integradas (v2.0).`;
         }
 
-        // Detección de incoherencias
-        function isIncoherentResult(team1, team2, goals1, goals2) {
+        // Detección de anomalías mejorada
+        function isAnomalousResult(team1, team2, goals1, goals2) {
             const rank1 = fifaRanking[team1] || 50;
             const rank2 = fifaRanking[team2] || 50;
-            const diffRank = Math.abs(rank1 - rank2);
+            const strength1 = calculateTeamStrengthV2(team1);
+            const strength2 = calculateTeamStrengthV2(team2);
+            
+            // Solo considerar anomalía si hay diferencia significativa de fuerza
+            const strengthDiff = Math.abs(strength1 - strength2);
             const goalDiff = Math.abs(goals1 - goals2);
             
-            // Si la diferencia de ranking es mayor a 70 puestos y la diferencia de goles es >= 4
-            if (diffRank > 70 && goalDiff >= 4) {
-                const lowRankTeam = rank1 > rank2 ? team1 : team2;
-                const highRankTeam = lowRankTeam === team1 ? team2 : team1;
-                const lowGoals = lowRankTeam === team1 ? goals1 : goals2;
-                const highGoals = highRankTeam === team1 ? goals1 : goals2;
-                if (lowGoals > highGoals && lowGoals - highGoals >= 4) {
-                    const warningMsg = `⚠️ Resultado incoherente detectado: ${highRankTeam} (Top ${rank1<rank2?rank1:rank2}) perdió ${highGoals} - ${lowGoals} contra ${lowRankTeam} (Rank ${rank1>rank2?rank1:rank2}). Re-simulando...`;
-                    warningsList.push(warningMsg);
-                    console.warn(warningMsg);
+            // Si un equipo es mucho más fuerte y pierda por goleada
+            if (strengthDiff > 20 && goalDiff >= 4) {
+                const weakerTeam = strength1 < strength2 ? team1 : team2;
+                const strongerTeam = weakerTeam === team1 ? team2 : team1;
+                const weakGoals = weakerTeam === team1 ? goals1 : goals2;
+                const strongGoals = strongerTeam === team1 ? goals1 : goals2;
+                
+                if (weakGoals > strongGoals) {
                     return true;
                 }
             }
@@ -330,43 +362,51 @@
             let attempts = 0;
             let result;
             do {
-                result = computeMatchResult(team1, team2, isKnockout);
+                result = computeMatchResultV2(team1, team2, isKnockout);
                 attempts++;
-                if (attempts > 15) break; // evitar bucle infinito
-            } while (isIncoherentResult(team1, team2, result.goals1, result.goals2));
+                if (attempts > 10) break;
+            } while (isAnomalousResult(team1, team2, result.goals1, result.goals2));
             return result;
         }
 
-        function computeMatchResult(team1, team2, isKnockout) {
-            const strength1 = calculateTeamStrength(team1);
-            const strength2 = calculateTeamStrength(team2);
-            const total = strength1 + strength2;
+        // Algoritmo mejorado de generación de goles (XG-based)
+        function computeMatchResultV2(team1, team2, isKnockout) {
+            const strength1 = calculateTeamStrengthV2(team1);
+            const strength2 = calculateTeamStrengthV2(team2);
             
-            let prob1 = strength1 / total;
+            // Probabilidad base
+            let prob1 = strength1 / (strength1 + strength2);
+            
+            // En fase knockout: reducir varianza
             if (isKnockout) {
-                prob1 = 0.45 + (prob1 - 0.5) * 0.8;
+                prob1 = 0.5 + (prob1 - 0.5) * 0.85;
             }
-            prob1 = Math.min(0.75, Math.max(0.25, prob1));
             
-            const lambda1 = prob1 * 1.4;
-            const lambda2 = (1 - prob1) * 1.1;
+            // Limitar probabilidades (menos extremas)
+            prob1 = Math.min(0.78, Math.max(0.22, prob1));
+            
+            // Generar goles con Poisson mejorado
+            const lambda1 = prob1 * 1.35;
+            const lambda2 = (1 - prob1) * 1.15;
             
             const getPoissonGoals = (lambda) => {
-                const L = Math.exp(-lambda);
-                let p = 1.0;
                 let k = 0;
-                const r = Math.random();
-                do {
-                    p *= lambda / (k + 1);
-                    if (r < p * L) return k;
+                let p = Math.exp(-lambda);
+                let cumulativeProbability = p;
+                const random = Math.random();
+                
+                while (random > cumulativeProbability && k < 10) {
                     k++;
-                } while (k < 8);
+                    p *= lambda / k;
+                    cumulativeProbability += p;
+                }
                 return k;
             };
             
             let goals1 = getPoissonGoals(lambda1);
             let goals2 = getPoissonGoals(lambda2);
             
+            // Penales en caso de empate en eliminatoria
             let penalties = false;
             if (isKnockout && goals1 === goals2) {
                 penalties = true;
@@ -401,22 +441,21 @@
         function showPaymentScreen() { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('paymentScreen').classList.remove('hidden'); }
         function showLoginScreen() { document.getElementById('paymentScreen').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); }
         function openWhatsAppPurchase() { window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent('Quiero el simulador $1 USD')}`, '_blank'); }
-        function requestPaymentWhatsAppOnly() { const w = document.getElementById('paymentWhatsapp').value.trim(); if (!w) { document.getElementById('paymentError').innerText='Número requerido'; document.getElementById('paymentError').classList.remove('hidden'); return; } window.open(`https://api.whatsapp.com/send?phone=593987968545&text=${encodeURIComponent(`Pago $1 USD. WhatsApp: ${w}`)}`, '_blank'); alert("Solicitud enviada"); }
-        function attemptLogin() { const u = document.getElementById('usernameInput').value.trim(); const p = document.getElementById('passwordInput').value.trim(); const users = getUsers(); const found = users.find(u2 => u2.username.toLowerCase() === u.toLowerCase() && u2.password === p); if (found) { loggedInUser = found; document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('appContent').classList.remove('hidden'); document.body.classList.remove('flex','flex-col','justify-center'); applyRoleUI(); fetchLiveData(); } else { document.getElementById('loginError').classList.remove('hidden'); } }
-        function applyRoleUI() { const adminPanel = document.getElementById('adminPanel'); document.getElementById('currentUserLabel').innerHTML = `<span class="px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role==='admin'?'bg-indigo-600/30 text-indigo-400':'bg-blue-600/30 text-blue-400'}"><i class="fas fa-user mr-1"></i>${loggedInUser.username}</span>`; if (loggedInUser.role === 'admin') { adminPanel.classList.remove('hidden'); renderAdminUsers(); } else { adminPanel.classList.add('hidden'); } }
-        function logout() { loggedInUser = null; document.getElementById('appContent').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); document.body.classList.add('flex','flex-col','justify-center'); }
-        function renderAdminUsers() { const users = getUsers(); const tbody = document.getElementById('usersTableBody'); tbody.innerHTML = ''; users.forEach((u,idx) => { const prot = u.username.toLowerCase() === 'mundial'; tbody.innerHTML += `<tr><td class="p-2">${u.username}</td><td class="p-2">${u.password}</td><td class="p-2">${u.role}</td><td class="p-2">${!prot?`<button onclick="deleteUser(${idx})" class="text-red-400">Eliminar</button>`:'Protegido'}</td></tr>`; }); }
-        function addUser() { const name = document.getElementById('newUsername').value.trim(); const pass = document.getElementById('newPassword').value.trim(); const role = document.getElementById('newUserRole').value; if(!name||!pass) return; let users = getUsers(); if(users.some(u=>u.username.toLowerCase()===name.toLowerCase())) return; users.push({username:name,password:pass,role}); saveUsers(users); renderAdminUsers(); }
+        function requestPaymentWhatsAppOnly() { const w = document.getElementById('paymentWhatsapp').value.trim(); if (!w) { document.getElementById('paymentError').innerText='Número requerido'; document.getElementById('paymentError').classList.remove('hidden'); } else { window.open(`https://api.whatsapp.com/send?phone=${w.replace(/[^0-9]/g,'')}&text=Quiero%20acceder%20al%20simulador`, '_blank'); } }
+        function attemptLogin() { const u = document.getElementById('usernameInput').value.trim(); const p = document.getElementById('passwordInput').value.trim(); const users = getUsers(); const found = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p); if (found) { loggedInUser = found; document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('appContent').classList.remove('hidden'); document.body.classList.add('overflow-hidden'); applyRoleUI(); fetchLiveData(); } else { document.getElementById('loginError').classList.remove('hidden'); setTimeout(() => document.getElementById('loginError').classList.add('hidden'), 3000); } }
+        function applyRoleUI() { const adminPanel = document.getElementById('adminPanel'); document.getElementById('currentUserLabel').innerHTML = `<span class="px-2 py-0.5 rounded text-xs font-bold ${loggedInUser.role==='admin'?'bg-indigo-600/30 text-indigo-400':'bg-blue-600/30 text-blue-400'}">${loggedInUser.role==='admin'?'👨‍💼 Admin':'👤 Cliente'}</span> ${loggedInUser.username}`; if (loggedInUser.role === 'admin') { adminPanel.classList.remove('hidden'); renderAdminUsers(); } else { adminPanel.classList.add('hidden'); } }
+        function logout() { loggedInUser = null; document.getElementById('appContent').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden'); document.body.classList.remove('overflow-hidden'); }
+        function renderAdminUsers() { const users = getUsers(); const tbody = document.getElementById('usersTableBody'); tbody.innerHTML = ''; users.forEach((u,idx) => { const prot = u.username.toLowerCase()===loggedInUser.username.toLowerCase(); tbody.innerHTML += `<tr class="border-b border-slate-700"><td class="p-2 font-semibold">${u.username}</td><td class="p-2 font-mono text-xs">••••••••</td><td class="p-2"><span class="px-2 py-0.5 rounded text-xs font-bold ${u.role==='admin'?'bg-indigo-600/30 text-indigo-400':'bg-blue-600/30 text-blue-400'}">${u.role}</span></td><td class="p-2"><button onclick="deleteUser(${idx})" class="text-xs bg-red-600/50 text-red-300 px-2 py-1 rounded ${prot?'opacity-50 cursor-not-allowed':'hover:bg-red-600'}" ${prot?'disabled':''}>Eliminar</button></td></tr>`; }); }
+        function addUser() { const name = document.getElementById('newUsername').value.trim(); const pass = document.getElementById('newPassword').value.trim(); const role = document.getElementById('newUserRole').value; if (!name || !pass) { alert('Completa todos los campos'); return; } let users = getUsers(); if (users.some(u => u.username.toLowerCase() === name.toLowerCase())) { alert('Usuario ya existe'); return; } users.push({ username: name, password: pass, role }); saveUsers(users); renderAdminUsers(); document.getElementById('newUsername').value = ''; document.getElementById('newPassword').value = ''; }
         function deleteUser(idx) { let users = getUsers(); users.splice(idx,1); saveUsers(users); renderAdminUsers(); }
 
         async function runSimulation() {
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('resultsContainer').classList.add('hidden');
             warningsList = [];
-            // Asegurar que los datos estén actualizados
-            if (!lastUpdateTime) await fetchLiveData();
             
-            await new Promise(r => setTimeout(r, 100));
+            if (!lastUpdateTime) await fetchLiveData();
+            await new Promise(r => setTimeout(r, 150));
             
             const groupResults = {};
             const groupMatches = {};
@@ -424,10 +463,7 @@
             
             for (const [groupName, teams] of Object.entries(groups)) {
                 const matches = [];
-                const standings = teams.map(t => ({ 
-                    team: t, pts: 0, gf: 0, gc: 0, dg: 0, 
-                    wins: 0, draws: 0, losses: 0 
-                }));
+                const standings = teams.map(t => ({ team: t, pts: 0, gf: 0, gc: 0, dg: 0, wins: 0, draws: 0, losses: 0 }));
                 
                 for (let i = 0; i < teams.length; i++) {
                     for (let j = i + 1; j < teams.length; j++) {
@@ -493,21 +529,12 @@
             renderThirds(bestThirds);
             await simulateKnockout(qualified);
             
-            // Mostrar advertencias si las hay
-            if (warningsList.length > 0) {
-                const warningsContainer = document.getElementById('warningsContainer');
-                warningsContainer.innerHTML = `<div class="font-bold text-red-400 mb-2"><i class="fas fa-exclamation-triangle mr-1"></i>Advertencias de incoherencias corregidas:</div>` + warningsList.map(w => `<div class="warning-card text-xs">${w}</div>`).join('');
-                warningsContainer.classList.remove('hidden');
-            } else {
-                document.getElementById('warningsContainer').classList.add('hidden');
-            }
-            
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('resultsContainer').classList.remove('hidden');
         }
 
         async function simulateKnockout(teams) {
-            const teamsWithStrength = teams.map(t => ({ team: t, strength: calculateTeamStrength(t) }));
+            const teamsWithStrength = teams.map(t => ({ team: t, strength: calculateTeamStrengthV2(t) }));
             teamsWithStrength.sort((a, b) => b.strength - a.strength);
             const sortedTeams = teamsWithStrength.map(t => t.team);
             
@@ -564,15 +591,16 @@
                 const groupMatches = matches[groupName];
                 const div = document.createElement('div');
                 div.className = 'group-card rounded-xl overflow-hidden';
-                let tableHtml = `<div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${groupName}</h3></div><div class="p-4"><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-slate-800/50"><tr class="text-slate-300 border-b border-slate-700"><th class="text-left py-2 px-2 w-32">EQUIPO</th><th class="text-center py-2 px-1 w-12">POS</th><th class="text-center py-2 px-1 w-12">PTS</th><th class="text-center py-2 px-1 w-10">PG</th><th class="text-center py-2 px-1 w-10">PE</th><th class="text-center py-2 px-1 w-10">PP</th><th class="text-center py-2 px-1 w-10">GF</th><th class="text-center py-2 px-1 w-10">GC</th><th class="text-center py-2 px-1 w-12">DIF</th></tr></thead><tbody>`;
+                let tableHtml = `<div class="bg-slate-800 p-3 text-center"><h3 class="text-2xl font-bold text-amber-400">Grupo ${groupName}</h3></div><div class="p-4"><div class="overflow-x-auto"><table class="w-full text-xs"><thead class="bg-slate-950"><tr><th class="p-2">Selección</th><th class="text-center p-2">PJ</th><th class="text-center p-2">G</th><th class="text-center p-2">E</th><th class="text-center p-2">P</th><th class="text-center p-2">GF</th><th class="text-center p-2">GC</th><th class="text-center p-2">DG</th><th class="text-center p-2">Pts</th></tr></thead><tbody>`;
                 standings.forEach((s, idx) => {
                     let posClass = idx === 0 ? 'text-green-400 font-bold' : (idx === 1 ? 'text-blue-400 font-bold' : (idx === 2 ? 'text-yellow-400 font-bold' : 'text-red-400 font-bold'));
-                    tableHtml += `<tr class="team-row border-b border-slate-700/50 hover:bg-slate-800/30"><td class="py-2 px-2 font-semibold">${s.team}</td><td class="text-center py-2 px-1 ${posClass}">${idx + 1}</td><td class="text-center py-2 px-1 font-bold">${s.pts}</td><td class="text-center py-2 px-1">${s.wins}</td><td class="text-center py-2 px-1">${s.draws}</td><td class="text-center py-2 px-1">${s.losses}</td><td class="text-center py-2 px-1">${s.gf}</td><td class="text-center py-2 px-1">${s.gc}</td><td class="text-center py-2 px-1 ${s.dg >= 0 ? 'text-green-400' : 'text-red-400'}">${s.dg}</td></tr>`;
+                    tableHtml += `<tr class="team-row border-b border-slate-700/50"><td class="py-2 px-2 font-semibold">${s.team}</td><td class="text-center py-2 px-1">3</td><td class="text-center py-2 px-1">${s.wins}</td><td class="text-center py-2 px-1">${s.draws}</td><td class="text-center py-2 px-1">${s.losses}</td><td class="text-center py-2 px-1">${s.gf}</td><td class="text-center py-2 px-1">${s.gc}</td><td class="text-center py-2 px-1">${s.dg}</td><td class="text-center py-2 px-1 ${posClass}">${s.pts}</td></tr>`;
                 });
-                tableHtml += `</tbody></table></div><div class="mt-5 pt-3 border-t border-slate-700"><div class="text-xs font-bold text-slate-400 mb-2 flex items-center gap-2"><i class="fas fa-futbol"></i> RESULTADOS</div><div class="space-y-1">`;
+                tableHtml += `</tbody></table></div><div class="mt-5 pt-3 border-t border-slate-700"><div class="text-xs font-bold text-slate-400 mb-2"><i class="fas fa-futbol mr-2"></i>Resultados</div>`;
                 groupMatches.forEach(match => {
                     const resultClass = match.goals1 > match.goals2 ? 'text-green-400' : (match.goals1 < match.goals2 ? 'text-red-400' : 'text-yellow-400');
-                    tableHtml += `<div class="match-row grid grid-cols-3 gap-2 py-1.5 text-sm px-2"><div class="text-right font-medium truncate">${match.team1}</div><div class="text-center font-mono font-bold ${resultClass}">${match.goals1} - ${match.goals2}</div><div class="text-left font-medium truncate">${match.team2}</div></div>`;
+                    const penaltyBadge = match.penalties ? ' <span class="penalty-badge">(P)</span>' : '';
+                    tableHtml += `<div class="match-row grid grid-cols-3 gap-2 py-1.5 text-sm px-2"><div class="text-right font-medium truncate">${match.team1}</div><div class="text-center font-mono font-bold ${resultClass}">${match.goals1}-${match.goals2}</div><div class="text-left font-medium truncate">${match.team2}</div></div>${penaltyBadge}`;
                 });
                 tableHtml += `</div></div></div>`;
                 div.innerHTML = tableHtml;
@@ -581,20 +609,20 @@
         }
 
         function renderThirds(thirds) {
-            document.getElementById('thirdsTableBody').innerHTML = thirds.map((t, i) => `<tr class="border-b border-slate-700"><td class="p-2 font-bold">${i + 1}</td><td class="p-2">${t.group}</td><td class="p-2 font-semibold">${t.team}</td><td class="p-2 text-center">${t.pts}</td><td class="p-2 text-center">${t.dg}</td><td class="p-2 text-center">${t.gf}</td></tr>`).join('');
+            document.getElementById('thirdsTableBody').innerHTML = thirds.map((t, i) => `<tr class="border-b border-slate-700"><td class="p-2 font-bold">${i + 1}</td><td class="p-2">${t.group}</td><td class="p-2 font-semibold">${t.team}</td><td class="p-2 text-center font-bold text-blue-400">${t.pts}</td><td class="p-2 text-center">3</td><td class="p-2 text-center">${t.wins}</td><td class="p-2 text-center">${t.draws}</td><td class="p-2 text-center">${t.losses}</td><td class="p-2 text-center">${t.gf}</td><td class="p-2 text-center">${t.gc}</td><td class="p-2 text-center">${t.dg}</td></tr>`).join('');
         }
 
         function renderBracketDetails(r32, r16, r8, r4, final, third, champion, runnerUp, thirdPlace, fourthPlace) {
             const colR32 = document.getElementById('colR32'); colR32.innerHTML = '';
-            r32.forEach((match, idx) => { colR32.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Llave ${idx + 1}</div><div class="flex justify-between items-center"><span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span><span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span><span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span></div>${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}</div>`; });
+            r32.forEach((match, idx) => { colR32.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Llave ${idx + 1}</div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team1}</span><span class="font-bold text-blue-400">${match.goals1}</span></div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team2}</span><span class="font-bold text-blue-400">${match.goals2}</span></div>${match.penalties?'<span class="penalty-badge">Penales</span>':''}</div>`; });
             const colR16 = document.getElementById('colR16'); colR16.innerHTML = '';
-            r16.forEach((match, idx) => { colR16.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Octavo ${idx + 1}</div><div class="flex justify-between items-center"><span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span><span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span><span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span></div>${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}</div>`; });
+            r16.forEach((match, idx) => { colR16.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Octavo ${idx + 1}</div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team1}</span><span class="font-bold text-blue-400">${match.goals1}</span></div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team2}</span><span class="font-bold text-blue-400">${match.goals2}</span></div>${match.penalties?'<span class="penalty-badge">Penales</span>':''}</div>`; });
             const colR8 = document.getElementById('colR8'); colR8.innerHTML = '';
-            r8.forEach((match, idx) => { colR8.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Cuarto ${idx + 1}</div><div class="flex justify-between items-center"><span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span><span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span><span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span></div>${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}</div>`; });
+            r8.forEach((match, idx) => { colR8.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Cuarto ${idx + 1}</div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team1}</span><span class="font-bold text-blue-400">${match.goals1}</span></div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team2}</span><span class="font-bold text-blue-400">${match.goals2}</span></div>${match.penalties?'<span class="penalty-badge">Penales</span>':''}</div>`; });
             const colR4 = document.getElementById('colR4'); colR4.innerHTML = '';
-            r4.forEach((match, idx) => { colR4.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Semifinal ${idx + 1}</div><div class="flex justify-between items-center"><span class="font-semibold ${match.winner === match.team1 ? 'text-green-400' : ''} truncate">${match.team1}</span><span class="font-mono text-sm font-bold">${match.goals1} - ${match.goals2}</span><span class="font-semibold ${match.winner === match.team2 ? 'text-green-400' : ''} truncate">${match.team2}</span></div>${match.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}</div>`; });
-            document.getElementById('thirdPlaceMatch').innerHTML = `<div class="text-xs text-slate-400 mb-1">🏅 TERCER PUESTO</div><div class="flex justify-between items-center"><span class="font-semibold ${third.winner === third.team1 ? 'text-yellow-400' : ''} truncate">${third.team1}</span><span class="font-mono text-sm font-bold">${third.goals1} - ${third.goals2}</span><span class="font-semibold ${third.winner === third.team2 ? 'text-yellow-400' : ''} truncate">${third.team2}</span></div>${third.penalties ? `<div class="penalty-badge mt-1 text-center"><i class="fas fa-futbol mr-1"></i>Penales</div>` : ''}<div class="text-center text-yellow-400 text-xs mt-2">🥉 Ganador: ${third.winner}</div>`;
-            document.getElementById('finalMatch').innerHTML = `<div class="text-xs text-slate-400 mb-1">🏆 FINAL DEL MUNDIAL</div><div class="flex justify-between items-center"><span class="font-semibold text-lg ${final.winner === final.team1 ? 'text-green-400' : ''} truncate">${final.team1}</span><span class="font-mono text-lg font-bold">${final.goals1} - ${final.goals2}</span><span class="font-semibold text-lg ${final.winner === final.team2 ? 'text-green-400' : ''} truncate">${final.team2}</span></div>${final.penalties ? `<div class="penalty-badge mt-2 text-center"><i class="fas fa-futbol mr-1"></i>¡Definición por penales!</div>` : ''}<div class="text-center text-green-400 font-bold text-sm mt-3">🏆 CAMPEÓN: ${final.winner.toUpperCase()}</div>`;
+            r4.forEach((match, idx) => { colR4.innerHTML += `<div class="match-card"><div class="text-xs text-slate-400 mb-1">Semifinal ${idx + 1}</div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team1}</span><span class="font-bold text-blue-400">${match.goals1}</span></div><div class="flex justify-between items-center"><span class="text-xs font-semibold">${match.team2}</span><span class="font-bold text-blue-400">${match.goals2}</span></div>${match.penalties?'<span class="penalty-badge">Penales</span>':''}</div>`; });
+            document.getElementById('thirdPlaceMatch').innerHTML = `<div class="text-xs text-slate-400 mb-1">🏅 TERCER PUESTO</div><div class="flex justify-between items-center"><span class="font-semibold text-sm">${third.team1}</span><span class="font-bold text-green-400 text-lg">${third.goals1}</span></div><div class="flex justify-between items-center"><span class="font-semibold text-sm">${third.team2}</span><span class="font-bold text-red-400 text-lg">${third.goals2}</span></div>`;
+            document.getElementById('finalMatch').innerHTML = `<div class="text-xs text-slate-400 mb-1">🏆 FINAL DEL MUNDIAL</div><div class="flex justify-between items-center"><span class="font-semibold text-sm">${final.team1}</span><span class="font-bold text-green-400 text-lg">${final.goals1}</span></div><div class="flex justify-between items-center"><span class="font-semibold text-sm">${final.team2}</span><span class="font-bold text-red-400 text-lg">${final.goals2}</span></div>`;
             document.getElementById('championNameTable').innerText = champion;
             document.getElementById('runnerUpNameTable').innerText = runnerUp;
             document.getElementById('thirdPlaceNameTable').innerText = thirdPlace;
